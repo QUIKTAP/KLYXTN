@@ -1,4 +1,4 @@
-Comment utiliser ca /**
+/**
  * KLYX — Système multilingue (Arabe / Français)
  * ─────────────────────────────────────────────
  * Comment utiliser :
@@ -11,7 +11,8 @@ Comment utiliser ca /**
 
 (function () {
 
-  /* ═══════════════════════════════════════════════════
+  /* 
+  ═══════════════════════════════════════════════════
      1. DICTIONNAIRE
   ═══════════════════════════════════════════════════ */
   const translations = {
