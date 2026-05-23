@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLYX — Payment</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --white:#fff;--off-white:#f8f7ff;
+  --purple:#7c3aed;--blue:#3b82f6;--cyan:#06b6d4;
+  --grad:linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%);
+  --grad-soft:linear-gradient(135deg,rgba(124,58,237,.1),rgba(59,130,246,.07));
+  --text:#1a1040;--text-soft:#64748b;--border:rgba(124,58,237,.15);
+}
+html{scroll-behavior:smooth;}
+body{
+  background:linear-gradient(155deg,#f9f8ff 0%,#fff 50%,#f0f4ff 100%);
+  color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 48px;display:flex;justify-content:space-between;align-items:center;
+  background:rgba(255,255,255,.93);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);box-shadow:0 2px 20px rgba(124,58,237,.06);
+}
+.logo-klyx{font-family:'Syne',sans-serif;font-weight:800;font-size:1.45rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-steps{display:flex;align-items:center;}
+.nav-step{display:flex;align-items:center;gap:7px;font-size:.75rem;font-weight:600;color:var(--text-soft);padding:5px 12px;}
+.nav-step.active{color:var(--purple);}
+.nav-step .sn{width:21px;height:21px;border-radius:50%;background:rgba(124,58,237,.1);border:1.5px solid rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--purple);}
+.nav-step.active .sn,.nav-step.done .sn{background:var(--grad);color:white;border-color:transparent;}
+.nav-step.done .sn{background:#22c55e;}
+.step-sep{width:20px;height:1px;background:var(--border);}
+
+.page-wrap{
+  padding:90px 24px 60px;max-width:960px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 310px;gap:32px;align-items:start;
+}
+
+/* ── PANELS ── */
+.panel{
+  background:white;border:1.5px solid rgba(124,58,237,.12);
+  border-radius:26px;padding:38px 34px;
+  box-shadow:0 16px 50px rgba(124,58,237,.07);
+  animation:up .6s .1s both;
+}
+@keyframes up{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+.section-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);color:var(--purple);font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:50px;margin-bottom:12px;letter-spacing:.05em;}
+.dot{width:5px;height:5px;background:var(--purple);border-radius:50%;animation:blink 1.8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.panel-title{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:7px;}
+.panel-sub{font-size:.85rem;color:var(--text-soft);line-height:1.65;margin-bottom:28px;}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.fsec-label{font-size:.68rem;font-weight:700;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid rgba(124,58,237,.1);}
+.form-section{margin-bottom:24px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field-wrap{display:flex;flex-direction:column;gap:5px;}
+.field-label{font-size:.76rem;font-weight:600;color:var(--text);}
+.field{width:100%;padding:12px 14px;border:1.5px solid rgba(124,58,237,.18);border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.9rem;color:var(--text);outline:none;background:#fafaff;transition:border-color .2s,box-shadow .2s;}
+.field:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1);background:white;}
+.field::placeholder{color:#bbb;font-size:.82rem;}
+
+/* ── PAYMENT METHODS ── */
+.pay-methods{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.pay-method{
+  display:flex;align-items:center;gap:14px;padding:16px 18px;
+  border:1.5px solid rgba(124,58,237,.15);border-radius:14px;cursor:pointer;
+  background:#fafaff;transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.pay-method:hover{border-color:var(--purple);background:rgba(124,58,237,.03);}
+.pay-method.selected{border-color:var(--purple);background:rgba(124,58,237,.06);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+.pay-radio{width:20px;height:20px;border-radius:50%;border:2px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s;position:relative;}
+.pay-method.selected .pay-radio{border-color:var(--purple);}
+.pay-radio::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--grad);opacity:0;transition:opacity .2s;position:absolute;}
+.pay-method.selected .pay-radio::after{opacity:1;}
+.pay-icon{font-size:1.5rem;width:38px;text-align:center;}
+.pay-info{flex:1;}
+.pay-name{font-size:.9rem;font-weight:700;color:var(--text);}
+.pay-desc{font-size:.74rem;color:var(--text-soft);margin-top:2px;}
+
+/* ── BANK INFO PANEL ── */
+.bank-info{
+  background:linear-gradient(160deg,#1a1040,#0f0a2e);
+  border-radius:18px;padding:24px 22px;margin-bottom:18px;
+  display:none;animation:up .4s both;
+  box-shadow:0 16px 50px rgba(124,58,237,.28);
+  position:relative;overflow:hidden;
+}
+.bank-info.show{display:block;}
+.bank-info::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(124,58,237,.22),transparent 60%);pointer-events:none;}
+.bank-info-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.06) 1px,transparent 1px);background-size:24px 24px;}
+.bi-title{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;margin-bottom:16px;position:relative;z-index:1;}
+.bi-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:relative;z-index:1;}
+.bi-label{font-size:.74rem;color:rgba(255,255,255,.4);}
+.bi-val{font-size:.88rem;font-weight:700;color:white;direction:ltr;font-family:monospace;}
+.bi-copy{
+  background:rgba(124,58,237,.3);border:1px solid rgba(124,58,237,.5);
+  color:rgba(255,255,255,.8);border-radius:8px;padding:4px 10px;
+  font-size:.65rem;font-weight:700;cursor:pointer;
+  transition:background .2s;font-family:'Tajawal',sans-serif;
+}
+.bi-copy:hover{background:rgba(124,58,237,.5);}
+.bi-divider{height:1px;background:rgba(255,255,255,.08);margin:14px 0;position:relative;z-index:1;}
+.bi-instructions{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.65;position:relative;z-index:1;}
+
+/* ── COD EXTRA ── */
+.cod-fields{display:none;animation:up .4s both;}
+.cod-fields.show{display:block;}
+
+/* ── BUTTONS ── */
+.btn-confirm{width:100%;padding:15px;background:var(--grad);color:white;border:none;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.98rem;cursor:pointer;box-shadow:0 8px 28px rgba(124,58,237,.42);transition:transform .2s,box-shadow .3s;margin-top:6px;}
+.btn-confirm:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(124,58,237,.55);}
+.secure-note{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:.72rem;color:var(--text-soft);}
+.secure-badge{display:flex;align-items:center;gap:4px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:50px;padding:3px 10px;color:#15803d;font-weight:700;font-size:.66rem;}
+
+/* ── SUMMARY PANEL ── */
+.summary-panel{animation:up .6s .25s both;position:sticky;top:96px;}
+.sum-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:16px;}
+.order-card{
+  background:linear-gradient(160deg,#1a1040,#0f0a2e);
+  border-radius:20px;padding:22px 20px;
+  box-shadow:0 20px 56px rgba(124,58,237,.3);
+  margin-bottom:18px;position:relative;overflow:hidden;
+}
+.order-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(124,58,237,.2),transparent 55%);}
+.order-card-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.05) 1px,transparent 1px);background-size:22px 22px;}
+.oc-product{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:5px;position:relative;z-index:1;}
+.oc-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:white;margin-bottom:14px;position:relative;z-index:1;}
+.oc-line{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;position:relative;z-index:1;}
+.oc-l{font-size:.76rem;color:rgba(255,255,255,.4);}
+.oc-v{font-size:.86rem;color:rgba(255,255,255,.8);font-weight:600;}
+.oc-div{height:1px;background:rgba(255,255,255,.08);margin:12px 0;position:relative;z-index:1;}
+.oc-total{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+.oc-tl{font-size:.82rem;color:rgba(255,255,255,.5);font-weight:600;}
+.oc-tp{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.includes{display:flex;flex-direction:column;gap:7px;}
+.inc-item{display:flex;align-items:center;gap:9px;font-size:.78rem;color:var(--text-soft);}
+.inc-check{width:18px;height:18px;border-radius:50%;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:.58rem;color:#16a34a;flex-shrink:0;}
+
+/* ── SUCCESS MODAL ── */
+#successModal{
+  position:fixed;inset:0;background:rgba(10,5,30,.82);
+  backdrop-filter:blur(20px);display:none;
+  align-items:center;justify-content:center;z-index:9999;
+}
+#successModal.open{display:flex;}
+.success-box{
+  background:white;border-radius:30px;padding:48px 40px;
+  max-width:460px;width:92%;text-align:center;
+  animation:pop .5s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 40px 100px rgba(124,58,237,.35);
+}
+@keyframes pop{from{transform:scale(.78);opacity:0;}to{transform:scale(1);opacity:1;}}
+.success-icon{font-size:3.2rem;margin-bottom:18px;animation:bounce .5s .3s both;}
+@keyframes bounce{from{transform:scale(0);}60%{transform:scale(1.15);}to{transform:scale(1);}}
+.success-title{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--text);margin-bottom:8px;}
+.success-sub{font-size:.88rem;color:var(--text-soft);line-height:1.7;margin-bottom:24px;}
+.creds-box{background:var(--off-white);border:1.5px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:24px;text-align:right;}
+.creds-title{font-size:.68rem;font-weight:700;color:var(--purple);letter-spacing:.07em;margin-bottom:10px;}
+.cred-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+.cred-key{font-size:.78rem;color:var(--text-soft);}
+.cred-val{font-size:.86rem;font-weight:700;color:var(--text);direction:ltr;font-family:monospace;}
+.btn-success{width:100%;padding:14px;background:var(--grad);color:white;border:none;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.96rem;cursor:pointer;box-shadow:0 8px 28px rgba(124,58,237,.4);}
+
+@media(max-width:900px){
+  nav{padding:14px 16px;}
+  .nav-steps{display:none;}
+  .page-wrap{grid-template-columns:1fr;padding:80px 14px 50px;}
+  .panel{padding:26px 18px;}
+  .form-grid{grid-template-columns:1fr;}
+  .summary-panel{position:static;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-klyx">KLYX</a>
+  <div class="nav-right">
+    <div class="nav-steps">
+      <div class="nav-step done"><div class="sn">✓</div><span data-i18n="step_order">الطلب</span></div>
+      <div class="step-sep"></div>
+      <div class="nav-step done"><div class="sn">✓</div><span data-i18n="step_card">البطاقة</span></div>
+      <div class="step-sep"></div>
+      <div class="nav-step active"><div class="sn">3</div><span data-i18n="step_payment">الدفع</span></div>
+    </div>
+    <div id="langSwitcherNav"></div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- ══ PAYMENT FORM ══ -->
+  <div class="panel">
+    <div class="section-pill"><div class="dot"></div><span data-i18n="pay_step">الخطوة 3 من 3 — الأخيرة</span></div>
+    <h1 class="panel-title"><span class="grad-text" data-i18n="pay_title">الدفع</span><span data-i18n="pay_title2"> وإنشاء حسابك</span></h1>
+    <p class="panel-sub" data-i18n="pay_sub">بعد الدفع سيتم إنشاء حسابك تلقائياً</p>
+
+    <!-- ACCOUNT SETUP -->
+    <div class="form-section">
+      <div class="fsec-label" data-i18n="pay_account">🔐 بيانات الدخول لحسابك</div>
+      <div class="form-grid">
+        <div class="field-wrap" style="grid-column:1/-1">
+          <label class="field-label" data-i18n="pay_email_label">البريد الإلكتروني</label>
+          <input class="field" id="loginEmail" dir="ltr" placeholder="your@email.com" />
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" data-i18n="pay_pwd">كلمة المرور</label>
+          <input class="field" id="loginPwd" type="password" dir="ltr" placeholder="••••••••" />
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" data-i18n="pay_pwd2">تأكيد كلمة المرور</label>
+          <input class="field" id="loginPwd2" type="password" dir="ltr" placeholder="••••••••" />
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT METHOD -->
+    <div class="form-section">
+      <div class="fsec-label" data-i18n="pay_method">💳 طريقة الدفع</div>
+      <div class="pay-methods">
+        <div class="pay-method selected" id="pm-cod" onclick="selectPay('cod')">
+          <div class="pay-radio"></div>
+          <div class="pay-icon">🚚</div>
+          <div class="pay-info">
+            <div class="pay-name" data-i18n="pay_cod">الدفع عند الاستلام</div>
+            <div class="pay-desc" data-i18n="pay_cod_desc">ادفع عند وصول المنتج</div>
+          </div>
+        </div>
+        <div class="pay-method" id="pm-bank" onclick="selectPay('bank')">
+          <div class="pay-radio"></div>
+          <div class="pay-icon">🏦</div>
+          <div class="pay-info">
+            <div class="pay-name" data-i18n="pay_bank">تحويل بنكي</div>
+            <div class="pay-desc" data-i18n="pay_bank_desc">تحويل مسبق — نؤكد بعد التحقق</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BANK DETAILS -->
+      <div class="bank-info" id="bankInfo">
+        <div class="bank-info-grid"></div>
+        <div class="bi-title" data-i18n="pay_bank_info">🏦 معلومات الحساب البنكي</div>
+        <div class="bi-row">
+          <span class="bi-label" data-i18n="pay_bank_name">اسم البنك</span>
+          <span class="bi-val">Banque Zitouna</span>
+        </div>
+        <div class="bi-row">
+          <span class="bi-label" data-i18n="pay_bank_iban">الرقم الحسابي / RIB</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="bi-val" id="bankRIB">22 XXX XXXXXXXX XXXXXXXXX XX</span>
+            <button class="bi-copy" onclick="copyRIB(event)" data-i18n="pay_bank_copy">نسخ</button>
+          </div>
+        </div>
+        <div class="bi-row">
+          <span class="bi-label" data-i18n="pay_bank_holder">اسم صاحب الحساب</span>
+          <span class="bi-val">KLYX TN SARL</span>
+        </div>
+        <div class="bi-divider"></div>
+        <div class="bi-instructions" data-i18n="pay_bank_inst_text">قم بتحويل المبلغ وأرسل لنا إثبات الدفع عبر WhatsApp أو البريد الإلكتروني</div>
+      </div>
+
+      <!-- COD DELIVERY FIELDS -->
+      <div class="cod-fields show" id="codFields">
+        <div class="fsec-label" style="margin-top:16px;" data-i18n="pay_delivery">📦 معلومات التوصيل</div>
+        <div class="form-grid">
+          <div class="field-wrap" style="grid-column:1/-1">
+            <label class="field-label" data-i18n="pay_address">العنوان الكامل</label>
+            <input class="field" id="address" data-i18n="pay_address_ph" placeholder="الشارع، الحي، المدينة" />
+          </div>
+          <div class="field-wrap">
+            <label class="field-label" data-i18n="pay_city">المدينة</label>
+            <input class="field" id="delivCity" data-i18n="pay_city_ph" placeholder="تونس، صفاقس..." />
+          </div>
+          <div class="field-wrap">
+            <label class="field-label" data-i18n="pay_notes">ملاحظات (اختياري)</label>
+            <input class="field" id="notes" data-i18n="pay_notes_ph" placeholder="تعليمات التوصيل..." />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-confirm" onclick="confirmOrder()" data-i18n="pay_confirm_btn">✓ تأكيد الطلب وإنشاء الحساب</button>
+    <div class="secure-note">
+      <div class="secure-badge">🔒</div>
+      <span data-i18n="pay_secure">بياناتك محمية تماماً</span>
+    </div>
+  </div>
+
+  <!-- ══ ORDER SUMMARY ══ -->
+  <div class="summary-panel">
+    <div class="sum-title" data-i18n="pay_summary">ملخص طلبك</div>
+    <div class="order-card">
+      <div class="order-card-grid"></div>
+      <div class="oc-product" data-i18n="pay_product">المنتج المختار</div>
+      <div class="oc-name" id="sumProduct">—</div>
+      <div class="oc-line">
+        <span class="oc-l" data-i18n="field_name">الاسم</span>
+        <span class="oc-v" id="sumName">—</span>
+      </div>
+      <div class="oc-line">
+        <span class="oc-l" data-i18n="pay_qty_label">الكمية</span>
+        <span class="oc-v" id="sumQty">1</span>
+      </div>
+      <div class="oc-div"></div>
+      <div class="oc-total">
+        <span class="oc-tl" data-i18n="pay_total">المجموع</span>
+        <span class="oc-tp" id="sumTotal">27 TND</span>
+      </div>
+    </div>
+    <div class="includes" id="includesList"></div>
+  </div>
+</div>
+
+<!-- ══ SUCCESS MODAL ══ -->
+<div id="successModal">
+  <div class="success-box">
+    <div class="success-icon" data-i18n="success_icon">🎉</div>
+    <div class="success-title" data-i18n="success_title">تم إنشاء حسابك!</div>
+    <p class="success-sub" data-i18n="success_sub">تم استلام طلبك بنجاح. إليك بيانات دخولك</p>
+    <div class="creds-box">
+      <div class="creds-title" data-i18n="success_creds_title">🔐 بيانات الدخول</div>
+      <div class="cred-row">
+        <span class="cred-key" data-i18n="success_email_label">البريد الإلكتروني</span>
+        <span class="cred-val" id="credEmail">—</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key" data-i18n="success_pwd_label">كلمة المرور</span>
+        <span class="cred-val" id="credPwd">—</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key" data-i18n="success_url_label">رابطك الشخصي</span>
+        <span class="cred-val" id="credUrl">—</span>
+      </div>
+    </div>
+    <div style="font-size:.78rem;color:var(--text-soft);margin-bottom:20px;" data-i18n="success_wa_note">سنتواصل معك قريباً لتأكيد الطلب</div>
+    <button class="btn-success" onclick="goToDash()" data-i18n="success_btn">ادخل على مساحتي ←</button>
+  </div>
+</div>
+
+<script src="i18n.js"></script>
+<script>
+const order = JSON.parse(sessionStorage.getItem('klyxOrder') || '{}');
+const card  = JSON.parse(sessionStorage.getItem('klyxCard')  || '{}');
+let selectedPay = 'cod';
+
+document.addEventListener('DOMContentLoaded', () => {
+  KlyxI18n.init();
+  const sw = document.getElementById('langSwitcherNav');
+  sw.className = 'klyx-lang-switcher';
+  sw.innerHTML = `
+    <button class="lang-btn" data-lang="ar" onclick="KlyxI18n.set('ar')">ع</button>
+    <button class="lang-btn" data-lang="fr" onclick="KlyxI18n.set('fr')">FR</button>
+    <button class="lang-btn" data-lang="en" onclick="KlyxI18n.set('en')">EN</button>
+  `;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === KlyxI18n.current));
+
+  // populate summary
+  document.getElementById('sumProduct').textContent = order.product || '—';
+  document.getElementById('sumName').textContent = order.name || card.fullName || '—';
+  document.getElementById('sumQty').textContent = order.qty || 1;
+
+  // pre-fill email from card
+  if (card.email) document.getElementById('loginEmail').value = card.email;
+
+  renderIncludes();
+});
+
+document.addEventListener('klyxLangChanged', () => renderIncludes());
+
+function renderIncludes() {
+  const items = KlyxI18n.t('pay_includes');
+  if (!Array.isArray(items)) return;
+  document.getElementById('includesList').innerHTML = items.map(i =>
+    `<div class="inc-item"><div class="inc-check">✓</div>${i}</div>`
+  ).join('');
+}
+
+function selectPay(method) {
+  selectedPay = method;
+  document.getElementById('pm-cod').classList.toggle('selected', method === 'cod');
+  document.getElementById('pm-bank').classList.toggle('selected', method === 'bank');
+  document.getElementById('bankInfo').classList.toggle('show', method === 'bank');
+  document.getElementById('codFields').classList.toggle('show', method === 'cod');
+}
+
+function copyRIB(event) {
+  const rib = document.getElementById('bankRIB').textContent;
+  navigator.clipboard?.writeText(rib).catch(()=>{});
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = KlyxI18n.t('pay_bank_copied');
+  setTimeout(() => { btn.textContent = orig; }, 2000);
+}
+
+function genUsername(name) {
+  return (name || 'user').toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
+}
+
+function confirmOrder() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPwd').value;
+  const pwd2  = document.getElementById('loginPwd2').value;
+  const addr  = selectedPay === 'cod' ? document.getElementById('address').value.trim() : 'bank';
+
+  if (!email) { alert(KlyxI18n.t('pay_err_email')); return; }
+  if (!pwd || pwd.length < 6) { alert(KlyxI18n.t('pay_err_pwd')); return; }
+  if (pwd !== pwd2) { alert(KlyxI18n.t('pay_err_match')); return; }
+  if (selectedPay === 'cod' && !addr) { alert(KlyxI18n.t('pay_err_address')); return; }
+
+  const username = genUsername(card.fullName || order.name);
+  const account = {
+    email, password: pwd, username,
+    card: { ...card },
+    order: { ...order, address: document.getElementById('address')?.value?.trim(), city: document.getElementById('delivCity')?.value?.trim(), notes: document.getElementById('notes')?.value?.trim() },
+    payMethod: selectedPay,
+    lang: KlyxI18n.current,
+    createdAt: new Date().toISOString()
+  };
+  localStorage.setItem('klyxAccount_' + email, JSON.stringify(account));
+  localStorage.setItem('klyxCurrentUser', email);
+
+  document.getElementById('credEmail').textContent = email;
+  document.getElementById('credPwd').textContent = pwd;
+  document.getElementById('credUrl').textContent = 'klyxtn.com/u/' + username;
+
+  KlyxI18n.apply(); // translate modal
+
+  if (selectedPay === 'cod') {
+    const msg = `🛒 KLYX Order\n━━━━━━━━━━\n📦 ${order.product}\n👤 ${order.name}\n📞 ${order.phone}\n🏙 ${addr}\n📧 ${email}\n━━━━━━━━━━`;
+    setTimeout(() => window.open('https://wa.me/21629691046?text=' + encodeURIComponent(msg), '_blank'), 600);
+  }
+
+  document.getElementById('successModal').classList.add('open');
+}
+
+function goToDash() { window.location.href = 'dashboard.html'; }
+</script>
+</body>
+</html>
