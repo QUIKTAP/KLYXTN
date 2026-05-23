@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLYX — My Space</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --white:#fff;--off-white:#f8f7ff;
+  --purple:#7c3aed;--blue:#3b82f6;--cyan:#06b6d4;
+  --grad:linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%);
+  --grad-soft:linear-gradient(135deg,rgba(124,58,237,.1),rgba(59,130,246,.07));
+  --text:#1a1040;--text-soft:#64748b;--border:rgba(124,58,237,.15);
+  --card-primary:#7c3aed;--card-secondary:#3b82f6;--card-accent:#06b6d4;
+  --card-grad:linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%);
+  --card-glow:rgba(124,58,237,.4);
+  --card-bg1:#0d0820;--card-bg2:#12082e;--card-bg3:#0a1628;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:linear-gradient(155deg,#f9f8ff 0%,#fff 50%,#f0f4ff 100%);
+  color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:14px 40px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 20px rgba(124,58,237,.06);
+}
+.logo-klyx{font-family:'Syne',sans-serif;font-weight:800;font-size:1.45rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;letter-spacing:.04em;}
+.nav-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.nav-avatar{width:36px;height:36px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;color:white;box-shadow:0 4px 12px rgba(124,58,237,.3);overflow:hidden;flex-shrink:0;}
+.nav-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.nav-name{font-size:.88rem;font-weight:700;color:var(--text);}
+.nav-view-btn{background:var(--grad);color:white;border:none;padding:8px 16px;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,.35);transition:transform .2s,opacity .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+.nav-view-btn:hover{transform:translateY(-1px);opacity:.9;}
+.nav-logout{background:transparent;border:1.5px solid rgba(124,58,237,.25);color:var(--purple);padding:7px 14px;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:600;font-size:.76rem;cursor:pointer;transition:background .2s;}
+.nav-logout:hover{background:rgba(124,58,237,.07);}
+
+/* LAYOUT */
+.page-wrap{
+  padding:86px 24px 60px;max-width:1120px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 350px;gap:30px;align-items:start;
+}
+
+/* GREETING BANNER */
+.greeting{
+  grid-column:1/-1;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:30px 38px;
+  background:linear-gradient(135deg,#1a1040,#0f0a2e);
+  border-radius:24px;
+  box-shadow:0 20px 60px rgba(124,58,237,.28);
+  position:relative;overflow:hidden;
+  animation:up .6s both;
+}
+@keyframes up{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+.greeting::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 50%,rgba(124,58,237,.22),transparent 60%);}
+.gr-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.06) 1px,transparent 1px);background-size:30px 30px;}
+.gr-text{position:relative;z-index:1;}
+.gr-hi{font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:5px;}
+.gr-name{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:white;margin-bottom:6px;}
+.gr-url{font-size:.8rem;color:rgba(124,171,237,.65);direction:ltr;font-family:monospace;}
+.gr-copy{display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,.22);border:1px solid rgba(124,58,237,.38);border-radius:50px;padding:5px 14px;font-size:.7rem;color:rgba(255,255,255,.65);cursor:pointer;transition:background .2s;margin-top:8px;font-family:'Tajawal',sans-serif;}
+.gr-copy:hover{background:rgba(124,58,237,.38);}
+.gr-avatar{position:relative;z-index:1;width:78px;height:78px;border-radius:50%;background:var(--card-grad);border:3px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:white;overflow:hidden;box-shadow:0 8px 28px rgba(124,58,237,.38);flex-shrink:0;transition:background .5s;}
+.gr-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+/* EDIT PANEL */
+.edit-panel{
+  background:white;border:1.5px solid rgba(124,58,237,.12);
+  border-radius:24px;padding:34px 30px;
+  box-shadow:0 12px 40px rgba(124,58,237,.07);
+  animation:up .6s .1s both;
+}
+.panel-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:4px;}
+.panel-sub{font-size:.82rem;color:var(--text-soft);margin-bottom:26px;}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.fsec{margin-bottom:22px;}
+.fsec-label{font-size:.67rem;font-weight:700;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid rgba(124,58,237,.1);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+
+.fw{display:flex;flex-direction:column;gap:5px;}
+.fl{font-size:.74rem;font-weight:600;color:var(--text);}
+.fi{width:100%;padding:11px 13px;border:1.5px solid rgba(124,58,237,.18);border-radius:11px;font-family:'Tajawal',sans-serif;font-size:.88rem;color:var(--text);outline:none;background:#fafaff;transition:border-color .2s,box-shadow .2s;}
+.fi:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1);background:white;}
+.fi::placeholder{color:#bbb;font-size:.8rem;}
+
+/* LOGO UPLOAD */
+.logo-area{border:2px dashed rgba(124,58,237,.28);border-radius:14px;padding:20px;text-align:center;cursor:pointer;background:rgba(124,58,237,.03);transition:border-color .3s,background .3s;position:relative;overflow:hidden;}
+.logo-area:hover{border-color:var(--purple);background:rgba(124,58,237,.06);}
+.logo-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+#logoPreview{width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid white;box-shadow:0 4px 16px rgba(124,58,237,.2);display:none;margin:0 auto 8px;}
+.upload-hint{font-size:.72rem;color:var(--text-soft);}
+#uploadText{font-size:.83rem;font-weight:600;color:var(--text);margin-bottom:3px;}
+
+/* THEME PICKER */
+.theme-row{display:flex;gap:8px;flex-wrap:wrap;}
+.theme-btn{display:flex;align-items:center;gap:7px;padding:8px 12px;border:1.5px solid rgba(124,58,237,.15);border-radius:11px;background:#fafaff;cursor:pointer;transition:border-color .25s,background .25s,transform .18s;font-family:'Tajawal',sans-serif;font-size:.75rem;font-weight:600;color:var(--text);}
+.theme-btn:hover{border-color:var(--purple);transform:translateY(-2px);}
+.theme-btn.active{border-color:var(--purple);background:rgba(124,58,237,.07);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+.theme-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+
+/* SAVE */
+.save-btn{width:100%;padding:14px;background:var(--grad);color:white;border:none;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.96rem;cursor:pointer;box-shadow:0 8px 24px rgba(124,58,237,.38);transition:transform .2s,box-shadow .3s;margin-top:20px;}
+.save-btn:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(124,58,237,.52);}
+.save-toast{display:flex;align-items:center;gap:8px;background:rgba(34,197,94,.09);border:1px solid rgba(34,197,94,.24);border-radius:50px;padding:8px 16px;font-size:.78rem;color:#15803d;font-weight:600;justify-content:center;margin-top:12px;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;}
+.save-toast.show{opacity:1;transform:translateY(0);}
+
+/* PREVIEW PANEL */
+.preview-side{animation:up .6s .2s both;position:sticky;top:94px;}
+.preview-label{font-size:.7rem;font-weight:700;color:var(--purple);letter-spacing:.08em;text-align:center;margin-bottom:13px;}
+
+.card-mock{
+  background:linear-gradient(160deg,var(--card-bg1),var(--card-bg2));
+  border-radius:26px;padding:26px 20px 22px;
+  box-shadow:0 32px 80px var(--card-glow),0 0 0 1px rgba(255,255,255,.06);
+  position:relative;overflow:hidden;transition:background .5s;
+}
+.card-mock::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 18%,rgba(255,255,255,.11),transparent 55%),radial-gradient(circle at 80% 85%,rgba(255,255,255,.05),transparent 45%);pointer-events:none;}
+.cm-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;}
+.cm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:2;}
+.cm-brand{font-family:'Syne',sans-serif;font-size:.7rem;font-weight:800;background:var(--card-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.12em;}
+.cm-nfc{width:26px;height:26px;border:1.5px solid rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.42rem;font-weight:800;color:rgba(255,255,255,.4);font-family:'Syne',sans-serif;}
+.cm-av-wrap{display:flex;justify-content:center;margin-bottom:14px;position:relative;z-index:2;}
+.cm-av{width:68px;height:68px;border-radius:50%;background:var(--card-grad);border:2.5px solid rgba(255,255,255,.14);box-shadow:0 8px 26px var(--card-glow);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:white;overflow:hidden;animation:flt 6s ease-in-out infinite;transition:background .5s;}
+@keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.cm-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.cm-info{text-align:center;margin-bottom:16px;position:relative;z-index:2;}
+.cm-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:white;margin-bottom:3px;}
+.cm-role{font-size:.72rem;color:rgba(255,255,255,.48);margin-bottom:9px;}
+.cm-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:50px;padding:3px 9px;font-size:.58rem;color:rgba(255,255,255,.6);font-weight:600;}
+.cm-bd{width:5px;height:5px;background:#22c55e;border-radius:50%;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.cm-links{display:flex;flex-direction:column;gap:6px;position:relative;z-index:2;max-height:230px;overflow:hidden;}
+.cm-link{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:8px 11px;}
+.cm-link-icon{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.78rem;flex-shrink:0;}
+.cm-link span{font-size:.71rem;color:rgba(255,255,255,.72);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;}
+.cm-save{width:100%;margin-top:14px;padding:10px;background:var(--card-grad);border:none;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.8rem;color:white;box-shadow:0 5px 16px var(--card-glow);position:relative;z-index:2;transition:background .5s;}
+
+.pub-box{background:var(--off-white);border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;margin-top:16px;}
+.pub-label{font-size:.68rem;font-weight:700;color:var(--purple);letter-spacing:.07em;margin-bottom:7px;}
+.pub-url{font-size:.8rem;color:var(--text);font-weight:600;direction:ltr;text-align:left;background:white;border:1px solid var(--border);border-radius:9px;padding:8px 11px;margin-bottom:9px;word-break:break-all;}
+.btn-open{width:100%;padding:10px;background:transparent;color:var(--purple);border:1.5px solid rgba(124,58,237,.28);border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.83rem;cursor:pointer;transition:background .2s,transform .2s;}
+.btn-open:hover{background:rgba(124,58,237,.06);transform:translateY(-1px);}
+
+@media(max-width:920px){
+  nav{padding:12px 16px;}
+  .nav-name{display:none;}
+  .page-wrap{grid-template-columns:1fr;padding:78px 14px 48px;}
+  .greeting{flex-direction:column;gap:16px;padding:22px 18px;}
+  .form-grid{grid-template-columns:1fr;}
+  .preview-side{position:static;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-klyx">KLYX</a>
+  <div class="nav-right">
+    <div class="nav-avatar" id="navAvatar">K</div>
+    <span class="nav-name" id="navName">—</span>
+    <div id="langSwitcherNav"></div>
+    <a class="nav-view-btn" id="viewCardBtn" href="#" target="_blank" data-i18n="dash_view">🔗 بطاقتي</a>
+    <button class="nav-logout" onclick="logout()" data-i18n="dash_logout">خروج</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- GREETING -->
+  <div class="greeting">
+    <div class="gr-grid"></div>
+    <div class="gr-text">
+      <div class="gr-hi" data-i18n="dash_greeting">مرحباً بك في مساحتك الشخصية ✨</div>
+      <div class="gr-name" id="grName">—</div>
+      <div class="gr-url" id="grUrl">klyxtn.com/u/...</div>
+      <div class="gr-copy" onclick="copyUrl()" id="copyBtn" data-i18n="dash_copy">📋 نسخ الرابط</div>
+    </div>
+    <div class="gr-avatar" id="grAvatar">K</div>
+  </div>
+
+  <!-- EDIT FORM -->
+  <div class="edit-panel">
+    <div class="panel-title"><span data-i18n="dash_title">تعديل </span><span class="grad-text" data-i18n="dash_title_grad">بطاقتك الرقمية</span></div>
+    <div class="panel-sub" data-i18n="dash_sub">التغييرات تنعكس فوراً على بطاقتك العامة</div>
+
+    <!-- LOGO -->
+    <div class="fsec">
+      <div class="fsec-label" data-i18n="dash_logo">🖼 الصورة / الشعار</div>
+      <div class="logo-area" onclick="document.getElementById('logoInput').click()">
+        <img id="logoPreview" src="" alt="logo" />
+        <div id="uploadText" data-i18n="dash_upload_text">📸 تغيير الصورة أو الشعار</div>
+        <div class="upload-hint">PNG, JPG — max 2MB</div>
+        <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(event)" />
+      </div>
+    </div>
+
+    <!-- PERSONAL -->
+    <div class="fsec">
+      <div class="fsec-label" data-i18n="dash_personal">👤 المعلومات الشخصية</div>
+      <div class="form-grid">
+        <div class="fw"><label class="fl" data-i18n="field_name">الاسم الكامل</label><input class="fi" id="fullName" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_job">المسمى الوظيفي</label><input class="fi" id="jobTitle" oninput="liveUpdate()" /></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="fsec">
+      <div class="fsec-label" data-i18n="dash_contact">📞 معلومات التواصل</div>
+      <div class="form-grid">
+        <div class="fw"><label class="fl" data-i18n="field_phone">📱 الهاتف</label><input class="fi" id="phone" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_wa">💬 واتساب</label><input class="fi" id="whatsapp" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_email">✉️ البريد</label><input class="fi" id="emailField" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_website">🌐 الموقع</label><input class="fi" id="website" dir="ltr" oninput="liveUpdate()" /></div>
+      </div>
+    </div>
+
+    <!-- SOCIAL -->
+    <div class="fsec">
+      <div class="fsec-label" data-i18n="dash_social">🔗 التواصل الاجتماعي</div>
+      <div class="form-grid">
+        <div class="fw"><label class="fl" data-i18n="field_ig">📸 Instagram</label><input class="fi" id="instagram" dir="ltr" placeholder="@username" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_fb">👥 Facebook</label><input class="fi" id="facebook" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_li">💼 LinkedIn</label><input class="fi" id="linkedin" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_tt">🎵 TikTok</label><input class="fi" id="tiktok" dir="ltr" placeholder="@username" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_tw">𝕏 Twitter / X</label><input class="fi" id="twitter" dir="ltr" placeholder="@username" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_yt">▶️ YouTube</label><input class="fi" id="youtube" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_sc">👻 Snapchat</label><input class="fi" id="snapchat" dir="ltr" placeholder="@username" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_tg">✈️ Telegram</label><input class="fi" id="telegram" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_gh">🐙 GitHub</label><input class="fi" id="github" dir="ltr" oninput="liveUpdate()" /></div>
+        <div class="fw"><label class="fl" data-i18n="field_be">🅱 Behance</label><input class="fi" id="behance" dir="ltr" oninput="liveUpdate()" /></div>
+      </div>
+    </div>
+
+    <!-- THEME -->
+    <div class="fsec">
+      <div class="fsec-label" data-i18n="dash_theme">🎨 لون البطاقة</div>
+      <div class="theme-row" id="themeRow"></div>
+    </div>
+
+    <button class="save-btn" onclick="saveChanges()" data-i18n="dash_save">💾 حفظ التغييرات</button>
+    <div class="save-toast" id="saveToast" data-i18n="dash_saved">✓ تم حفظ التغييرات بنجاح</div>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-side">
+    <div class="preview-label" data-i18n="dash_preview">✨ بطاقتك الرقمية الحالية</div>
+    <div class="card-mock">
+      <div class="cm-grid"></div>
+      <div class="cm-top">
+        <span class="cm-brand">KLYX</span>
+        <div class="cm-nfc">NFC</div>
+      </div>
+      <div class="cm-av-wrap">
+        <div class="cm-av" id="previewAv">K</div>
+      </div>
+      <div class="cm-info">
+        <div class="cm-name" id="previewName">—</div>
+        <div class="cm-role" id="previewRole">—</div>
+        <div class="cm-badge"><div class="cm-bd"></div><span data-i18n="card_badge">بطاقة KLYX الرقمية</span></div>
+      </div>
+      <div class="cm-links" id="previewLinks"></div>
+      <button class="cm-save" data-i18n="card_save">💾 حفظ في جهات الاتصال</button>
+    </div>
+
+    <div class="pub-box">
+      <div class="pub-label" data-i18n="dash_link_label">🔗 رابطك العام</div>
+      <div class="pub-url" id="pubUrl">klyxtn.com/u/...</div>
+      <button class="btn-open" onclick="openCard()" data-i18n="dash_open_card">فتح البطاقة العامة ↗</button>
+    </div>
+  </div>
+</div>
+
+<script src="i18n.js"></script>
+<script>
+// ── Auth guard ────────────────────────────────────
+const currentEmail = localStorage.getItem('klyxCurrentUser');
+if (!currentEmail) window.location.href = 'login.html';
+const account = currentEmail ? JSON.parse(localStorage.getItem('klyxAccount_' + currentEmail) || '{}') : {};
+let card = account.card || {};
+let logoDataUrl = card.logo || '';
+
+// ── LINK CONFIGS (all 14 socials) ────────────────
+const LINKS = [
+  {id:'phone',    icon:'📱', bg:'rgba(34,197,94,.15)'},
+  {id:'whatsapp', icon:'💬', bg:'rgba(37,211,102,.15)'},
+  {id:'emailField',icon:'✉️',bg:'rgba(124,58,237,.15)'},
+  {id:'website',  icon:'🌐', bg:'rgba(59,130,246,.15)'},
+  {id:'instagram',icon:'📸', bg:'rgba(225,48,108,.15)'},
+  {id:'facebook', icon:'👥', bg:'rgba(59,130,246,.1)'},
+  {id:'linkedin', icon:'💼', bg:'rgba(10,102,194,.15)'},
+  {id:'tiktok',   icon:'🎵', bg:'rgba(0,0,0,.15)'},
+  {id:'twitter',  icon:'𝕏',  bg:'rgba(0,0,0,.12)'},
+  {id:'youtube',  icon:'▶️', bg:'rgba(255,0,0,.12)'},
+  {id:'snapchat', icon:'👻', bg:'rgba(255,252,0,.15)'},
+  {id:'telegram', icon:'✈️', bg:'rgba(0,136,204,.15)'},
+  {id:'github',   icon:'🐙', bg:'rgba(36,41,47,.15)'},
+  {id:'behance',  icon:'🅱', bg:'rgba(23,105,255,.15)'},
+];
+
+const THEMES = [
+  {key:'purple', dot:'linear-gradient(135deg,#7c3aed,#3b82f6,#06b6d4)', label_key:'theme_purple'},
+  {key:'dark',   dot:'linear-gradient(135deg,#a855f7,#ec4899,#f43f5e)', label_key:'theme_dark'},
+  {key:'blue',   dot:'linear-gradient(135deg,#00d4ff,#0070f3,#7928ca)', label_key:'theme_blue'},
+  {key:'gold',   dot:'linear-gradient(135deg,#fbbf24,#f59e0b,#d97706)', label_key:'theme_gold'},
+  {key:'white',  dot:'linear-gradient(135deg,#6366f1,#8b5cf6)',          label_key:'theme_white'},
+];
+
+// ── DOMContentLoaded ─────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  KlyxI18n.init();
+  buildLangSwitcher();
+  buildThemePicker();
+  KlyxTheme.init('klyxCardTheme');
+  // Override theme from saved card
+  if (card.theme) KlyxTheme.set(card.theme);
+  populateFields();
+  initNavInfo();
+  liveUpdate();
+});
+
+document.addEventListener('klyxThemeChanged', () => {
+  // ✅ FIX: Persist theme immediately to account so card.html reads the correct theme
+  if (currentEmail && account) {
+    if (!account.card) account.card = {};
+    account.card.theme = KlyxTheme.current;
+    localStorage.setItem('klyxAccount_' + currentEmail, JSON.stringify(account));
+  }
+  updateGrAvatar();
+  liveUpdate();
+});
+
+function buildLangSwitcher() {
+  const sw = document.getElementById('langSwitcherNav');
+  sw.className = 'klyx-lang-switcher';
+  sw.innerHTML = `<button class="lang-btn" data-lang="ar" onclick="KlyxI18n.set('ar')">ع</button><button class="lang-btn" data-lang="fr" onclick="KlyxI18n.set('fr')">FR</button><button class="lang-btn" data-lang="en" onclick="KlyxI18n.set('en')">EN</button>`;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === KlyxI18n.current));
+}
+
+function buildThemePicker() {
+  document.getElementById('themeRow').innerHTML = THEMES.map(t => `
+    <button class="theme-btn" data-theme="${t.key}" onclick="KlyxTheme.set('${t.key}')">
+      <div class="theme-dot" style="background:${t.dot};"></div>
+      <span data-i18n="${t.label_key}">${t.label_key}</span>
+    </button>
+  `).join('');
+  setTimeout(() => KlyxI18n.apply(), 50);
+}
+
+function initNavInfo() {
+  const name = card.fullName || account.order?.name || '—';
+  const username = account.username || 'user';
+  document.getElementById('navName').textContent = name.split(' ')[0];
+  setNavAvatar(logoDataUrl, name);
+  document.getElementById('grName').textContent = name;
+  document.getElementById('grUrl').textContent = 'klyxtn.com/u/' + username;
+  document.getElementById('pubUrl').textContent = 'klyxtn.com/u/' + username;
+  document.getElementById('viewCardBtn').href = 'card.html?u=' + username;
+  updateGrAvatar();
+}
+
+function setNavAvatar(logo, name) {
+  const el = document.getElementById('navAvatar');
+  if (logo) {
+    el.innerHTML = `<img src="${logo}" alt="avatar" />`;
+  } else {
+    el.textContent = (name || 'K').charAt(0).toUpperCase();
+  }
+}
+
+function updateGrAvatar() {
+  const el = document.getElementById('grAvatar');
+  const name = document.getElementById('fullName').value || card.fullName || 'K';
+  if (logoDataUrl) {
+    el.innerHTML = `<img src="${logoDataUrl}" alt="logo" />`;
+  } else {
+    el.textContent = name.charAt(0).toUpperCase();
+  }
+}
+
+function populateFields() {
+  const f = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  f('fullName',  card.fullName);  f('jobTitle',   card.jobTitle);
+  f('phone',     card.phone);     f('whatsapp',   card.whatsapp);
+  f('emailField',card.email);     f('website',    card.website);
+  f('instagram', card.instagram); f('facebook',   card.facebook);
+  f('linkedin',  card.linkedin);  f('tiktok',     card.tiktok);
+  f('twitter',   card.twitter);   f('youtube',    card.youtube);
+  f('snapchat',  card.snapchat);  f('telegram',   card.telegram);
+  f('github',    card.github);    f('behance',    card.behance);
+
+  if (logoDataUrl) {
+    const prev = document.getElementById('logoPreview');
+    prev.src = logoDataUrl; prev.style.display = 'block';
+    document.getElementById('uploadText').textContent = KlyxI18n.t('cc_logo_done');
+  }
+}
+
+function handleLogo(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    logoDataUrl = ev.target.result;
+    const prev = document.getElementById('logoPreview');
+    prev.src = logoDataUrl; prev.style.display = 'block';
+    document.getElementById('uploadText').textContent = '✓ ' + KlyxI18n.t('cc_logo_done');
+    updatePreviewAvatar();
+    updateGrAvatar();
+    setNavAvatar(logoDataUrl, document.getElementById('fullName').value);
+  };
+  reader.readAsDataURL(file);
+}
+
+function updatePreviewAvatar() {
+  const av = document.getElementById('previewAv');
+  if (logoDataUrl) {
+    av.innerHTML = `<img src="${logoDataUrl}" alt="logo" />`;
+  } else {
+    const name = document.getElementById('fullName').value || 'K';
+    av.textContent = name.charAt(0).toUpperCase();
+  }
+}
+
+function liveUpdate() {
+  const name = document.getElementById('fullName')?.value || '—';
+  const role = document.getElementById('jobTitle')?.value || '—';
+  document.getElementById('previewName').textContent = name;
+  document.getElementById('previewRole').textContent = role;
+  updatePreviewAvatar();
+  updateGrAvatar();
+
+  const populated = LINKS.filter(cfg => {
+    const el = document.getElementById(cfg.id);
+    return el && el.value.trim().length > 0;
+  }).slice(0, 5);
+
+  const linksEl = document.getElementById('previewLinks');
+  if (populated.length === 0) {
+    linksEl.innerHTML = `<div style="text-align:center;color:rgba(255,255,255,.22);font-size:.7rem;padding:10px 0;">—</div>`;
+  } else {
+    linksEl.innerHTML = populated.map(cfg => {
+      const val = document.getElementById(cfg.id).value;
+      return `<div class="cm-link"><div class="cm-link-icon" style="background:${cfg.bg};">${cfg.icon}</div><span>${val}</span></div>`;
+    }).join('');
+  }
+}
+
+function saveChanges() {
+  const get = id => document.getElementById(id)?.value?.trim() || '';
+  account.card = {
+    ...card,
+    fullName:  get('fullName'),  jobTitle: get('jobTitle'),
+    phone:     get('phone'),     whatsapp: get('whatsapp'),
+    email:     get('emailField'),website:  get('website'),
+    instagram: get('instagram'), facebook: get('facebook'),
+    linkedin:  get('linkedin'),  tiktok:   get('tiktok'),
+    twitter:   get('twitter'),   youtube:  get('youtube'),
+    snapchat:  get('snapchat'),  telegram: get('telegram'),
+    github:    get('github'),    behance:  get('behance'),
+    logo:      logoDataUrl,
+    theme:     KlyxTheme.current,
+  };
+  card = account.card;
+  localStorage.setItem('klyxAccount_' + currentEmail, JSON.stringify(account));
+
+  // Update greeting
+  document.getElementById('grName').textContent = card.fullName || '—';
+  setNavAvatar(logoDataUrl, card.fullName);
+
+  const toast = document.getElementById('saveToast');
+  toast.textContent = KlyxI18n.t('dash_saved');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function copyUrl() {
+  const url = 'https://' + document.getElementById('grUrl').textContent;
+  navigator.clipboard?.writeText(url).catch(() => {});
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = KlyxI18n.t('dash_copied');
+  setTimeout(() => { btn.setAttribute('data-i18n', 'dash_copy'); KlyxI18n.apply(); }, 2000);
+}
+
+function openCard() {
+  const username = account.username || 'demo';
+  window.open('card.html?u=' + username, '_blank');
+}
+
+function logout() {
+  localStorage.removeItem('klyxCurrentUser');
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
