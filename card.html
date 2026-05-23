@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>KLYX Digital Card</title>
+<meta name="description" content="KLYX — Digital NFC Business Card">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --purple:#7c3aed;--grad:linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%);
+  --text:#1a1040;--text-soft:#64748b;
+  /* Overridden by JS per user theme */
+  --card-primary:#7c3aed;--card-secondary:#3b82f6;--card-accent:#06b6d4;
+  --card-grad:linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%);
+  --card-glow:rgba(124,58,237,.42);
+  --card-bg1:#0d0820;--card-bg2:#12082e;--card-bg3:#0a1628;
+}
+html,body{min-height:100%;}
+body{
+  font-family:'Tajawal',sans-serif;
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--card-bg1),var(--card-bg2),var(--card-bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:32px 16px 56px;
+  position:relative;overflow-x:hidden;
+  transition:background 0.6s;
+}
+
+/* BG ELEMENTS */
+.bg-grid{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:38px 38px;}
+.blob{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;animation:drift 14s ease-in-out infinite;}
+.b1{width:500px;height:500px;background:radial-gradient(circle,var(--card-glow),transparent 70%);top:-140px;right:-120px;opacity:.7;}
+.b2{width:360px;height:360px;background:radial-gradient(circle,rgba(59,130,246,.16),transparent 70%);bottom:60px;left:-100px;animation-delay:-7s;opacity:.7;}
+.b3{width:240px;height:240px;background:radial-gradient(circle,rgba(6,182,212,.12),transparent 70%);top:45%;right:8%;animation-delay:-3.5s;}
+@keyframes drift{0%,100%{transform:translate(0,0);}50%{transform:translate(18px,-20px);}}
+
+/* BRAND */
+.brand-top{position:relative;z-index:5;margin-bottom:26px;animation:up .5s both;}
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.brand-name{font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;background:var(--card-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em;}
+
+/* CARD */
+.card{
+  width:100%;max-width:390px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:32px;padding:34px 26px 30px;
+  position:relative;z-index:5;overflow:hidden;
+  box-shadow:0 40px 100px var(--card-glow),0 0 0 1px rgba(255,255,255,.07);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  animation:up .65s .1s both;
+  transition:box-shadow .6s;
+}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 28% 14%,rgba(255,255,255,.1),transparent 55%),radial-gradient(circle at 80% 88%,rgba(255,255,255,.05),transparent 45%);pointer-events:none;}
+.cg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:26px 26px;}
+
+/* AVATAR */
+.av-wrap{display:flex;justify-content:center;margin-bottom:18px;position:relative;z-index:2;}
+.avatar{
+  width:92px;height:92px;border-radius:50%;
+  background:var(--card-grad);
+  border:3px solid rgba(255,255,255,.15);
+  box-shadow:0 10px 34px var(--card-glow);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:white;
+  overflow:hidden;
+  animation:flt 7s ease-in-out infinite;
+  transition:background .6s,box-shadow .6s;
+}
+@keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+
+/* INFO */
+.card-info{text-align:center;margin-bottom:26px;position:relative;z-index:2;}
+.card-name{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:white;margin-bottom:5px;line-height:1.2;}
+.card-role{font-size:.88rem;color:rgba(255,255,255,.5);margin-bottom:14px;line-height:1.5;}
+.card-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:50px;padding:4px 14px;font-size:.66rem;color:rgba(255,255,255,.65);font-weight:600;}
+.badge-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:blink 1.6s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
+
+/* ACTIONS */
+.actions{display:flex;flex-direction:column;gap:9px;position:relative;z-index:2;}
+.action-btn{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:13px 16px;
+  text-decoration:none;
+  transition:background .2s,transform .2s,box-shadow .2s;
+  cursor:pointer;
+}
+.action-btn:hover{background:rgba(255,255,255,.13);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.22);}
+.action-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.action-body{flex:1;min-width:0;}
+.action-label{color:rgba(255,255,255,.88);font-size:.9rem;font-weight:700;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.action-hint{color:rgba(255,255,255,.38);font-size:.7rem;direction:ltr;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.action-arrow{color:rgba(255,255,255,.28);font-size:.85rem;flex-shrink:0;margin-right:0;}
+[dir="rtl"] .action-arrow{transform:scaleX(-1);}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:10px;margin:14px 0;position:relative;z-index:2;}
+.div-line{flex:1;height:1px;background:rgba(255,255,255,.08);}
+.div-text{font-size:.62rem;color:rgba(255,255,255,.28);letter-spacing:.06em;}
+
+/* SOCIAL ROW */
+.social-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+.social-btn{
+  width:46px;height:46px;border-radius:13px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:1.1rem;
+  transition:background .2s,transform .2s,box-shadow .2s;
+}
+.social-btn:hover{background:rgba(255,255,255,.16);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.2);}
+
+/* PRIMARY CTA BUTTONS */
+.cta-row{display:flex;gap:10px;margin-top:18px;position:relative;z-index:2;}
+.cta-save{
+  flex:1;padding:14px;
+  background:var(--card-grad);color:white;border:none;border-radius:50px;
+  font-family:'Tajawal',sans-serif;font-weight:800;font-size:.9rem;
+  cursor:pointer;box-shadow:0 8px 30px var(--card-glow);
+  transition:transform .2s,box-shadow .3s,background .5s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.cta-save:hover{transform:translateY(-3px);box-shadow:0 14px 44px var(--card-glow);}
+.cta-share{
+  width:52px;height:52px;flex-shrink:0;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.15rem;
+  transition:background .2s,transform .2s;
+}
+.cta-share:hover{background:rgba(255,255,255,.2);transform:translateY(-3px);}
+
+/* TOAST */
+#shareToast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);
+  backdrop-filter:blur(16px);
+  border-radius:50px;padding:10px 22px;
+  font-size:.82rem;font-weight:700;color:#86efac;
+  opacity:0;transition:opacity .3s,transform .3s;z-index:9999;
+  pointer-events:none;white-space:nowrap;
+}
+#shareToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* KLYX FOOTER */
+.klyx-footer{margin-top:24px;position:relative;z-index:5;display:flex;align-items:center;gap:7px;font-size:.72rem;color:rgba(255,255,255,.25);animation:up .6s .4s both;}
+.klyx-footer a{color:rgba(124,171,237,.45);text-decoration:none;font-weight:700;}
+.klyx-footer a:hover{color:rgba(124,171,237,.85);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;color:rgba(255,255,255,.4);padding:60px 20px;position:relative;z-index:5;animation:up .5s .2s both;}
+.empty-icon{font-size:3rem;margin-bottom:14px;}
+.empty-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:white;margin-bottom:7px;}
+.empty-sub{font-size:.86rem;line-height:1.7;}
+
+@media(max-width:430px){
+  body{padding:24px 12px 48px;}
+  .card{border-radius:26px;padding:28px 20px 24px;}
+  .avatar{width:80px;height:80px;}
+  .card-name{font-size:1.3rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<div class="brand-top"><span class="brand-name">KLYX</span></div>
+
+<div id="cardWrap"></div>
+
+<div class="klyx-footer">
+  <span id="footerTxt">بُنيت بـ ❤ بواسطة</span>
+  <a href="index.html" target="_blank">KLYX</a>
+  &nbsp;·&nbsp;
+  <a href="index.html#products" target="_blank" id="footerGet">احصل على بطاقتك</a>
+</div>
+
+<div id="shareToast">✓ <span id="toastMsg">تم النسخ!</span></div>
+
+<script src="i18n.js"></script>
+<script>
+// ── Load lang ────────────────────────────────────
+// Safe init: wait for DOM so i18n.js is guaranteed loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => KlyxI18n.init());
+} else {
+  KlyxI18n.init();
+}
+
+// ── Get username from URL ────────────────────────
+function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+const username = getParam('u') || 'demo';
+
+// ── Find account ─────────────────────────────────
+function findAccount(uname) {
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('klyxAccount_')) {
+      try {
+        const data = JSON.parse(localStorage.getItem(key) || '{}');
+        if (data.username === uname) return data;
+      } catch(e){}
+    }
+  }
+  return null;
+}
+
+// ── DEMO DATA ────────────────────────────────────
+const DEMO = {
+  username: 'demo',
+  card: {
+    fullName: 'أحمد بن علي', jobTitle: 'مصمم جرافيك & مطور رقمي',
+    phone: '+216 29 691 046', whatsapp: '+216 29 691 046',
+    email: 'ahmed@klyxtn.com', website: 'www.klyxtn.com',
+    instagram: '@klyx.tn', facebook: 'facebook.com/klyxtn',
+    linkedin: 'linkedin.com/company/klyx', tiktok: '@klyx.tn5',
+    twitter: '', youtube: '', snapchat: '', telegram: '',
+    github: '', behance: '',
+    logo: '', theme: 'purple'
+  }
+};
+
+// ── LINK DEFINITIONS ─────────────────────────────
+const CONTACT_LINKS = [
+  { id:'phone',    icon:'📱', bg:'rgba(34,197,94,.15)',    href: v => 'tel:'+v,                              label_key:'card_call',    hint: v => v },
+  { id:'whatsapp', icon:'💬', bg:'rgba(37,211,102,.15)',   href: v => 'https://wa.me/'+v.replace(/\D/g,''),  label_key:'card_wa',      hint: v => v },
+  { id:'email',    icon:'✉️', bg:'rgba(124,58,237,.15)',   href: v => 'mailto:'+v,                           label_key:'card_email',   hint: v => v },
+  { id:'website',  icon:'🌐', bg:'rgba(59,130,246,.15)',   href: v => 'https://'+v.replace(/^https?:\/\//,''),label_key:'card_website', hint: v => v },
+];
+
+const SOCIAL_LINKS = [
+  { id:'instagram', icon:'📸', href: v => 'https://instagram.com/'+v.replace('@',''),       title:'Instagram' },
+  { id:'facebook',  icon:'👥', href: v => 'https://'+v.replace(/^https?:\/\//,''),          title:'Facebook' },
+  { id:'linkedin',  icon:'💼', href: v => 'https://'+v.replace(/^https?:\/\//,''),          title:'LinkedIn' },
+  { id:'tiktok',    icon:'🎵', href: v => 'https://tiktok.com/'+v,                          title:'TikTok' },
+  { id:'twitter',   icon:'𝕏',  href: v => 'https://twitter.com/'+v.replace('@',''),         title:'X / Twitter' },
+  { id:'youtube',   icon:'▶️', href: v => 'https://'+v.replace(/^https?:\/\//,''),          title:'YouTube' },
+  { id:'snapchat',  icon:'👻', href: v => 'https://snapchat.com/add/'+v.replace('@',''),    title:'Snapchat' },
+  { id:'telegram',  icon:'✈️', href: v => 'https://t.me/'+v.replace('@','').replace('+',''), title:'Telegram' },
+  { id:'github',    icon:'🐙', href: v => 'https://'+v.replace(/^https?:\/\//,''),          title:'GitHub' },
+  { id:'behance',   icon:'🅱', href: v => 'https://'+v.replace(/^https?:\/\//,''),          title:'Behance' },
+];
+
+// ── APPLY THEME ───────────────────────────────────
+function applyTheme(themeKey) {
+  // ✅ FIX: fallback chain — card data → localStorage → 'purple'
+  const resolvedKey = themeKey || localStorage.getItem('klyxCardTheme') || 'purple';
+  if (!window.KLYX_THEMES) return;
+  const th = KLYX_THEMES[resolvedKey] || KLYX_THEMES.purple;
+  const r = document.documentElement;
+  r.style.setProperty('--card-primary', th.primary);
+  r.style.setProperty('--card-secondary', th.secondary);
+  r.style.setProperty('--card-accent', th.accent);
+  r.style.setProperty('--card-grad', th.grad);
+  r.style.setProperty('--card-glow', th.glow);
+  r.style.setProperty('--card-bg1', th.bg1);
+  r.style.setProperty('--card-bg2', th.bg2);
+  r.style.setProperty('--card-bg3', th.bg3);
+  // ✅ FIX: update body background to match theme
+  document.body.style.background = `linear-gradient(160deg,${th.bg1},${th.bg2},${th.bg3})`;
+  // ✅ FIX: update blob glow color
+  const blobs = document.querySelectorAll('.blob.b1');
+  if (blobs.length) blobs[0].style.background = `radial-gradient(circle,${th.glow},transparent 70%)`;
+}
+
+// ── RENDER CARD ───────────────────────────────────
+function renderCard() {
+  const account = findAccount(username) || DEMO;
+  const c = account.card || {};
+  document.title = (c.fullName || 'KLYX') + ' — KLYX Digital Card';
+
+  applyTheme(c.theme || 'purple');
+
+  const lang = KlyxI18n.current;
+  const t = k => KlyxI18n.t(k);
+
+  const name = c.fullName || 'KLYX';
+  const initials = name.charAt(0).toUpperCase();
+
+  // Avatar
+  const avatarHtml = c.logo
+    ? `<img src="${c.logo}" alt="${name}" />`
+    : initials;
+
+  // Contact buttons (only non-empty)
+  const contactBtns = CONTACT_LINKS
+    .filter(cfg => c[cfg.id] && c[cfg.id].trim())
+    .map(cfg => {
+      const val = c[cfg.id].trim();
+      return `<a class="action-btn" href="${cfg.href(val)}" target="_blank">
+        <div class="action-icon" style="background:${cfg.bg};">${cfg.icon}</div>
+        <div class="action-body">
+          <span class="action-label">${t(cfg.label_key)}</span>
+          <span class="action-hint">${cfg.hint(val)}</span>
+        </div>
+        <span class="action-arrow">→</span>
+      </a>`;
+    }).join('');
+
+  // Social buttons (only non-empty)
+  const socials = SOCIAL_LINKS.filter(cfg => c[cfg.id] && c[cfg.id].trim());
+  const socialHtml = socials.length > 0 ? `
+    <div class="divider"><div class="div-line"></div><div class="div-text">SOCIAL</div><div class="div-line"></div></div>
+    <div class="social-row">
+      ${socials.map(cfg => {
+        const val = c[cfg.id].trim();
+        return `<a class="social-btn" href="${cfg.href(val)}" target="_blank" title="${cfg.title}">${cfg.icon}</a>`;
+      }).join('')}
+    </div>
+  ` : '';
+
+  // WhatsApp direct CTA (show if whatsapp field exists)
+  const hasCta = c.whatsapp && c.whatsapp.trim();
+  const ctaHtml = hasCta ? `
+    <a class="action-btn" href="https://wa.me/${(c.whatsapp||'').replace(/\D/g,'')}" target="_blank" style="background:rgba(37,211,102,.12);border-color:rgba(37,211,102,.22);">
+      <div class="action-icon" style="background:rgba(37,211,102,.18);">💬</div>
+      <div class="action-body">
+        <span class="action-label">${t('card_wa')}</span>
+        <span class="action-hint">${c.whatsapp}</span>
+      </div>
+      <span class="action-arrow">→</span>
+    </a>
+  ` : '';
+
+  document.getElementById('cardWrap').innerHTML = `
+    <div class="card">
+      <div class="cg"></div>
+      <div class="av-wrap">
+        <div class="avatar">${avatarHtml}</div>
+      </div>
+      <div class="card-info">
+        <div class="card-name">${name}</div>
+        ${c.jobTitle ? `<div class="card-role">${c.jobTitle}</div>` : ''}
+        <div class="card-badge"><div class="badge-dot"></div>${t('card_badge')}</div>
+      </div>
+      <div class="actions">
+        ${contactBtns}
+        ${hasCta && !c.phone ? ctaHtml : ''}
+      </div>
+      ${socialHtml}
+      <div class="cta-row">
+        <button class="cta-save" onclick="saveContact()">💾 ${t('card_save')}</button>
+        <button class="cta-share" onclick="shareCard()" title="${t('card_share')}">↗</button>
+      </div>
+    </div>
+  `;
+
+  // Store for vCard
+  window._cardData = c;
+  window._cardName = name;
+  window._cardUser = username;
+}
+
+// ── SAVE vCARD ────────────────────────────────────
+function saveContact() {
+  const c = window._cardData || {};
+  const name = window._cardName || 'KLYX';
+  const parts = name.split(' ');
+  const vcard = [
+    'BEGIN:VCARD', 'VERSION:3.0',
+    `FN:${name}`,
+    `N:${parts.slice(1).join(' ')};${parts[0]};;;`,
+    c.jobTitle ? `TITLE:${c.jobTitle}` : '',
+    c.phone    ? `TEL;TYPE=CELL:${c.phone}` : '',
+    c.whatsapp && c.whatsapp !== c.phone ? `TEL;TYPE=WORK:${c.whatsapp}` : '',
+    c.email    ? `EMAIL:${c.email}` : '',
+    c.website  ? `URL:https://${c.website.replace(/^https?:\/\//,'')}` : '',
+    c.instagram? `X-SOCIALPROFILE;type=instagram:${c.instagram}` : '',
+    c.linkedin ? `X-SOCIALPROFILE;type=linkedin:${c.linkedin}` : '',
+    'NOTE:KLYX NFC Digital Card — klyxtn.com',
+    'END:VCARD'
+  ].filter(Boolean).join('\r\n');
+
+  const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name.replace(/\s+/g,'_') + '.vcf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ── SHARE ────────────────────────────────────────
+function shareCard() {
+  const url = window.location.href;
+  const name = window._cardName || 'KLYX';
+
+  if (navigator.share) {
+    navigator.share({ title: name + ' — KLYX', url }).catch(() => {});
+  } else {
+    navigator.clipboard?.writeText(url).catch(() => {});
+    showToast(KlyxI18n.t('card_shared'));
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('shareToast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ── UPDATE FOOTER ────────────────────────────────
+function updateFooterLang() {
+  document.getElementById('footerTxt').textContent = KlyxI18n.t('card_footer');
+  document.getElementById('footerGet').textContent = KlyxI18n.t('card_get');
+}
+
+// ── INIT ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  KlyxI18n.init();
+  renderCard();
+  updateFooterLang();
+});
+
+document.addEventListener('klyxLangChanged', () => {
+  renderCard();
+  updateFooterLang();
+});
+</script>
+</body>
+</html>
