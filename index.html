@@ -3,261 +3,567 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLYX — حلول NFC الذكية لبطاقات الأعمال</title>
-<meta name="description" content="KLYX — بطاقات أعمال NFC ذكية لتونس. شارك معلوماتك بلمسة واحدة بدون تطبيق.">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="KLYX — حلول NFC الذكية">
-<meta property="og:description" content="بطاقات أعمال NFC ذكية. شارك معلوماتك بلمسة واحدة.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://klyxtn.com">
-<meta name="theme-color" content="#7c3aed">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>KLYX — حلول NFC الذكية</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-  :root{
-    --white:#ffffff;--off-white:#f8f7ff;
-    --purple:#7c3aed;--blue:#3b82f6;--cyan:#06b6d4;
-    --grad:linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%);
-    --grad-soft:linear-gradient(135deg,rgba(124,58,237,.1),rgba(59,130,246,.07));
-    --text:#1a1040;--text-soft:#64748b;
-    --border:rgba(124,58,237,.15);
-    --shadow:0 20px 60px rgba(124,58,237,.18);
-    --focus-ring:0 0 0 3px rgba(124,58,237,.4);
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --white: #ffffff;
+    --off-white: #f8f7ff;
+    --purple: #7c3aed;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+    --grad: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
+    --grad-soft: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(59,130,246,0.07));
+    --text: #1a1040;
+    --text-soft: #64748b;
+    --border: rgba(124,58,237,0.15);
+    --shadow: 0 20px 60px rgba(124,58,237,0.18);
   }
-  html{scroll-behavior:smooth;}
-  body{background:var(--white);color:var(--text);font-family:'Tajawal',sans-serif;overflow-x:hidden;}
-
-  /* FOCUS VISIBLE — accessibility */
-  :focus-visible{outline:2px solid var(--purple);outline-offset:3px;border-radius:4px;}
-
-  /* Skip link */
-  .skip-link{position:absolute;top:-100px;right:0;background:var(--purple);color:#fff;padding:8px 16px;z-index:10000;border-radius:0 0 0 8px;font-size:.9rem;transition:top .2s;}
-  .skip-link:focus{top:0;}
-
-  /* Custom cursor — only on non-touch devices */
-  @media (hover:hover) and (pointer:fine){
-    body{cursor:none;}
-    .cursor{position:fixed;width:10px;height:10px;background:var(--purple);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply;}
-    .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(124,58,237,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease,width .3s,height .3s;}
-    .cursor.big{width:18px;height:18px;}
-    .cursor-ring.big{width:54px;height:54px;border-color:var(--purple);}
-    a,button,[role="button"]{cursor:none;}
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--white);
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
   }
+
+  /* CURSOR */
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--purple); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .3s, height .3s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid rgba(124,58,237,.45); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: left .12s ease, top .12s ease, width .3s, height .3s;
+  }
+  .cursor.big { width: 18px; height: 18px; }
+  .cursor-ring.big { width: 54px; height: 54px; border-color: var(--purple); }
 
   /* NAV */
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.93);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);box-shadow:0 2px 20px rgba(124,58,237,.06);}
-  .logo-klyx{font-family:'Syne',sans-serif;font-weight:800;font-size:1.55rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.04em;text-decoration:none;}
-  nav ul{list-style:none;display:flex;gap:34px;flex-direction:row-reverse;align-items:center;}
-  nav a{text-decoration:none;color:var(--text-soft);font-size:.88rem;font-weight:500;transition:color .3s;}
-  nav a:hover{color:var(--purple);}
-  .nav-btn{background:var(--grad);color:white!important;padding:8px 22px;border-radius:50px;font-weight:700!important;font-size:.82rem!important;box-shadow:0 4px 16px rgba(124,58,237,.35);transition:opacity .3s,transform .2s!important;}
-  .nav-btn:hover{opacity:.9;transform:translateY(-1px);}
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,.93);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(124,58,237,.06);
+  }
+  .logo-klyx {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.55rem;
+    background: var(--grad); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
+    letter-spacing: .04em;
+  }
+  nav ul { list-style: none; display: flex; gap: 34px; flex-direction: row-reverse; }
+  nav a { text-decoration: none; color: var(--text-soft); font-size: .88rem; font-weight: 500; transition: color .3s; }
+  nav a:hover { color: var(--purple); }
+  .nav-btn {
+    background: var(--grad); color: white !important; padding: 8px 22px;
+    border-radius: 50px; font-weight: 700 !important; font-size: .82rem !important;
+    box-shadow: 0 4px 16px rgba(124,58,237,.35);
+    transition: opacity .3s, transform .2s !important;
+    cursor: none;
+  }
+  .nav-btn:hover { opacity: .9; transform: translateY(-1px); }
 
   /* HERO */
-  .hero{min-height:100vh;display:flex;align-items:center;padding:120px 60px 80px;position:relative;overflow:hidden;background:linear-gradient(155deg,#f9f8ff 0%,#fff 45%,#f0f4ff 100%);}
-  .hero::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);background-size:52px 52px;}
-  .blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:drift 9s ease-in-out infinite;}
-  .b1{width:480px;height:480px;background:radial-gradient(circle,rgba(124,58,237,.16),transparent 70%);top:-120px;left:-160px;}
-  .b2{width:380px;height:380px;background:radial-gradient(circle,rgba(59,130,246,.13),transparent 70%);bottom:-100px;right:180px;animation-delay:-4s;}
-  .b3{width:280px;height:280px;background:radial-gradient(circle,rgba(6,182,212,.11),transparent 70%);top:42%;right:8%;animation-delay:-7s;}
-  @keyframes drift{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(18px,-18px) scale(1.05);}66%{transform:translate(-14px,12px) scale(.97);}}
-  @media (prefers-reduced-motion:reduce){.blob,.card-hero,.phone-hero,.wv{animation:none!important;}}
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 120px 60px 80px; position: relative; overflow: hidden;
+    background: linear-gradient(155deg, #f9f8ff 0%, #fff 45%, #f0f4ff 100%);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(124,58,237,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,.04) 1px, transparent 1px);
+    background-size: 52px 52px;
+  }
+  .blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); pointer-events: none;
+    animation: drift 9s ease-in-out infinite;
+  }
+  .b1 { width:480px;height:480px; background:radial-gradient(circle,rgba(124,58,237,.16),transparent 70%); top:-120px; left:-160px; }
+  .b2 { width:380px;height:380px; background:radial-gradient(circle,rgba(59,130,246,.13),transparent 70%); bottom:-100px; right:180px; animation-delay:-4s; }
+  .b3 { width:280px;height:280px; background:radial-gradient(circle,rgba(6,182,212,.11),transparent 70%); top:42%; right:8%; animation-delay:-7s; }
+  @keyframes drift {
+    0%,100%{transform:translate(0,0) scale(1);}
+    33%{transform:translate(18px,-18px) scale(1.05);}
+    66%{transform:translate(-14px,12px) scale(.97);}
+  }
 
-  .hero-content{flex:1;max-width:560px;position:relative;z-index:2;}
-  .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.22);color:var(--purple);font-size:.73rem;font-weight:700;padding:5px 16px;border-radius:50px;margin-bottom:26px;opacity:0;animation:up .7s .2s forwards;letter-spacing:.06em;}
-  .dot{width:6px;height:6px;background:var(--purple);border-radius:50%;animation:blink 1.8s infinite;}
+  .hero-content { flex:1; max-width:560px; position:relative; z-index:2; }
+  .pill {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(124,58,237,.08); border:1px solid rgba(124,58,237,.22);
+    color:var(--purple); font-size:.73rem; font-weight:700;
+    padding:5px 16px; border-radius:50px; margin-bottom:26px;
+    opacity:0; animation:up .7s .2s forwards; letter-spacing:.06em;
+  }
+  .dot { width:6px;height:6px;background:var(--purple);border-radius:50%;animation:blink 1.8s infinite; }
   @keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
-  h1{font-size:clamp(2.8rem,5vw,4.4rem);font-weight:800;line-height:1.1;margin-bottom:18px;opacity:0;animation:up .7s .35s forwards;color:var(--text);letter-spacing:-.01em;}
-  .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-  .hero-sub{font-size:.98rem;line-height:1.8;color:var(--text-soft);margin-bottom:10px;opacity:0;animation:up .7s .5s forwards;}
-  .hero-sub2{font-size:.92rem;color:var(--text-soft);margin-bottom:42px;opacity:0;animation:up .7s .64s forwards;}
-  .actions{display:flex;gap:14px;flex-direction:row-reverse;flex-wrap:wrap;opacity:0;animation:up .7s .8s forwards;}
-  @keyframes up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
-  .btn{padding:13px 30px;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.93rem;text-decoration:none;display:inline-block;transition:transform .2s,box-shadow .3s;letter-spacing:.02em;border:none;background:none;}
-  .btn-p{background:var(--grad);color:white;box-shadow:0 6px 24px rgba(124,58,237,.4);}
-  .btn-p:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(124,58,237,.5);}
-  .btn-g{color:var(--purple);border:1.5px solid rgba(124,58,237,.35);}
-  .btn-g:hover{background:rgba(124,58,237,.06);border-color:var(--purple);transform:translateY(-3px);}
+  h1 {
+    font-size: clamp(2.8rem, 5vw, 4.4rem); font-weight:800;
+    line-height:1.1; margin-bottom:18px;
+    opacity:0; animation:up .7s .35s forwards;
+    color:var(--text); letter-spacing:-.01em;
+  }
+  .grad-text {
+    background:var(--grad); -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .hero-sub {
+    font-size:.98rem; line-height:1.8; color:var(--text-soft);
+    margin-bottom:10px; opacity:0; animation:up .7s .5s forwards;
+  }
+  .hero-sub2 {
+    font-size:.92rem; color:var(--text-soft); margin-bottom:42px;
+    opacity:0; animation:up .7s .64s forwards;
+  }
+  .actions {
+    display:flex; gap:14px; flex-direction:row-reverse; flex-wrap:wrap;
+    opacity:0; animation:up .7s .8s forwards;
+  }
+  @keyframes up { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+
+  .btn {
+    padding:13px 30px; border-radius:50px; font-family:'Tajawal',sans-serif;
+    font-weight:700; font-size:.93rem; text-decoration:none;
+    display:inline-block; cursor:none; transition:transform .2s, box-shadow .3s;
+    letter-spacing:.02em; border: none;
+  }
+  .btn-p { background:var(--grad); color:white; box-shadow:0 6px 24px rgba(124,58,237,.4); }
+  .btn-p:hover { transform:translateY(-3px); box-shadow:0 12px 36px rgba(124,58,237,.5); }
+  .btn-g { background:transparent; color:var(--purple); border:1.5px solid rgba(124,58,237,.35); }
+  .btn-g:hover { background:rgba(124,58,237,.06); border-color:var(--purple); transform:translateY(-3px); }
 
   /* HERO VISUAL */
-  .hero-visual{flex:0 0 420px;height:500px;position:relative;opacity:0;animation:up .9s .5s forwards;}
-  .phone-hero{position:absolute;right:30px;top:10px;width:210px;height:420px;background:linear-gradient(160deg,#ece6ff,#d8caff,#c4b2f5);border-radius:36px;border:7px solid rgba(255,255,255,.92);box-shadow:0 40px 100px rgba(124,58,237,.25),0 0 0 1px rgba(124,58,237,.14),inset 0 2px 4px rgba(255,255,255,.7);display:flex;flex-direction:column;align-items:center;padding:26px 18px 18px;gap:12px;animation:flt 6s ease-in-out infinite;}
+  .hero-visual {
+    flex:0 0 420px; height:500px; position:relative;
+    opacity:0; animation:up .9s .5s forwards;
+  }
+  .phone-hero {
+    position:absolute; right:30px; top:10px;
+    width:210px; height:420px;
+    background:linear-gradient(160deg,#ece6ff,#d8caff,#c4b2f5);
+    border-radius:36px; border:7px solid rgba(255,255,255,.92);
+    box-shadow:0 40px 100px rgba(124,58,237,.25),0 0 0 1px rgba(124,58,237,.14),inset 0 2px 4px rgba(255,255,255,.7);
+    display:flex; flex-direction:column; align-items:center;
+    padding:26px 18px 18px; gap:12px;
+    animation:flt 6s ease-in-out infinite;
+  }
   @keyframes flt{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-16px) rotate(-1deg);}}
-  .phone-notch{width:64px;height:18px;background:rgba(255,255,255,.45);border-radius:0 0 12px 12px;}
-  .nfc-ring{width:76px;height:76px;border:2.5px solid rgba(124,58,237,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;}
-  .nfc-ring::before,.nfc-ring::after{content:'';position:absolute;border:2px solid;border-radius:50%;animation:expand 2.2s ease-out infinite;}
+  .phone-notch { width:64px;height:18px;background:rgba(255,255,255,.45);border-radius:0 0 12px 12px; }
+  .nfc-ring {
+    width:76px;height:76px;border:2.5px solid rgba(124,58,237,.5);
+    border-radius:50%;display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .nfc-ring::before,.nfc-ring::after {
+    content:'';position:absolute;border:2px solid;border-radius:50%;
+    animation:expand 2.2s ease-out infinite;
+  }
   .nfc-ring::before{width:110px;height:110px;border-color:rgba(124,58,237,.25);animation-delay:.5s;}
   .nfc-ring::after{width:144px;height:144px;border-color:rgba(59,130,246,.14);animation-delay:1s;}
   @keyframes expand{0%{transform:scale(.8);opacity:1;}100%{transform:scale(1.35);opacity:0;}}
-  .nfc-txt{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;}
-  .hint-txt{font-size:.6rem;color:rgba(124,58,237,.6);font-weight:600;text-align:center;letter-spacing:.04em;}
-  .card-hero{position:absolute;left:0;bottom:50px;width:220px;height:138px;background:linear-gradient(135deg,#fff,#f2eeff,#e4d8ff);border-radius:14px;border:1px solid rgba(124,58,237,.2);box-shadow:0 28px 70px rgba(124,58,237,.2),0 0 0 1px rgba(255,255,255,.8),inset 0 1px 2px rgba(255,255,255,.9);padding:18px;display:flex;flex-direction:column;justify-content:space-between;animation:flt2 7s ease-in-out infinite;animation-delay:-2s;}
+  .nfc-txt { font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800; }
+  .hint-txt { font-size:.6rem;color:rgba(124,58,237,.6);font-weight:600;text-align:center;letter-spacing:.04em; }
+
+  .card-hero {
+    position:absolute; left:0; bottom:50px;
+    width:220px; height:138px;
+    background:linear-gradient(135deg,#fff,#f2eeff,#e4d8ff);
+    border-radius:14px; border:1px solid rgba(124,58,237,.2);
+    box-shadow:0 28px 70px rgba(124,58,237,.2),0 0 0 1px rgba(255,255,255,.8),inset 0 1px 2px rgba(255,255,255,.9);
+    padding:18px; display:flex; flex-direction:column; justify-content:space-between;
+    animation:flt2 7s ease-in-out infinite; animation-delay:-2s;
+  }
   @keyframes flt2{0%,100%{transform:translateY(0) rotate(6deg);}50%{transform:translateY(-10px) rotate(8deg);}}
-  .card-klyx{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;}
-  .card-waves{display:flex;gap:2.5px;align-items:flex-end;}
-  .wv{width:3px;border-radius:2px;background:var(--grad);animation:wv 1.5s ease-in-out infinite;}
-  .wv:nth-child(1){height:7px;}.wv:nth-child(2){height:12px;animation-delay:.2s;}.wv:nth-child(3){height:9px;animation-delay:.4s;}.wv:nth-child(4){height:16px;animation-delay:.6s;}
+  .card-klyx { font-family:'Syne',sans-serif;font-weight:800;font-size:1rem; }
+  .card-waves { display:flex;gap:2.5px;align-items:flex-end; }
+  .wv { width:3px;border-radius:2px;background:var(--grad);animation:wv 1.5s ease-in-out infinite; }
+  .wv:nth-child(1){height:7px;} .wv:nth-child(2){height:12px;animation-delay:.2s;}
+  .wv:nth-child(3){height:9px;animation-delay:.4s;} .wv:nth-child(4){height:16px;animation-delay:.6s;}
   @keyframes wv{0%,100%{opacity:.4;transform:scaleY(.8);}50%{opacity:1;transform:scaleY(1.1);}}
-  .card-label{font-size:.65rem;color:var(--text-soft);letter-spacing:.04em;}
-  .shint{position:absolute;bottom:30px;right:60px;display:flex;align-items:center;gap:9px;font-size:.68rem;color:var(--text-soft);opacity:0;animation:up .7s 1.3s forwards;}
-  .sl{width:32px;height:1px;background:linear-gradient(to left,var(--purple),transparent);position:relative;overflow:hidden;}
-  .sl::after{content:'';position:absolute;top:0;right:-100%;width:100%;height:100%;background:var(--purple);animation:sl 2.2s ease-in-out infinite;}
+
+  /* SCROLL HINT */
+  .shint {
+    position:absolute;bottom:30px;right:60px;
+    display:flex;align-items:center;gap:9px;
+    font-size:.68rem;color:var(--text-soft);
+    opacity:0;animation:up .7s 1.3s forwards;
+  }
+  .sl { width:32px;height:1px;background:linear-gradient(to left,var(--purple),transparent);position:relative;overflow:hidden; }
+  .sl::after {content:'';position:absolute;top:0;right:-100%;width:100%;height:100%;background:var(--purple);animation:sl 2.2s ease-in-out infinite;}
   @keyframes sl{0%{right:-100%;}60%{right:100%;}100%{right:100%;}}
 
-  /* SECTIONS */
-  .section-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);color:var(--purple);font-size:.72rem;font-weight:700;padding:5px 15px;border-radius:50px;margin-bottom:16px;letter-spacing:.05em;}
-  .sec-title{font-size:clamp(1.7rem,3vw,2.7rem);font-weight:800;line-height:1.15;margin-bottom:64px;color:var(--text);max-width:440px;}
+  /* SECTIONS COMMON */
+  .section-pill {
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(124,58,237,.08); border:1px solid rgba(124,58,237,.2);
+    color:var(--purple); font-size:.72rem; font-weight:700;
+    padding:5px 15px; border-radius:50px; margin-bottom:16px; letter-spacing:.05em;
+  }
+  .sec-title {
+    font-size:clamp(1.7rem,3vw,2.7rem); font-weight:800; line-height:1.15;
+    margin-bottom:64px; color:var(--text); max-width:440px;
+  }
 
   /* HOW */
-  .how{padding:120px 60px;background:var(--off-white);}
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
-  .step{background:white;border:1px solid rgba(124,58,237,.1);border-radius:20px;padding:38px 30px;position:relative;overflow:hidden;transition:transform .4s,box-shadow .4s,border-color .4s;}
-  .step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad);transform:scaleX(0);transform-origin:right;transition:transform .4s;border-radius:3px 3px 0 0;}
-  .step:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:rgba(124,58,237,.28);}
-  .step:hover::before{transform:scaleX(1);transform-origin:left;}
-  .step-n{font-family:'Syne',sans-serif;font-size:3.2rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:.15;line-height:1;margin-bottom:14px;}
-  .step-ico{width:50px;height:50px;background:var(--grad-soft);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:18px;}
-  .step h3{font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--text);}
-  .step p{font-size:.85rem;line-height:1.75;color:var(--text-soft);}
+  .how { padding:120px 60px; background:var(--off-white); }
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .step {
+    background:white; border:1px solid rgba(124,58,237,.1);
+    border-radius:20px; padding:38px 30px; position:relative;
+    overflow:hidden; transition:transform .4s,box-shadow .4s,border-color .4s;
+    cursor:none;
+  }
+  .step::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:var(--grad);transform:scaleX(0);transform-origin:right;
+    transition:transform .4s; border-radius:3px 3px 0 0;
+  }
+  .step:hover { transform:translateY(-8px); box-shadow:var(--shadow); border-color:rgba(124,58,237,.28); }
+  .step:hover::before { transform:scaleX(1); transform-origin:left; }
+  .step-n {
+    font-family:'Syne',sans-serif; font-size:3.2rem; font-weight:800;
+    background:var(--grad); -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent; background-clip:text;
+    opacity:.15; line-height:1; margin-bottom:14px;
+  }
+  .step-ico {
+    width:50px;height:50px;background:var(--grad-soft);border-radius:13px;
+    display:flex;align-items:center;justify-content:center;font-size:1.35rem;
+    margin-bottom:18px;
+  }
+  .step h3 { font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--text); }
+  .step p { font-size:.85rem;line-height:1.75;color:var(--text-soft); }
 
   /* FEATURES */
-  .features{padding:120px 60px;background:white;display:flex;gap:76px;align-items:center;}
-  .feat-list{flex:1;display:flex;flex-direction:column;gap:18px;}
-  .feat-item{display:flex;align-items:center;gap:15px;padding:18px 22px;background:var(--off-white);border:1px solid rgba(124,58,237,.1);border-radius:13px;transition:transform .3s,box-shadow .3s,border-color .3s;}
-  .feat-item:hover{transform:translateX(-6px);box-shadow:0 8px 28px rgba(124,58,237,.12);border-color:rgba(124,58,237,.3);}
-  .feat-ico{width:42px;height:42px;background:var(--grad);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;box-shadow:0 4px 14px rgba(124,58,237,.3);}
-  .feat-item h4{font-size:.93rem;font-weight:700;color:var(--text);margin-bottom:2px;}
-  .feat-item p{font-size:.78rem;color:var(--text-soft);line-height:1.5;}
-  .feat-phone{flex:0 0 230px;height:440px;background:linear-gradient(160deg,#ece6ff,#ddd4ff);border-radius:36px;border:7px solid rgba(255,255,255,.95);box-shadow:0 40px 90px rgba(124,58,237,.2),0 0 0 1.5px rgba(124,58,237,.15);display:flex;flex-direction:column;align-items:center;padding:22px 14px 20px;gap:10px;animation:flt 7s ease-in-out infinite;animation-delay:-3s;}
-  .fp-notch{width:58px;height:18px;background:rgba(124,58,237,.1);border-radius:0 0 12px 12px;}
-  .fp-avatar{width:52px;height:52px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:white;box-shadow:0 6px 18px rgba(124,58,237,.35);margin-top:6px;}
-  .fp-name{font-weight:700;font-size:.76rem;color:var(--text);}
-  .fp-role{font-size:.58rem;color:var(--text-soft);}
-  .fp-badge{display:flex;align-items:center;gap:4px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:50px;padding:2px 8px;font-size:.52rem;color:var(--purple);font-weight:700;}
-  .fp-dot{width:4px;height:4px;background:var(--purple);border-radius:50%;animation:blink 1.5s infinite;}
-  .fp-links{display:flex;flex-direction:column;gap:6px;width:100%;}
-  .fp-lnk{display:flex;align-items:center;gap:7px;background:white;border:1px solid rgba(124,58,237,.1);border-radius:9px;padding:7px 9px;font-size:.61rem;color:var(--text);font-weight:500;}
-  .fp-lnk-i{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;}
-  .ic-g{background:rgba(34,197,94,.12);}.ic-p{background:rgba(124,58,237,.1);}.ic-b{background:rgba(59,130,246,.12);}.ic-r{background:rgba(225,48,108,.1);}
+  .features { padding:120px 60px; background:white; display:flex; gap:76px; align-items:center; }
+  .feat-list { flex:1; display:flex; flex-direction:column; gap:18px; }
+  .feat-item {
+    display:flex; align-items:center; gap:15px;
+    padding:18px 22px; background:var(--off-white);
+    border:1px solid rgba(124,58,237,.1); border-radius:13px;
+    transition:transform .3s,box-shadow .3s,border-color .3s; cursor:none;
+  }
+  .feat-item:hover { transform:translateX(-6px); box-shadow:0 8px 28px rgba(124,58,237,.12); border-color:rgba(124,58,237,.3); }
+  .feat-ico {
+    width:42px;height:42px;background:var(--grad);border-radius:11px;
+    display:flex;align-items:center;justify-content:center;font-size:1rem;
+    flex-shrink:0;box-shadow:0 4px 14px rgba(124,58,237,.3);
+  }
+  .feat-item h4 { font-size:.93rem;font-weight:700;color:var(--text);margin-bottom:2px; }
+  .feat-item p { font-size:.78rem;color:var(--text-soft);line-height:1.5; }
+  .feat-phone {
+    flex:0 0 230px; height:440px;
+    background:linear-gradient(160deg,#ece6ff,#ddd4ff);
+    border-radius:36px; border:7px solid rgba(255,255,255,.95);
+    box-shadow:0 40px 90px rgba(124,58,237,.2),0 0 0 1.5px rgba(124,58,237,.15);
+    display:flex;flex-direction:column;align-items:center;
+    padding:22px 14px 20px;gap:10px;
+    animation:flt 7s ease-in-out infinite;animation-delay:-3s;
+  }
+  .fp-notch { width:58px;height:18px;background:rgba(124,58,237,.1);border-radius:0 0 12px 12px; }
+  .fp-avatar {
+    width:52px;height:52px;border-radius:50%;background:var(--grad);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:white;
+    box-shadow:0 6px 18px rgba(124,58,237,.35);margin-top:6px;
+  }
+  .fp-name { font-weight:700;font-size:.76rem;color:var(--text); }
+  .fp-role { font-size:.58rem;color:var(--text-soft); }
+  .fp-badge {
+    display:flex;align-items:center;gap:4px;
+    background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);
+    border-radius:50px;padding:2px 8px;font-size:.52rem;color:var(--purple);font-weight:700;
+  }
+  .fp-dot { width:4px;height:4px;background:var(--purple);border-radius:50%;animation:blink 1.5s infinite; }
+  .fp-links { display:flex;flex-direction:column;gap:6px;width:100%; }
+  .fp-lnk {
+    display:flex;align-items:center;gap:7px;background:white;
+    border:1px solid rgba(124,58,237,.1);border-radius:9px;padding:7px 9px;
+    font-size:.61rem;color:var(--text);font-weight:500;
+  }
+  .fp-lnk-i {
+    width:22px;height:22px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;
+  }
+  .ic-g{background:rgba(34,197,94,.12);} .ic-p{background:rgba(124,58,237,.1);}
+  .ic-b{background:rgba(59,130,246,.12);} .ic-r{background:rgba(225,48,108,.1);}
 
   /* PRODUCTS */
-  .products{padding:120px 60px;background:linear-gradient(160deg,#f9f8ff,#f0f4ff);}
-  .products-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:56px;}
-  .prod-card{background:white;border:1.5px solid rgba(124,58,237,.12);border-radius:24px;padding:46px 38px;position:relative;overflow:hidden;transition:transform .4s,box-shadow .4s,border-color .4s;}
-  .prod-card.feat{border-color:rgba(124,58,237,.35);background:linear-gradient(160deg,#fdfcff,#f6f1ff);}
-  .prod-card:hover{transform:translateY(-8px);box-shadow:0 32px 80px rgba(124,58,237,.17);border-color:rgba(124,58,237,.4);}
-  .prod-badge{position:absolute;top:20px;left:20px;font-size:.68rem;font-weight:700;background:var(--grad);color:white;padding:4px 12px;border-radius:50px;box-shadow:0 4px 12px rgba(124,58,237,.4);}
-  .prod-vis{height:155px;display:flex;align-items:center;justify-content:center;margin-bottom:34px;}
-  .mc{width:185px;height:116px;background:linear-gradient(135deg,#f5f2ff,#e6dcff,#d2c4f8);border-radius:12px;border:1px solid rgba(124,58,237,.22);box-shadow:0 20px 55px rgba(124,58,237,.18),0 0 0 1px rgba(255,255,255,.8);padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .4s;}
-  .prod-card:hover .mc{transform:rotateY(-10deg) rotateX(4deg) scale(1.05);}
-  .mc-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;}
-  .mc-w{display:flex;gap:2px;align-items:flex-end;}
-  .mw{width:2.5px;border-radius:2px;background:var(--grad);}
-  .mw:nth-child(1){height:6px;}.mw:nth-child(2){height:10px;}.mw:nth-child(3){height:7px;}.mw:nth-child(4){height:13px;}
-  .mk{width:68px;height:115px;background:linear-gradient(180deg,#f4f0ff,#ddd0ff);border-radius:34px 34px 17px 17px;border:1px solid rgba(124,58,237,.22);box-shadow:0 20px 55px rgba(124,58,237,.18);display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:10px;transition:transform .4s;}
-  .prod-card:hover .mk{transform:rotate(-10deg) scale(1.08);}
-  .logo-placeholder{background:rgba(124,58,237,.08);border:1.5px dashed rgba(124,58,237,.45);border-radius:6px;padding:4px 7px;font-size:.48rem;font-weight:800;color:var(--purple);letter-spacing:.07em;font-family:'Syne',sans-serif;text-align:center;line-height:1.3;}
-  .logo-placeholder-key{background:rgba(124,58,237,.08);border:1.5px dashed rgba(124,58,237,.45);border-radius:6px;padding:5px 6px;font-size:.42rem;font-weight:800;color:var(--purple);letter-spacing:.06em;font-family:'Syne',sans-serif;text-align:center;line-height:1.3;width:46px;}
-  .mk-h{width:13px;height:13px;border:2px solid rgba(124,58,237,.4);border-radius:50%;}
-  .mk-r{width:36px;height:36px;border:2px solid rgba(124,58,237,.32);border-radius:50%;display:flex;align-items:center;justify-content:center;}
-  .mk-r::after{content:'';width:18px;height:18px;background:var(--grad);border-radius:50%;opacity:.4;}
-  .prod-name{font-size:1.3rem;font-weight:800;margin-bottom:9px;color:var(--text);}
-  .prod-desc{font-size:.85rem;color:var(--text-soft);line-height:1.7;margin-bottom:26px;}
-  .prod-price{font-size:2rem;font-weight:800;line-height:1;margin-bottom:5px;}
-  .prod-sub{font-size:.76rem;color:var(--text-soft);margin-bottom:20px;}
-  .prod-order-btn{display:block;margin-top:16px;padding:12px 28px;background:var(--grad);color:white;border:none;border-radius:50px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.9rem;width:100%;text-align:center;box-shadow:0 6px 20px rgba(124,58,237,.35);transition:transform .2s,box-shadow .3s,opacity .2s;letter-spacing:.02em;}
-  .prod-order-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(124,58,237,.48);opacity:.93;}
-  .prod-order-btn:disabled{opacity:.6;pointer-events:none;}
+  .products { padding:120px 60px; background:linear-gradient(160deg,#f9f8ff,#f0f4ff); }
+  .products-grid { display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:56px; }
+  .prod-card {
+    background:white; border:1.5px solid rgba(124,58,237,.12);
+    border-radius:24px; padding:46px 38px; position:relative;
+    overflow:hidden; transition:transform .4s,box-shadow .4s,border-color .4s; cursor:none;
+  }
+  .prod-card.feat { border-color:rgba(124,58,237,.35);background:linear-gradient(160deg,#fdfcff,#f6f1ff); }
+  .prod-card:hover { transform:translateY(-8px); box-shadow:0 32px 80px rgba(124,58,237,.17); border-color:rgba(124,58,237,.4); }
+  .prod-badge {
+    position:absolute;top:20px;left:20px;
+    font-size:.68rem;font-weight:700;background:var(--grad);color:white;
+    padding:4px 12px;border-radius:50px;box-shadow:0 4px 12px rgba(124,58,237,.4);
+  }
+  .prod-vis { height:155px;display:flex;align-items:center;justify-content:center;margin-bottom:34px; }
+  .mc {
+    width:185px;height:116px;background:linear-gradient(135deg,#f5f2ff,#e6dcff,#d2c4f8);
+    border-radius:12px;border:1px solid rgba(124,58,237,.22);
+    box-shadow:0 20px 55px rgba(124,58,237,.18),0 0 0 1px rgba(255,255,255,.8);
+    padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;
+    transition:transform .4s;
+  }
+  .prod-card:hover .mc { transform:rotateY(-10deg) rotateX(4deg) scale(1.05); }
+  .mc-logo { font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem; }
+  .mc-w { display:flex;gap:2px;align-items:flex-end; }
+  .mw { width:2.5px;border-radius:2px;background:var(--grad); }
+  .mw:nth-child(1){height:6px;} .mw:nth-child(2){height:10px;} .mw:nth-child(3){height:7px;} .mw:nth-child(4){height:13px;}
+  .mk {
+    width:68px;height:115px;background:linear-gradient(180deg,#f4f0ff,#ddd0ff);
+    border-radius:34px 34px 17px 17px;border:1px solid rgba(124,58,237,.22);
+    box-shadow:0 20px 55px rgba(124,58,237,.18);
+    display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:10px;
+    transition:transform .4s;
+  }
+  .prod-card:hover .mk { transform:rotate(-10deg) scale(1.08); }
+  .logo-placeholder {
+    background: rgba(124,58,237,0.08);
+    border: 1.5px dashed rgba(124,58,237,0.45);
+    border-radius: 6px; padding: 4px 7px;
+    font-size: .48rem; font-weight: 800; color: var(--purple);
+    letter-spacing: .07em; font-family: 'Syne', sans-serif;
+    text-align: center; line-height: 1.3;
+  }
+  .logo-placeholder-key {
+    background: rgba(124,58,237,0.08);
+    border: 1.5px dashed rgba(124,58,237,0.45);
+    border-radius: 6px; padding: 5px 6px;
+    font-size: .42rem; font-weight: 800; color: var(--purple);
+    letter-spacing: .06em; font-family: 'Syne', sans-serif;
+    text-align: center; line-height: 1.3; width: 46px;
+  }
+  .mk-h { width:13px;height:13px;border:2px solid rgba(124,58,237,.4);border-radius:50%; }
+  .mk-r {
+    width:36px;height:36px;border:2px solid rgba(124,58,237,.32);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .mk-r::after { content:'';width:18px;height:18px;background:var(--grad);border-radius:50%;opacity:.4; }
+  .prod-name { font-size:1.3rem;font-weight:800;margin-bottom:9px;color:var(--text); }
+  .prod-desc { font-size:.85rem;color:var(--text-soft);line-height:1.7;margin-bottom:26px; }
+  .prod-price { font-size:2rem;font-weight:800;line-height:1;margin-bottom:5px; }
+  .prod-sub { font-size:.76rem;color:var(--text-soft);margin-bottom:20px; }
+  .prod-order-btn {
+    display: inline-block; margin-top: 16px; padding: 12px 28px;
+    background: var(--grad); color: white; border: none; border-radius: 50px;
+    font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: .9rem;
+    cursor: none; width: 100%; text-align: center;
+    box-shadow: 0 6px 20px rgba(124,58,237,.35);
+    transition: transform .2s, box-shadow .3s, opacity .2s; letter-spacing: .02em;
+  }
+  .prod-order-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,58,237,.48); opacity: .93; }
 
-  /* GOOGLE STAND */
-  .google-stand{display:flex;flex-direction:column;align-items:center;}
-  .stand-panel{width:136px;background:#181818;border-radius:10px 10px 3px 3px;padding:10px 12px 9px;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;box-shadow:0 14px 40px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.05);transition:transform .4s;}
-  .prod-card:hover .stand-panel{transform:perspective(500px) rotateX(8deg) translateY(-4px);}
-  .stand-nfc-icon{position:absolute;top:7px;right:8px;opacity:.65;}
-  .stand-qr{width:68px;height:68px;background:white;border-radius:4px;padding:5px;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:1px;}
-  .stand-qr-cell{border-radius:1px;}
-  .stand-google{display:flex;gap:.5px;align-items:center;margin-top:1px;}
-  .stand-stars{font-size:.65rem;letter-spacing:1px;}
-  .stand-label{font-size:.38rem;color:rgba(255,255,255,.45);letter-spacing:.07em;font-family:'Syne',sans-serif;font-weight:700;text-align:center;}
-  .stand-base{width:154px;height:13px;background:#101010;clip-path:polygon(6px 0,calc(100% - 6px) 0,100% 100%,0 100%);border-radius:0 0 5px 5px;box-shadow:0 6px 18px rgba(0,0,0,.28);}
+  /* Google Review Stand */
+  .google-stand { display:flex;flex-direction:column;align-items:center; }
+  .stand-panel {
+    width:136px;background:#181818;border-radius:10px 10px 3px 3px;
+    padding:10px 12px 9px;display:flex;flex-direction:column;
+    align-items:center;gap:5px;position:relative;
+    box-shadow:0 14px 40px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.05);
+    transition:transform .4s;
+  }
+  .prod-card:hover .stand-panel { transform:perspective(500px) rotateX(8deg) translateY(-4px); }
+  .stand-nfc-icon { position:absolute;top:7px;right:8px;opacity:.65; }
+  .stand-qr {
+    width:68px;height:68px;background:white;border-radius:4px;padding:5px;
+    display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:1px;
+  }
+  .stand-qr-cell { border-radius:1px; }
+  .stand-google { display:flex;gap:0.5px;align-items:center;margin-top:1px; }
+  .stand-stars { font-size:.65rem;letter-spacing:1px; }
+  .stand-label {
+    font-size:.38rem;color:rgba(255,255,255,.45);letter-spacing:.07em;
+    font-family:'Syne',sans-serif;font-weight:700;text-align:center;
+  }
+  .stand-base {
+    width:154px;height:13px;background:#101010;
+    clip-path:polygon(6px 0,calc(100% - 6px) 0,100% 100%,0 100%);
+    border-radius:0 0 5px 5px; box-shadow:0 6px 18px rgba(0,0,0,.28);
+  }
 
-  /* EPOXY TAG */
-  .epoxy-tag{width:148px;height:148px;border-radius:50%;background:linear-gradient(145deg,#2c2c2c,#141414);border:5px solid rgba(255,255,255,.1);box-shadow:0 16px 48px rgba(0,0,0,.3),inset 0 2px 4px rgba(255,255,255,.06),0 0 0 1px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;transition:transform .4s;position:relative;overflow:hidden;}
-  .epoxy-tag::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.08),transparent 60%);}
-  .prod-card:hover .epoxy-tag{transform:scale(1.06) rotate(-3deg);}
-  .epoxy-inner{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px;position:relative;z-index:1;}
-  .epoxy-title{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;background:linear-gradient(135deg,#e8c97a,#c8a030);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.12em;line-height:1;}
-  .epoxy-sub{font-size:.38rem;color:rgba(255,255,255,.45);letter-spacing:.04em;text-align:center;}
-  .epoxy-row{display:flex;align-items:center;gap:8px;margin-top:2px;}
-  .epoxy-nfc{width:32px;height:32px;border:1.5px solid rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);}
-  .epoxy-tap{font-size:.38rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;margin-bottom:3px;}
+  /* Epoxy Round NFC Tag */
+  .epoxy-tag {
+    width:148px;height:148px;border-radius:50%;
+    background:linear-gradient(145deg,#2c2c2c,#141414);
+    border:5px solid rgba(255,255,255,.1);
+    box-shadow:0 16px 48px rgba(0,0,0,.3),inset 0 2px 4px rgba(255,255,255,.06),0 0 0 1px rgba(0,0,0,.5);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .4s; position:relative;overflow:hidden;
+  }
+  .epoxy-tag::before {
+    content:'';position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.08),transparent 60%);
+  }
+  .prod-card:hover .epoxy-tag { transform:scale(1.06) rotate(-3deg); }
+  .epoxy-inner { display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px;position:relative;z-index:1; }
+  .epoxy-title {
+    font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
+    background:linear-gradient(135deg,#e8c97a,#c8a030);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    letter-spacing:.12em;line-height:1;
+  }
+  .epoxy-sub { font-size:.38rem;color:rgba(255,255,255,.45);letter-spacing:.04em;text-align:center; }
+  .epoxy-row { display:flex;align-items:center;gap:8px;margin-top:2px; }
+  .epoxy-nfc {
+    width:32px;height:32px;border:1.5px solid rgba(255,255,255,.25);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);
+  }
+  .epoxy-tap { font-size:.38rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;margin-bottom:3px; }
+  .epoxy-qr-mini {
+    width:30px;height:30px;background:white;border-radius:3px;padding:3px;
+    display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:.8px;
+  }
+  .mini-qr-cell { background:#1a1a1a;border-radius:.5px; }
 
   /* STATS */
-  .stats{padding:68px 60px;background:var(--off-white);display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-  .stat{padding:36px;text-align:center;position:relative;}
-  .stat:not(:last-child)::after{content:'';position:absolute;left:0;top:20%;bottom:20%;width:1px;background:var(--border);}
-  .stat-n{display:block;font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:7px;}
-  .stat-l{font-size:.8rem;color:var(--text-soft);font-weight:500;line-height:1.5;}
+  .stats {
+    padding:68px 60px; background:var(--off-white);
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  }
+  .stat { padding:36px;text-align:center;position:relative; }
+  .stat:not(:last-child)::after {
+    content:'';position:absolute;left:0;top:20%;bottom:20%;
+    width:1px;background:var(--border);
+  }
+  .stat-n {
+    display:block;font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;
+    background:var(--grad);-webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;background-clip:text;
+    line-height:1;margin-bottom:7px;
+  }
+  .stat-l { font-size:.8rem;color:var(--text-soft);font-weight:500;line-height:1.5; }
 
   /* CTA */
-  .cta{padding:140px 60px;background:linear-gradient(160deg,#f9f8ff,#ece8ff);text-align:center;position:relative;overflow:hidden;}
-  .cta::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);background-size:40px 40px;}
-  .cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.07) 0%,transparent 65%);pointer-events:none;}
-  .cta h2{font-size:clamp(1.9rem,4vw,3.5rem);font-weight:800;margin-bottom:14px;color:var(--text);position:relative;}
-  .cta p{font-size:.98rem;color:var(--text-soft);margin-bottom:46px;position:relative;}
-  .cta .actions{justify-content:center;position:relative;}
+  .cta { padding:140px 60px; background:linear-gradient(160deg,#f9f8ff,#ece8ff); text-align:center; position:relative;overflow:hidden; }
+  .cta::before {
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  .cta-glow {
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:700px;height:700px;
+    background:radial-gradient(circle,rgba(124,58,237,.07) 0%,transparent 65%);
+    pointer-events:none;
+  }
+  .cta h2 { font-size:clamp(1.9rem,4vw,3.5rem);font-weight:800;margin-bottom:14px;color:var(--text);position:relative; }
+  .cta p { font-size:.98rem;color:var(--text-soft);margin-bottom:46px;position:relative; }
+  .cta .actions { justify-content:center; position:relative; }
 
   /* CONTACT */
-  .contact-bar{background:white;border-top:1px solid var(--border);padding:40px 60px;display:grid;grid-template-columns:1fr 1fr;}
-  .cblock{padding:20px 36px;display:flex;flex-direction:column;align-items:center;gap:6px;}
-  .cblock:first-child{border-left:1px solid var(--border);}
-  .clabel{font-size:.72rem;color:var(--text-soft);font-weight:600;letter-spacing:.07em;margin-bottom:3px;}
-  .cval{font-size:1.1rem;font-weight:700;color:var(--text);direction:ltr;}
-  .socials{display:flex;gap:14px;align-items:center;}
-  .social-link{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.18);color:var(--purple);text-decoration:none;transition:background .25s,transform .2s,box-shadow .25s;}
-  .social-link:hover{background:var(--grad);color:white;transform:translateY(-3px);box-shadow:0 8px 20px rgba(124,58,237,.35);border-color:transparent;}
-  .shandle{font-size:.83rem;color:var(--purple);font-weight:700;}
+  .contact-bar {
+    background:white;border-top:1px solid var(--border);
+    padding:40px 60px;display:grid;grid-template-columns:1fr 1fr;
+  }
+  .cblock { padding:20px 36px;display:flex;flex-direction:column;align-items:center;gap:6px; }
+  .cblock:first-child { border-left:1px solid var(--border); }
+  .clabel { font-size:.72rem;color:var(--text-soft);font-weight:600;letter-spacing:.07em;margin-bottom:3px; }
+  .cval { font-size:1.1rem;font-weight:700;color:var(--text); direction:ltr; }
+  .socials { display:flex;gap:14px;align-items:center; }
+  .social-link {
+    display:flex;align-items:center;justify-content:center;
+    width:42px;height:42px;border-radius:12px;
+    background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.18);
+    color:var(--purple);text-decoration:none;
+    transition:background .25s,transform .2s,box-shadow .25s; cursor:pointer;
+  }
+  .social-link:hover {
+    background:var(--grad);color:white;
+    transform:translateY(-3px); box-shadow:0 8px 20px rgba(124,58,237,.35);
+    border-color:transparent;
+  }
+  .social-link svg { display:block; }
+  .shandle { font-size:.83rem;color:var(--purple);font-weight:700; }
 
   /* FOOTER */
-  footer{background:var(--text);padding:30px 60px;display:flex;justify-content:space-between;align-items:center;}
-  .f-logo{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;}
-  .f-copy{font-size:.72rem;color:rgba(255,255,255,.28);}
+  footer {
+    background:var(--text);padding:30px 60px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .f-logo { font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800; }
+  .f-copy { font-size:.72rem;color:rgba(255,255,255,.28); }
 
   /* SCROLL REVEAL */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .65s ease,transform .65s ease;}
-  .reveal.in{opacity:1;transform:translateY(0);}
+  .reveal { opacity:0;transform:translateY(26px);transition:opacity .65s ease,transform .65s ease; }
+  .reveal.in { opacity:1;transform:translateY(0); }
 
   /* ORDER MODAL */
-  #orderModal{position:fixed;inset:0;background:rgba(10,5,30,.65);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:99999;}
-  #orderModal.open{display:flex;}
-  .modal-box{background:white;width:92%;max-width:440px;border-radius:24px;padding:36px 32px 28px;position:relative;animation:pop .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 40px 100px rgba(124,58,237,.22),0 0 0 1px rgba(124,58,237,.1);}
-  @keyframes pop{from{transform:scale(.82) translateY(20px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
-  .modal-close{position:absolute;top:16px;left:16px;width:30px;height:30px;background:rgba(124,58,237,.08);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--purple);transition:background .2s;cursor:pointer;}
-  .modal-close:hover{background:rgba(124,58,237,.15);}
-  .modal-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px;color:var(--text);}
-  .modal-product{font-size:.82rem;color:var(--purple);font-weight:700;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:50px;padding:4px 14px;display:inline-block;margin-bottom:22px;letter-spacing:.03em;}
-  .modal-field{width:100%;padding:12px 16px;border:1.5px solid rgba(124,58,237,.18);border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;color:var(--text);margin-bottom:12px;outline:none;transition:border-color .2s,box-shadow .2s;background:#fafaff;}
-  .modal-field:focus{border-color:var(--purple);box-shadow:var(--focus-ring);background:white;}
-  .modal-field::placeholder{color:#aaa;}
-  .modal-field[aria-invalid="true"]{border-color:#ef4444;}
-  .modal-send{width:100%;padding:14px;background:var(--grad);color:white;border:none;border-radius:14px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:.98rem;cursor:pointer;box-shadow:0 6px 24px rgba(124,58,237,.4);transition:transform .2s,box-shadow .3s,opacity .2s;margin-top:4px;}
-  .modal-send:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(124,58,237,.5);}
-  .modal-send:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-  .modal-note{text-align:center;font-size:.72rem;color:var(--text-soft);margin-top:12px;}
-  .modal-error{color:#dc2626;font-size:.78rem;margin-bottom:8px;display:none;}
-  .modal-error.show{display:block;}
+  #orderModal {
+    position: fixed; inset: 0;
+    background: rgba(10, 5, 30, 0.65);
+    backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center; z-index: 99999;
+  }
+  #orderModal.open { display: flex; }
+  .modal-box {
+    background: white; width: 92%; max-width: 440px;
+    border-radius: 24px; padding: 36px 32px 28px;
+    position: relative;
+    animation: pop .35s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 40px 100px rgba(124,58,237,.22), 0 0 0 1px rgba(124,58,237,.1);
+  }
+  @keyframes pop { from{transform:scale(.82) translateY(20px);opacity:0;} to{transform:scale(1) translateY(0);opacity:1;} }
+  .modal-close {
+    position: absolute; top: 16px; left: 16px;
+    width: 30px; height: 30px;
+    background: rgba(124,58,237,.08); border: none; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; cursor: none; color: var(--purple); transition: background .2s;
+  }
+  .modal-close:hover { background: rgba(124,58,237,.15); }
+  .modal-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+  .modal-product {
+    font-size: .82rem; color: var(--purple); font-weight: 700;
+    background: rgba(124,58,237,.08); border: 1px solid rgba(124,58,237,.2);
+    border-radius: 50px; padding: 4px 14px; display: inline-block;
+    margin-bottom: 22px; letter-spacing: .03em;
+  }
+  .modal-field {
+    width: 100%; padding: 12px 16px;
+    border: 1.5px solid rgba(124,58,237,.18); border-radius: 12px;
+    font-family: 'Tajawal', sans-serif; font-size: .92rem; color: var(--text);
+    margin-bottom: 12px; outline: none;
+    transition: border-color .2s, box-shadow .2s; background: #fafaff;
+  }
+  .modal-field:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,.1); background: white; }
+  .modal-field::placeholder { color: #aaa; }
+  .modal-send {
+    width: 100%; padding: 14px;
+    background: var(--grad); color: white; border: none; border-radius: 14px;
+    font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: .98rem; cursor: none;
+    box-shadow: 0 6px 24px rgba(124,58,237,.4);
+    transition: transform .2s, box-shadow .3s, opacity .2s; margin-top: 4px;
+  }
+  .modal-send:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,58,237,.5); }
+  .modal-note { text-align: center; font-size: .72rem; color: var(--text-soft); margin-top: 12px; }
 
-  /* KLYX LANG SWITCHER */
-  .klyx-lang-switcher{display:flex;align-items:center;gap:6px;}
-  .lang-btn{background:transparent;border:1.5px solid rgba(124,58,237,.25);color:var(--purple);font-family:'Tajawal',sans-serif;font-weight:700;font-size:.72rem;padding:4px 11px;border-radius:50px;cursor:pointer;transition:background .2s,color .2s,border-color .2s;}
-  .lang-btn.active,.lang-btn:hover{background:var(--grad);color:#fff;border-color:transparent;}
-
-  @media (max-width:900px){
-    nav{padding:16px 18px;}
-    nav ul{display:none;}
+  @media(max-width:900px){
+    nav{padding:16px 18px;} nav ul{display:none;}
     .hero{padding:100px 20px 60px;flex-direction:column;}
     .hero-visual{display:none;}
     .how,.features,.products,.cta{padding:80px 20px;}
@@ -272,458 +578,452 @@
 </style>
 </head>
 <body>
-<a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
-<div class="cursor" id="cur" aria-hidden="true"></div>
-<div class="cursor-ring" id="ring" aria-hidden="true"></div>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
 
 <!-- NAV -->
-<nav role="navigation" aria-label="التنقل الرئيسي">
-  <a href="/" class="logo-klyx" aria-label="KLYX — الصفحة الرئيسية">KLYX</a>
+<nav>
+  <div class="logo-klyx">KLYX</div>
   <ul>
     <li><a href="#how" data-i18n="nav_how">كيف يعمل</a></li>
     <li><a href="#products" data-i18n="nav_products">المنتجات</a></li>
     <li><a href="#features" data-i18n="nav_features">المميزات</a></li>
     <li><a href="login.html" data-i18n="nav_space">مساحتي</a></li>
-    <li><a href="#products" class="nav-btn" data-i18n="nav_order">اطلب الآن</a></li>
+    <li><a href="#cta" class="nav-btn" data-i18n="nav_order">اطلب الآن</a></li>
   </ul>
-  <div id="langSwitcherNav" role="region" aria-label="اختيار اللغة"></div>
 </nav>
 
 <!-- HERO -->
-<main id="main-content">
-<section class="hero" aria-labelledby="hero-title">
-  <div class="blob b1" aria-hidden="true"></div>
-  <div class="blob b2" aria-hidden="true"></div>
-  <div class="blob b3" aria-hidden="true"></div>
+<section class="hero">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
   <div class="hero-content">
-    <div class="pill" aria-hidden="true"><div class="dot"></div>تقنية NFC الذكية — الجيل الجديد</div>
-    <h1 id="hero-title">KLYX —<br>حلول ذكية<br><span class="grad-text">بدون تلامس</span></h1>
-    <p class="hero-sub">حلول رقمية للأعمال الحديثة باستخدام NFC</p>
-    <p class="hero-sub2">بسّط تواصلك وخلي تجربتك أسرع وأكثر احترافية</p>
+    <div class="pill"><div class="dot"></div><span data-i18n="hero_pill">تقنية NFC الذكية — الجيل الجديد</span></div>
+    <h1>
+      <span data-i18n="hero_h1_line1">KLYX —</span><br>
+      <span data-i18n="hero_h1_line2">حلول ذكية</span><br>
+      <span class="grad-text" data-i18n="hero_h1_grad">بدون تلامس</span>
+    </h1>
+    <p class="hero-sub" data-i18n="hero_sub1">حلول رقمية للأعمال الحديثة باستخدام NFC</p>
+    <p class="hero-sub2" data-i18n="hero_sub2">بسّط تواصلك وخلي تجربتك أسرع وأكثر احترافية</p>
     <div class="actions">
-      <a href="#products" class="btn btn-p">اكتشف المنتجات</a>
-      <a href="#features" class="btn btn-g">المميزات</a>
+      <a href="#products" class="btn btn-p" data-i18n="hero_btn_products">اكتشف المنتجات</a>
+      <a href="#features" class="btn btn-g" data-i18n="hero_btn_features">المميزات</a>
     </div>
   </div>
-  <div class="hero-visual" aria-hidden="true">
+
+  <div class="hero-visual">
     <div class="phone-hero">
       <div class="phone-notch"></div>
-      <div class="nfc-ring"><span class="nfc-txt grad-text">NFC</span></div>
-      <div class="hint-txt">قرّب بطاقتك من الهاتف</div>
+      <div class="nfc-ring">
+        <span class="nfc-txt grad-text">NFC</span>
+      </div>
+      <div class="hint-txt" data-i18n="hero_phone_hint">قرّب بطاقتك من الهاتف</div>
     </div>
     <div class="card-hero">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
         <div class="card-klyx grad-text">KLYX</div>
-        <div style="background:rgba(124,58,237,.1);border:1px dashed rgba(124,58,237,.4);border-radius:6px;padding:4px 8px;font-size:.55rem;font-weight:700;color:var(--purple);letter-spacing:.06em;font-family:'Syne',sans-serif;">VOTRE LOGO</div>
+        <div style="background:rgba(124,58,237,0.1);border:1px dashed rgba(124,58,237,0.4);border-radius:6px;padding:4px 8px;font-size:.55rem;font-weight:700;color:var(--purple);letter-spacing:.06em;font-family:'Syne',sans-serif;">VOTRE LOGO</div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:flex-end;">
-        <div class="card-label">بطاقتك الذكية</div>
-        <div class="card-waves"><div class="wv"></div><div class="wv"></div><div class="wv"></div><div class="wv"></div></div>
+        <div class="card-label" data-i18n="hero_card_label">بطاقتك الذكية</div>
+        <div class="card-waves">
+          <div class="wv"></div><div class="wv"></div>
+          <div class="wv"></div><div class="wv"></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="shint" aria-hidden="true"><div class="sl"></div>اسكرول</div>
+
+  <div class="shint"><div class="sl"></div><span data-i18n="hero_scroll">اسكرول</span></div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="how" id="how" aria-labelledby="how-title">
-  <div class="section-pill" aria-hidden="true">⚡ كيف يعمل</div>
-  <h2 id="how-title" class="sec-title">ثلاث خطوات نحو <span class="grad-text">هوية بلا حدود</span></h2>
+<section class="how" id="how">
+  <div class="section-pill" data-i18n="how_pill">⚡ كيف يعمل</div>
+  <h2 class="sec-title">
+    <span data-i18n="how_title">ثلاث خطوات نحو</span> <span class="grad-text" data-i18n="how_title_grad">هوية بلا حدود</span>
+  </h2>
   <div class="steps">
-    <article class="step reveal">
-      <div class="step-n" aria-hidden="true">01</div>
-      <div class="step-ico" aria-hidden="true">🎨</div>
-      <h3>خصّص ملفك الشخصي</h3>
-      <p>أعدّ مساحتك الرقمية — صورتك، روابطك، معلومات التواصل، وكل ما يمثلك.</p>
-    </article>
-    <article class="step reveal">
-      <div class="step-n" aria-hidden="true">02</div>
-      <div class="step-ico" aria-hidden="true">📲</div>
-      <h3>قرّب بطاقتك من الهاتف</h3>
-      <p>قرّب بطاقة Klyx أو مفتاحك NFC من هاتف أي شخص. بدون تطبيق — يشتغل مباشرة على iOS و Android.</p>
-    </article>
-    <article class="step reveal">
-      <div class="step-n" aria-hidden="true">03</div>
-      <div class="step-ico" aria-hidden="true">✨</div>
-      <h3>ملفك يفتح فوراً</h3>
-      <p>صفحة أنيقة ومهنية تظهر في ثانية — معلومات التواصل، الروابط، الشبكات. الانطباع المثالي في كل لقاء.</p>
-    </article>
+    <div class="step reveal">
+      <div class="step-n">01</div>
+      <div class="step-ico">🎨</div>
+      <h3 data-i18n="step1_title">خصّص ملفك الشخصي</h3>
+      <p data-i18n="step1_desc">أعدّ مساحتك الرقمية — صورتك، روابطك، معلومات التواصل، وكل ما يمثلك.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-n">02</div>
+      <div class="step-ico">📲</div>
+      <h3 data-i18n="step2_title">قرّب بطاقتك من الهاتف</h3>
+      <p data-i18n="step2_desc">قرّب بطاقة Klyx أو مفتاحك NFC من هاتف أي شخص. بدون تطبيق — يشتغل مباشرة على iOS و Android.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-n">03</div>
+      <div class="step-ico">✨</div>
+      <h3 data-i18n="step3_title">ملفك يفتح فوراً</h3>
+      <p data-i18n="step3_desc">صفحة أنيقة ومهنية تظهر في ثانية — معلومات التواصل، الروابط، الشبكات. الانطباع المثالي في كل لقاء.</p>
+    </div>
   </div>
 </section>
 
 <!-- FEATURES -->
-<section class="features" id="features" aria-labelledby="feat-title">
+<section class="features" id="features">
   <div class="feat-list">
     <div>
-      <div class="section-pill" aria-hidden="true">✦ المميزات</div>
-      <h2 id="feat-title" class="sec-title" style="margin-bottom:32px;">كل اللي تحتاجه<br><span class="grad-text">في بطاقة واحدة</span></h2>
+      <div class="section-pill" data-i18n="feat_pill">✦ المميزات</div>
+      <h2 class="sec-title" style="margin-bottom:32px;">
+        <span data-i18n="feat_title">كل اللي تحتاجه</span><br>
+        <span class="grad-text" data-i18n="feat_title_grad">في بطاقة واحدة</span>
+      </h2>
     </div>
-    <div class="feat-item reveal"><div class="feat-ico" aria-hidden="true">📶</div><div><h4>بطاقات NFC ذكية</h4><p>تقنية NFC مدمجة — تشتغل مع كل الهواتف الحديثة بدون إعداد</p></div></div>
-    <div class="feat-item reveal"><div class="feat-ico" aria-hidden="true">⚡</div><div><h4>مشاركة فورية بدون تطبيقات</h4><p>لا تحميل، لا QR ، لا تأخير — قط قرب وكهو</p></div></div>
-    <div class="feat-item reveal"><div class="feat-ico" aria-hidden="true">🎯</div><div><h4>تخصيص كامل لبيزنسك</h4><p>غير ملفك في أي وقت من خلال الاتصال بينا — بدون بطاقة جديدة</p></div></div>
-    <div class="feat-item reveal"><div class="feat-ico" aria-hidden="true">👤</div><div><h4>تجربة عصرية لعملائك</h4><p>اترك انطباعاً احترافياً يُعبّر عن مستواك الحقيقي</p></div></div>
-    <div class="feat-item reveal"><div class="feat-ico" aria-hidden="true">🔒</div><div><h4>تحكم كامل في بياناتك</h4><p>أنت من يقرر ما يُعرض — خصوصيتك محفوظة دائماً</p></div></div>
+    <div class="feat-item reveal">
+      <div class="feat-ico">📶</div>
+      <div>
+        <h4 data-i18n="feat1_title">بطاقات NFC ذكية</h4>
+        <p data-i18n="feat1_desc">تقنية NFC مدمجة — تشتغل مع كل الهواتف الحديثة بدون إعداد</p>
+      </div>
+    </div>
+    <div class="feat-item reveal">
+      <div class="feat-ico">⚡</div>
+      <div>
+        <h4 data-i18n="feat2_title">مشاركة فورية بدون تطبيقات</h4>
+        <p data-i18n="feat2_desc">لا تحميل، لا QR ، لا تأخير — قط قرب وكهو</p>
+      </div>
+    </div>
+    <div class="feat-item reveal">
+      <div class="feat-ico">🎯</div>
+      <div>
+        <h4 data-i18n="feat3_title">تخصيص كامل لبيزنسك</h4>
+        <p data-i18n="feat3_desc">غير ملفك في أي وقت من خلال الاتصال بينا — بدون بطاقة جديدة</p>
+      </div>
+    </div>
+    <div class="feat-item reveal">
+      <div class="feat-ico">👤</div>
+      <div>
+        <h4 data-i18n="feat4_title">تجربة عصرية لعملائك</h4>
+        <p data-i18n="feat4_desc">اترك انطباعاً احترافياً يُعبّر عن مستواك الحقيقي</p>
+      </div>
+    </div>
+    <div class="feat-item reveal">
+      <div class="feat-ico">🔒</div>
+      <div>
+        <h4 data-i18n="feat5_title">تحكم كامل في بياناتك</h4>
+        <p data-i18n="feat5_desc">أنت من يقرر ما يُعرض — خصوصيتك محفوظة دائماً</p>
+      </div>
+    </div>
   </div>
-  <div class="feat-phone" aria-hidden="true">
+
+  <div class="feat-phone">
     <div class="fp-notch"></div>
     <div class="fp-avatar">A</div>
-    <div class="fp-name">أمين</div>
-    <div class="fp-role">مدير تجاري</div>
+    <div class="fp-name" data-i18n="feat_phone_name">أمين</div>
+    <div class="fp-role" data-i18n="feat_phone_role">مدير تجاري</div>
     <div class="fp-badge"><div class="fp-dot"></div>Via Klyx NFC</div>
     <div class="fp-links">
       <div class="fp-lnk"><div class="fp-lnk-i ic-g">📞</div><span style="direction:ltr;">+216 XX XXX XXX</span></div>
       <div class="fp-lnk"><div class="fp-lnk-i ic-p">✉</div><span>amin@xxxx.com</span></div>
-      <div class="fp-lnk"><div class="fp-lnk-i ic-b">🌐</div><span>SITE WEB</span></div>
+      <div class="fp-lnk"><div class="fp-lnk-i ic-b">🌐</div><span data-i18n="feat_phone_site">SITE WEB</span></div>
       <div class="fp-lnk"><div class="fp-lnk-i ic-r">📸</div><span>@amin.tn</span></div>
     </div>
   </div>
 </section>
 
 <!-- PRODUCTS -->
-<section class="products" id="products" aria-labelledby="prod-title">
-  <div class="section-pill" aria-hidden="true">🛍 منتجاتنا</div>
-  <h2 id="prod-title" class="sec-title">اختار <span class="grad-text">المنتج</span> المناسب</h2>
-  <div style="display:flex;gap:0;background:white;border:1px solid var(--border);border-radius:18px;margin-bottom:32px;overflow:hidden;" role="list" aria-label="مميزات المنتجات">
-    <div style="flex:1;padding:28px 24px;text-align:center;border-left:1px solid var(--border);" role="listitem"><div style="font-size:1.6rem;margin-bottom:8px;" aria-hidden="true">⚡</div><div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;">سرعة</div><div style="font-size:.72rem;color:var(--text-soft);">في الاستخدام</div></div>
-    <div style="flex:1;padding:28px 24px;text-align:center;border-left:1px solid var(--border);" role="listitem"><div style="font-size:1.6rem;margin-bottom:8px;" aria-hidden="true">💎</div><div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;">تصميم</div><div style="font-size:.72rem;color:var(--text-soft);">فاخر</div></div>
-    <div style="flex:1;padding:28px 24px;text-align:center;" role="listitem"><div style="font-size:1.6rem;margin-bottom:8px;" aria-hidden="true">🎯</div><div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;">مناسب</div><div style="font-size:.72rem;color:var(--text-soft);">لكل الأنشطة</div></div>
+<section class="products" id="products">
+  <div class="section-pill" data-i18n="prod_pill">🛍 منتجاتنا</div>
+  <h2 class="sec-title">
+    <span data-i18n="prod_title">اختار</span> <span class="grad-text" data-i18n="prod_title_grad">المنتج</span><span data-i18n="prod_title2"> المناسب</span>
+  </h2>
+
+  <div style="display:flex;gap:0;background:white;border:1px solid var(--border);border-radius:18px;margin-bottom:32px;overflow:hidden;">
+    <div style="flex:1;padding:28px 24px;text-align:center;border-left:1px solid var(--border);">
+      <div style="font-size:1.6rem;margin-bottom:8px;">⚡</div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;" data-i18n="prod_speed">سرعة</div>
+      <div style="font-size:.72rem;color:var(--text-soft);" data-i18n="prod_speed_sub">في الاستخدام</div>
+    </div>
+    <div style="flex:1;padding:28px 24px;text-align:center;border-left:1px solid var(--border);">
+      <div style="font-size:1.6rem;margin-bottom:8px;">💎</div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;" data-i18n="prod_design">تصميم</div>
+      <div style="font-size:.72rem;color:var(--text-soft);" data-i18n="prod_design_sub">فاخر</div>
+    </div>
+    <div style="flex:1;padding:28px 24px;text-align:center;">
+      <div style="font-size:1.6rem;margin-bottom:8px;">🎯</div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;" data-i18n="prod_fit">مناسب</div>
+      <div style="font-size:.72rem;color:var(--text-soft);" data-i18n="prod_fit_sub">لكل الأنشطة</div>
+    </div>
   </div>
 
   <div class="products-grid">
-    <article class="prod-card feat reveal">
-      <div class="prod-badge">⭐ الأكثر طلباً</div>
-      <div class="prod-vis" aria-hidden="true">
+    <!-- Card 1 -->
+    <div class="prod-card feat reveal">
+      <div class="prod-badge" data-i18n="prod_badge_popular">⭐ الأكثر طلباً</div>
+      <div class="prod-vis">
         <div class="mc">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;"><div class="mc-logo grad-text">KLYX</div><div class="logo-placeholder">VOTRE<br>LOGO</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div class="mc-logo grad-text">KLYX</div>
+            <div class="logo-placeholder">VOTRE<br>LOGO</div>
+          </div>
           <div class="mc-w"><div class="mw"></div><div class="mw"></div><div class="mw"></div><div class="mw"></div></div>
         </div>
       </div>
-      <h3 class="prod-name">Klyx Card — بطاقة NFC</h3>
-      <p class="prod-desc">بطاقة العمل المُعاد اختراعها. حجم قياسي، فاخر، شريحة NFC مدمجة. دائمة، أنيقة، لا تُنسى.</p>
-      <p class="prod-price grad-text">27 TND</p>
-      <p class="prod-sub">للبطاقة الواحدة — شحن مجاني</p>
-      <button class="prod-order-btn" data-product="Klyx Card — بطاقة NFC (27 TND)">🛒 اطلب الآن</button>
-    </article>
+      <div class="prod-name" data-i18n="prod1_name">Klyx Card — بطاقة NFC</div>
+      <p class="prod-desc" data-i18n="prod1_desc">بطاقة العمل المُعاد اختراعها. حجم قياسي، فاخر، شريحة NFC مدمجة. دائمة، أنيقة، لا تُنسى.</p>
+      <div class="prod-price grad-text" data-i18n="prod1_price">27 TND</div>
+      <div class="prod-sub" data-i18n="prod1_sub">للبطاقة الواحدة — شحن مجاني</div>
+      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Card — بطاقة NFC (27 TND)')">🛒 اطلب الآن</button>
+    </div>
 
-    <article class="prod-card reveal">
-      <div class="prod-vis" aria-hidden="true">
-        <div class="mk"><div class="mk-h"></div><div class="mk-r"></div><div class="logo-placeholder-key">VOTRE<br>LOGO</div></div>
+    <!-- Card 2 -->
+    <div class="prod-card reveal">
+      <div class="prod-vis">
+        <div class="mk">
+          <div class="mk-h"></div>
+          <div class="mk-r"></div>
+          <div class="logo-placeholder-key">VOTRE<br>LOGO</div>
+        </div>
       </div>
-      <h3 class="prod-name">Klyx Key — porte-clé NFC</h3>
-      <p class="prod-desc">دايماً معاك. حامل المفاتيح NFC صغير يرافق يومياتك — خفيف، عملي، واحترافي في نفس الوقت.</p>
-      <p class="prod-price grad-text">25 TND</p>
-      <p class="prod-sub">للقطعة الواحدة — شحن مجاني</p>
-      <button class="prod-order-btn" data-product="Klyx Key — porte-clé NFC (25 TND)">🛒 اطلب الآن</button>
-    </article>
+      <div class="prod-name" data-i18n="prod2_name">Klyx حامل المفاتيح — porte-clé NFC</div>
+      <p class="prod-desc" data-i18n="prod2_desc">دايماً معاك. حامل المفاتيح NFC صغير يرافق يومياتك — خفيف، عملي، واحترافي في نفس الوقت.</p>
+      <div class="prod-price grad-text" data-i18n="prod2_price">25 TND</div>
+      <div class="prod-sub" data-i18n="prod2_sub">للقطعة الواحدة — شحن مجاني</div>
+      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Key — porte-clé NFC (25 TND)')">🛒 اطلب الآن</button>
+    </div>
 
-    <article class="prod-card reveal">
-      <div class="prod-badge" style="background:linear-gradient(135deg,#4285F4,#34A853);">⭐ للمحلات</div>
-      <div class="prod-vis" aria-hidden="true">
+    <!-- Card 3 -->
+    <div class="prod-card reveal">
+      <div class="prod-badge" style="background:linear-gradient(135deg,#4285F4,#34A853);" data-i18n="prod_badge_shops">⭐ للمحلات</div>
+      <div class="prod-vis">
         <div class="google-stand">
           <div class="stand-panel">
-            <div class="stand-nfc-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2.5" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+            <div class="stand-nfc-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2.5">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
+              </svg>
+            </div>
             <div class="stand-qr" id="standQr"></div>
-            <div class="stand-google"><span style="color:#4285F4;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">G</span><span style="color:#EA4335;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">o</span><span style="color:#FBBC05;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">o</span><span style="color:#4285F4;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">g</span><span style="color:#34A853;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">l</span><span style="color:#EA4335;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">e</span></div>
-            <div class="stand-stars" aria-hidden="true">⭐⭐⭐⭐⭐</div>
+            <div class="stand-google">
+              <span style="color:#4285F4;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">G</span><span style="color:#EA4335;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">o</span><span style="color:#FBBC05;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">o</span><span style="color:#4285F4;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">g</span><span style="color:#34A853;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">l</span><span style="color:#EA4335;font-weight:800;font-family:'Syne',sans-serif;font-size:.8rem;">e</span>
+            </div>
+            <div class="stand-stars">⭐⭐⭐⭐⭐</div>
             <div class="stand-label">Leave a 5-Star Review!</div>
           </div>
           <div class="stand-base"></div>
         </div>
       </div>
-      <h3 class="prod-name">Klyx Stand — Google Review</h3>
-      <p class="prod-desc">أداة احترافية لمحلك أو مطعمك. زبونك يقرب هاتفه أو يسكن QR — مباشرة لصفحة Google Review تاعك.</p>
-      <p class="prod-price grad-text">79 TND</p>
-      <p class="prod-sub">للقطعة — شحن مجاني</p>
-      <button class="prod-order-btn" data-product="Klyx Stand — Google Review (79 TND)">🛒 اطلب الآن</button>
-    </article>
+      <div class="prod-name" data-i18n="prod3_name">Klyx Stand — Google Review</div>
+      <p class="prod-desc" data-i18n="prod3_desc">أداة احترافية لمحلك أو مطعمك. زبونك يقرب هاتفه أو يسكن QR — مباشرة لصفحة Google Review تاعك.</p>
+      <div class="prod-price grad-text" data-i18n="prod3_price">79 TND</div>
+      <div class="prod-sub" data-i18n="prod3_sub">للقطعة — شحن مجاني</div>
+      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Stand — Google Review (79 TND)')">🛒 اطلب الآن</button>
+    </div>
 
-    <article class="prod-card reveal">
-      <div class="prod-vis" aria-hidden="true">
+    <!-- Card 4 -->
+    <div class="prod-card reveal">
+      <div class="prod-vis">
         <div class="epoxy-tag">
           <div class="epoxy-inner">
             <div class="epoxy-title">MENU</div>
             <div class="epoxy-sub">For restaurants, cafes, bars…</div>
             <div class="epoxy-row">
-              <div class="epoxy-nfc"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+              <div class="epoxy-nfc">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                  <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
+                </svg>
+              </div>
+              <div>
+                <div class="epoxy-tap">TAP OR SCAN</div>
+                <div class="epoxy-qr-mini"></div>
+              </div>
             </div>
             <div class="logo-placeholder" style="margin-top:6px;font-size:.42rem;padding:3px 6px;">VOTRE LOGO</div>
           </div>
         </div>
       </div>
-      <h3 class="prod-name">Klyx Menu — منيو NFC دائري</h3>
-      <p class="prod-desc">منيو رقمي للمطاعم والمقاهي والبارات. تاغ NFC دائري من الإيبوكسي يوضع على الطاولة — زبونك يقرب هاتفه وينفتحله المنيو فوراً.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" aria-label="المجالات المناسبة">
-        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;">🍽 مطاعم</span>
-        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;">☕ مقاهي</span>
-        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;">🍹 بارات</span>
+      <div class="prod-name" data-i18n="prod4_name">Klyx Menu — منيو NFC دائري</div>
+      <p class="prod-desc" data-i18n="prod4_desc">منيو رقمي للمطاعم والمقاهي والبارات. تاغ NFC دائري من الإيبوكسي يوضع على الطاولة — زبونك يقرب هاتفه أو يسكن QR وينفتحله المنيو فوراً. بدون ورق، بدون تطبيق.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;" data-i18n="prod_tag_resto">🍽 مطاعم</span>
+        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;" data-i18n="prod_tag_cafe">☕ مقاهي</span>
+        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;" data-i18n="prod_tag_bar">🍹 بارات</span>
       </div>
-      <p class="prod-price grad-text">29 TND</p>
-      <p class="prod-sub">للقطعة — مقاوم للماء والخدش</p>
-      <button class="prod-order-btn" data-product="Klyx Menu — منيو NFC دائري (29 TND)">🛒 اطلب الآن</button>
-    </article>
+      <div class="prod-price grad-text" data-i18n="prod4_price">29 TND</div>
+      <div class="prod-sub" data-i18n="prod4_sub">للقطعة — مقاوم للماء والخدش</div>
+      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Menu — منيو NFC دائري (29 TND)')">🛒 اطلب الآن</button>
+    </div>
   </div>
 </section>
 
 <!-- STATS -->
-<div class="stats" role="region" aria-label="إحصائيات">
-  <div class="stat reveal"><span class="stat-n" aria-label="أكثر من 90 عميل">90+</span><span class="stat-l">عميل راضي</span></div>
-  <div class="stat reveal"><span class="stat-n" aria-label="0.8 ثانية">0.8s</span><span class="stat-l">وقت الفتح</span></div>
-  <div class="stat reveal"><span class="stat-n" aria-label="100 بالمئة">100%</span><span class="stat-l">متوافق iOS & Android</span></div>
+<div class="stats">
+  <div class="stat reveal">
+    <span class="stat-n" data-i18n="stat1_val">90+</span>
+    <span class="stat-l" data-i18n="stat1_label">عميل راضي</span>
+  </div>
+  <div class="stat reveal">
+    <span class="stat-n" data-i18n="stat2_val">0.8s</span>
+    <span class="stat-l" data-i18n="stat2_label">وقت الفتح</span>
+  </div>
+  <div class="stat reveal">
+    <span class="stat-n" data-i18n="stat3_val">100%</span>
+    <span class="stat-l" data-i18n="stat3_label">متوافق iOS & Android</span>
+  </div>
 </div>
 
 <!-- CTA -->
-<section class="cta" id="cta" aria-labelledby="cta-title">
-  <div class="cta-glow" aria-hidden="true"></div>
-  <h2 id="cta-title">مستعد تترك <span class="grad-text">انطباع لا يُنسى؟</span></h2>
-  <p>انضم لمئات المحترفين اللي يتواصلوا بطريقة مختلفة</p>
+<section class="cta" id="cta">
+  <div class="cta-glow"></div>
+  <h2>
+    <span data-i18n="cta_title">مستعد تترك</span> <span class="grad-text" data-i18n="cta_title_grad">انطباع لا يُنسى؟</span>
+  </h2>
+  <p data-i18n="cta_sub">انضم لمئات المحترفين اللي يتواصلوا بطريقة مختلفة</p>
   <div class="actions">
-    <button class="btn btn-p" data-product="Klyx Card — بطاقة NFC (27 TND)">اطلب بطاقتك الآن</button>
-    <a href="#products" class="btn btn-g">تعرف على الباقات</a>
+    <button onclick="openOrder('Klyx Card — بطاقة NFC (27 TND)')" class="btn btn-p" data-i18n="cta_btn_order">اطلب بطاقتك الآن</button>
+    <a href="#products" class="btn btn-g" data-i18n="cta_btn_products">تعرف على الباقات</a>
   </div>
 </section>
-</main>
 
 <!-- CONTACT -->
-<div class="contact-bar" role="contentinfo">
+<div class="contact-bar">
   <div class="cblock">
-    <div class="clabel">تابعنا علي</div>
+    <div class="clabel" data-i18n="contact_follow">تابعنا علي</div>
     <div class="socials">
-      <a href="https://www.instagram.com/klyx.tn/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="KLYX على Instagram" title="Instagram">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      <a href="https://www.instagram.com/klyx.tn/" target="_blank" rel="noopener" class="social-link" title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
       </a>
-      <a href="https://www.facebook.com/people/klyxtn/61573300281091/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="KLYX على Facebook" title="Facebook">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      <a href="https://www.facebook.com/people/klyxtn/61573300281091/" target="_blank" rel="noopener" class="social-link" title="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
-      <a href="https://tiktok.com/@klyx.tn5" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="KLYX على TikTok" title="TikTok">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+      <a href="https://tiktok.com/@klyx.tn5" target="_blank" rel="noopener" class="social-link" title="TikTok">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
       </a>
     </div>
     <div class="shandle">@klyx.tn</div>
   </div>
   <div class="cblock">
-    <div class="clabel">تواصل معنا</div>
-    <a class="cval" href="tel:+21629691046" style="text-decoration:none;color:inherit;">+216 29 691 046</a>
-    <a class="cval" href="mailto:contact@klyxtn.com" style="text-decoration:none;color:inherit;font-size:.9rem;">contact@klyxtn.com</a>
+    <div class="clabel" data-i18n="contact_reach">تواصل معنا</div>
+    <div class="cval">+216 29 691 046</div>
+    <div class="cval">contact@klyxtn.com</div>
   </div>
 </div>
 
 <footer>
-  <a href="/" class="f-logo grad-text" style="text-decoration:none;" aria-label="KLYX">KLYX</a>
-  <small class="f-copy">© 2026 Klyx. جميع الحقوق محفوظة.</small>
+  <div class="f-logo grad-text">KLYX</div>
+  <div class="f-copy" data-i18n="footer_copy">© 2026 Klyx. جميع الحقوق محفوظة.</div>
 </footer>
 
 <!-- ORDER MODAL -->
-<div id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+<div id="orderModal">
   <div class="modal-box">
-    <button class="modal-close" id="modalCloseBtn" aria-label="إغلاق">✕</button>
-    <h2 class="modal-title" id="modalTitle" data-i18n="modal_title">🛒 اطلب المنتج</h2>
-    <p id="modalProduct" class="modal-product"></p>
-    <p id="modalError" class="modal-error" role="alert"></p>
-    <label for="modalName" style="display:block;font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:4px;" data-i18n="modal_name">الاسم الكامل</label>
-    <input id="modalName" class="modal-field" autocomplete="name" data-i18n="modal_name" placeholder="الاسم الكامل" required />
-    <label for="modalPhone" style="display:block;font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:4px;" data-i18n="modal_phone">رقم الهاتف</label>
-    <input id="modalPhone" class="modal-field" type="tel" dir="ltr" autocomplete="tel" placeholder="+216 XX XXX XXX" required />
-    <label for="modalCity" style="display:block;font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:4px;" data-i18n="modal_city">العنوان / المدينة</label>
-    <input id="modalCity" class="modal-field" autocomplete="address-level2" data-i18n="modal_city" placeholder="العنوان / المدينة" />
-    <label for="modalQty" style="display:block;font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:4px;" data-i18n="modal_qty">الكمية</label>
-    <input id="modalQty" class="modal-field" type="number" min="1" max="100" value="1" />
-    <button class="modal-send" id="modalBtn" data-i18n="modal_btn_nfc">متابعة ←</button>
-    <p class="modal-note" id="modalNote" data-i18n="modal_note_nfc"></p>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" data-i18n="modal_title">🛒 اطلب المنتج</div>
+    <div id="modalProduct" class="modal-product"></div>
+
+    <input id="name"  class="modal-field" data-i18n="modal_name" placeholder="الاسم الكامل" />
+    <input id="phone" class="modal-field" data-i18n="modal_phone" placeholder="رقم الهاتف" style="direction:ltr;" />
+    <input id="city"  class="modal-field" data-i18n="modal_city" placeholder="العنوان / المدينة" />
+    <input id="qty"   class="modal-field" type="number" data-i18n="modal_qty" placeholder="الكمية" value="1" min="1" />
+
+    <button class="modal-send" id="modalBtn" onclick="handleModalSubmit()">متابعة — إنشاء بطاقتك الرقمية ←</button>
+    <div class="modal-note" id="modalNote">ستنتقل لإنشاء بطاقتك الرقمية الشخصية</div>
     <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(124,58,237,.1);text-align:center;">
       <a href="login.html" data-i18n="modal_login" style="font-size:.78rem;color:var(--purple);font-weight:600;text-decoration:none;opacity:.8;">لديك حساب بالفعل؟ تسجيل الدخول ←</a>
     </div>
   </div>
 </div>
 
+<script src="i18n.js"></script>
 <script>
-(function(){
-  'use strict';
+  // ── Cursor ──────────────────────────────────────────
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+  });
+  (function loop(){
+    rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.prod-card,.step,.feat-item').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.classList.add('big');ring.classList.add('big');});
+    el.addEventListener('mouseleave',()=>{cur.classList.remove('big');ring.classList.remove('big');});
+  });
 
-  /* ── Cursor (touch-safe) ── */
-  var cur = document.getElementById('cur');
-  var ring = document.getElementById('ring');
-  if (cur && ring && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
-    var mx=0,my=0,rx=0,ry=0;
-    document.addEventListener('mousemove',function(e){
-      mx=e.clientX; my=e.clientY;
-      cur.style.left=mx+'px'; cur.style.top=my+'px';
-    });
-    (function loop(){
-      rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
-      ring.style.left=rx+'px'; ring.style.top=ry+'px';
-      requestAnimationFrame(loop);
-    })();
-    document.querySelectorAll('a,button').forEach(function(el){
-      el.addEventListener('mouseenter',function(){cur.classList.add('big');ring.classList.add('big');});
-      el.addEventListener('mouseleave',function(){cur.classList.remove('big');ring.classList.remove('big');});
-    });
-  }
-
-  /* ── Scroll reveal ── */
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
+  // ── Scroll reveal ────────────────────────────────────
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
       if(e.isIntersecting){
-        var delay = parseInt(e.target.dataset.d) || 0;
-        setTimeout(function(){ e.target.classList.add('in'); }, delay);
+        setTimeout(()=>e.target.classList.add('in'), e.target.dataset.d||0);
         obs.unobserve(e.target);
       }
     });
   },{threshold:.1});
-  document.querySelectorAll('.reveal').forEach(function(el,i){
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
     el.dataset.d = (i%3)*100;
     obs.observe(el);
   });
 
-  /* ── QR pattern (decorative) ── */
-  (function(){
-    var qr = document.getElementById('standQr');
-    if(!qr) return;
-    var p=[1,1,1,1,1,1,1,1,0,0,0,1,0,0,1,0,1,1,1,0,1,1,0,0,1,1,0,0,1,0,1,0,1,0,1,1,1,1,1,0,0,0,1,0,0,0,1,1,1,1,1,1,1];
-    p.forEach(function(v){
-      var d=document.createElement('div');
-      d.className='stand-qr-cell';
-      d.style.background=v?'#222':'#fff';
-      qr.appendChild(d);
-    });
-  })();
-
-  /* ── Modal ── */
-  var modal = document.getElementById('orderModal');
-  var _currentProduct = '';
-  var _isNfc = false;
-  var NFC_KEYS = ['Klyx Card','Klyx Key','porte-clé','27 TND','25 TND'];
-
-  function openModal(product) {
-    if (!product || typeof product !== 'string') return;
-    _currentProduct = product;
-    _isNfc = NFC_KEYS.some(function(k){ return product.indexOf(k) !== -1; });
-
-    document.getElementById('modalProduct').textContent = '📦 ' + product;
-    document.getElementById('modalName').value = '';
-    document.getElementById('modalPhone').value = '';
-    document.getElementById('modalCity').value = '';
-    document.getElementById('modalQty').value = '1';
-    clearError();
-
-    var btn = document.getElementById('modalBtn');
-    var note = document.getElementById('modalNote');
-    btn.setAttribute('data-i18n', _isNfc ? 'modal_btn_nfc' : 'modal_btn_simple');
-    note.setAttribute('data-i18n', _isNfc ? 'modal_note_nfc' : 'modal_note_simple');
-    if (window.KlyxI18n) KlyxI18n.apply();
-
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden','false');
-    setTimeout(function(){ document.getElementById('modalName').focus(); }, 50);
-    document.body.style.overflow = 'hidden';
-  }
+  // ── Modal ────────────────────────────────────────────
+  let currentProduct = "";
+  const NFC_PRODUCTS = ['Klyx Card', 'Klyx Key', 'porte-clé NFC', 'NFC (27 TND)', 'NFC (25 TND)'];
+  let isNfcProduct = false;
 
   function closeModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
+    document.getElementById("orderModal").classList.remove("open");
+  }
+  document.getElementById("orderModal").addEventListener("click", function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  function openOrder(product) {
+    currentProduct = product;
+    document.getElementById("modalProduct").textContent = "📦 " + product;
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("qty").value = "1";
+
+    isNfcProduct = NFC_PRODUCTS.some(k => product.includes(k));
+    const btn = document.getElementById("modalBtn");
+    const note = document.getElementById("modalNote");
+    if (isNfcProduct) {
+      btn.setAttribute('data-i18n', 'modal_btn_nfc');
+      note.setAttribute('data-i18n', 'modal_note_nfc');
+    } else {
+      btn.setAttribute('data-i18n', 'modal_btn_simple');
+      note.setAttribute('data-i18n', 'modal_note_simple');
+    }
+    if (window.KlyxI18n) KlyxI18n.apply();
+    document.getElementById("orderModal").classList.add("open");
   }
 
-  function showError(msg) {
-    var el = document.getElementById('modalError');
-    el.textContent = msg;
-    el.classList.add('show');
-  }
+  function handleModalSubmit() {
+    const name  = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const city  = document.getElementById("city").value.trim();
+    const qty   = document.getElementById("qty").value.trim();
+    const errMsg = window.KlyxI18n ? KlyxI18n.t('modal_err') : 'من فضلك أدخل الاسم ورقم الهاتف';
+    if (!name || !phone) { alert(errMsg); return; }
 
-  function clearError() {
-    var el = document.getElementById('modalError');
-    el.textContent = '';
-    el.classList.remove('show');
-  }
-
-  /* Sanitize user text for textContent (belt-and-suspenders) */
-  function sanitizeText(s) {
-    return String(s || '').replace(/[<>&"']/g, function(c){
-      return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#x27;'}[c];
-    });
-  }
-
-  /* Phone number: digits, +, spaces, dashes only */
-  function isValidPhone(p) {
-    return /^[\d\s\+\-\(\)]{6,20}$/.test(p.trim());
-  }
-
-  function handleSubmit() {
-    var name  = document.getElementById('modalName').value.trim();
-    var phone = document.getElementById('modalPhone').value.trim();
-    var city  = document.getElementById('modalCity').value.trim();
-    var qty   = parseInt(document.getElementById('modalQty').value) || 1;
-    clearError();
-
-    var errKey = 'modal_err';
-    if (!name || !phone) { showError(KlyxI18n.t(errKey)); return; }
-    if (!isValidPhone(phone)) { showError('رقم الهاتف غير صحيح'); return; }
-    if (qty < 1 || qty > 100) { qty = 1; }
-
-    var orderData = {
-      product: _currentProduct,
-      name: name,
-      phone: phone,
-      city: city,
-      qty: qty,
-      isNfc: _isNfc,
-      ts: Date.now()
-    };
-
-    try { sessionStorage.setItem('klyxOrder', JSON.stringify(orderData)); } catch(e){}
+    const orderData = { product: currentProduct, name, phone, city, qty, isNfc: isNfcProduct };
+    sessionStorage.setItem('klyxOrder', JSON.stringify(orderData));
     closeModal();
 
-    if (_isNfc) {
+    if (isNfcProduct) {
       window.location.href = 'create-card.html';
     } else {
-      /* Build WhatsApp URL — encode all user input */
-      var msg = '\uD83D\uDED2 \u0637\u0644\u0628 KLYX\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\uD83D\uDCE6 ' + _currentProduct + '\n\uD83D\uDC64 ' + name + '\n\uD83D\uDCDE ' + phone + '\n\uD83C\uDFD9 ' + city + '\n\uD83D\uDD22 ' + qty;
-      window.open('https://wa.me/21629691046?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+      const msg = `🛒 طلب KLYX\n━━━━━━━━━━\n📦 ${currentProduct}\n👤 ${name}\n📞 ${phone}\n🏙 ${city}\n🔢 ${qty}`;
+      window.open('https://wa.me/21629691046?text=' + encodeURIComponent(msg), '_blank');
     }
   }
-
-  /* Event listeners */
-  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
-
-  modal.addEventListener('click', function(e){
-    if (e.target === modal) closeModal();
-  });
-
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
-
-  document.getElementById('modalBtn').addEventListener('click', handleSubmit);
-
-  /* Enter key in modal fields */
-  ['modalName','modalPhone','modalCity','modalQty'].forEach(function(id){
-    document.getElementById(id).addEventListener('keydown', function(e){
-      if (e.key === 'Enter') handleSubmit();
-    });
-  });
-
-  /* Delegate order button clicks */
-  document.addEventListener('click', function(e){
-    var btn = e.target.closest('[data-product]');
-    if (btn) openModal(btn.getAttribute('data-product'));
-  });
-
-  /* ── Lang switcher inject ── */
-  document.addEventListener('DOMContentLoaded', function(){
-    if (window.KlyxI18n) {
-      var sw = document.getElementById('langSwitcherNav');
-      if (sw) {
-        sw.className = 'klyx-lang-switcher';
-        sw.innerHTML = '<button class="lang-btn" data-lang="ar">ع</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button>';
-        sw.querySelectorAll('.lang-btn').forEach(function(b){
-          b.addEventListener('click', function(){ KlyxI18n.set(b.dataset.lang); });
-          b.classList.toggle('active', b.dataset.lang === KlyxI18n.current);
-        });
-      }
-    }
-  });
-
-})();
 </script>
-<script src="i18n.js"></script>
 </body>
 </html>
