@@ -1,4 +1,98 @@
 (function () {
+  /* ══════════════════════════════════════════════
+     KLYX THEME SYSTEM
+     ══════════════════════════════════════════════ */
+  var KLYX_THEMES = {
+    purple: {
+      primary:'#7c3aed', secondary:'#3b82f6', accent:'#06b6d4',
+      grad:'linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%)',
+      glow:'rgba(124,58,237,.4)',
+      bg1:'#0d0820', bg2:'#12082e', bg3:'#0a1628'
+    },
+    dark: {
+      primary:'#a855f7', secondary:'#ec4899', accent:'#f43f5e',
+      grad:'linear-gradient(135deg,#a855f7 0%,#ec4899 50%,#f43f5e 100%)',
+      glow:'rgba(168,85,247,.4)',
+      bg1:'#1a0520', bg2:'#2d0a2e', bg3:'#1a0518'
+    },
+    blue: {
+      primary:'#00d4ff', secondary:'#0070f3', accent:'#7928ca',
+      grad:'linear-gradient(135deg,#00d4ff 0%,#0070f3 50%,#7928ca 100%)',
+      glow:'rgba(0,112,243,.4)',
+      bg1:'#020b18', bg2:'#041428', bg3:'#060a20'
+    },
+    gold: {
+      primary:'#fbbf24', secondary:'#f59e0b', accent:'#d97706',
+      grad:'linear-gradient(135deg,#fbbf24 0%,#f59e0b 50%,#d97706 100%)',
+      glow:'rgba(251,191,36,.35)',
+      bg1:'#1a1200', bg2:'#2a1e00', bg3:'#180f00'
+    },
+    white: {
+      primary:'#6366f1', secondary:'#8b5cf6', accent:'#a78bfa',
+      grad:'linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%)',
+      glow:'rgba(99,102,241,.3)',
+      bg1:'#0f0f1a', bg2:'#1a1a2e', bg3:'#0a0a18'
+    }
+  };
+
+  // Expose themes globally so card.html can use them
+  window.KLYX_THEMES = KLYX_THEMES;
+
+  var _themeStorageKey = 'klyxCardTheme';
+  var _currentTheme = 'purple';
+
+  function applyThemeToCss(key) {
+    var th = KLYX_THEMES[key] || KLYX_THEMES.purple;
+    var r = document.documentElement;
+    r.style.setProperty('--card-primary',   th.primary);
+    r.style.setProperty('--card-secondary', th.secondary);
+    r.style.setProperty('--card-accent',    th.accent);
+    r.style.setProperty('--card-grad',      th.grad);
+    r.style.setProperty('--card-glow',      th.glow);
+    r.style.setProperty('--card-bg1',       th.bg1);
+    r.style.setProperty('--card-bg2',       th.bg2);
+    r.style.setProperty('--card-bg3',       th.bg3);
+
+    // Update theme buttons active state
+    document.querySelectorAll('[data-theme]').forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-theme') === key);
+    });
+
+    // Dispatch event so pages can react
+    document.dispatchEvent(new CustomEvent('klyxThemeChanged', { detail: { theme: key } }));
+  }
+
+  window.KlyxTheme = {
+    current: _currentTheme,
+
+    init: function(storageKey) {
+      if (storageKey) _themeStorageKey = storageKey;
+      try {
+        var saved = localStorage.getItem(_themeStorageKey);
+        _currentTheme = (saved && KLYX_THEMES[saved]) ? saved : 'purple';
+      } catch(e) {
+        _currentTheme = 'purple';
+      }
+      window.KlyxTheme.current = _currentTheme;
+      applyThemeToCss(_currentTheme);
+    },
+
+    set: function(key) {
+      if (!KLYX_THEMES[key]) return;
+      _currentTheme = key;
+      window.KlyxTheme.current = key;
+      try { localStorage.setItem(_themeStorageKey, key); } catch(e) {}
+      applyThemeToCss(key);
+    },
+
+    get: function() {
+      return _currentTheme;
+    }
+  };
+
+  /* ══════════════════════════════════════════════
+     KLYX I18N SYSTEM
+     ══════════════════════════════════════════════ */
   const translations = {
     ar: {
       // NAV
@@ -267,22 +361,26 @@
       login_err: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
       login_err_empty: "يرجى إدخال البريد الإلكتروني وكلمة المرور",
       login_err_nouser: "لا يوجد حساب بهذا البريد الإلكتروني",
+      login_attempts_left: "محاولات متبقية",
       login_email: "البريد الإلكتروني",
       login_pwd: "كلمة المرور",
       login_btn: "تسجيل الدخول",
       login_no_account: "ليس لديك حساب؟",
       login_no_account_link: " اطلب بطاقتك الآن ←",
+
+      // PASSWORD STRENGTH
+      pwd_weak: "ضعيفة",
+      pwd_fair: "متوسطة",
+      pwd_good: "جيدة",
+      pwd_strong: "قوية",
     },
 
     fr: {
-      // NAV
       nav_how: "Comment ça marche",
       nav_products: "Produits",
       nav_features: "Fonctionnalités",
       nav_space: "Mon espace",
       nav_order: "Commander",
-
-      // HERO
       hero_pill: "Technologie NFC — La nouvelle génération",
       hero_h1_line1: "KLYX —",
       hero_h1_line2: "Solutions intelligentes",
@@ -294,8 +392,6 @@
       hero_scroll: "Défiler",
       hero_phone_hint: "Approchez votre carte du téléphone",
       hero_card_label: "Votre carte intelligente",
-
-      // HOW IT WORKS
       how_pill: "⚡ Comment ça marche",
       how_title: "Trois étapes vers",
       how_title_grad: "une identité sans limites",
@@ -305,8 +401,6 @@
       step2_desc: "Approchez votre carte Klyx ou porte-clé NFC de n'importe quel smartphone. Sans app — compatible iOS et Android.",
       step3_title: "Votre profil s'ouvre instantanément",
       step3_desc: "Une page élégante et professionnelle apparaît en une seconde — coordonnées, liens, réseaux. L'impression parfaite à chaque rencontre.",
-
-      // FEATURES
       feat_pill: "✦ Fonctionnalités",
       feat_title: "Tout ce dont vous avez besoin",
       feat_title_grad: "en une seule carte",
@@ -323,8 +417,6 @@
       feat_phone_name: "Amine",
       feat_phone_role: "Directeur commercial",
       feat_phone_site: "SITE WEB",
-
-      // PRODUCTS
       prod_pill: "🛍 Nos produits",
       prod_title: "Choisissez",
       prod_title_grad: "le produit",
@@ -357,30 +449,20 @@
       prod_tag_cafe: "☕ Cafés",
       prod_tag_bar: "🍹 Bars",
       prod_order_btn: "🛒 Commander",
-
-      // STATS
       stat1_val: "90+",
       stat1_label: "clients satisfaits",
       stat2_val: "0.8s",
       stat2_label: "temps d'ouverture",
       stat3_val: "100%",
       stat3_label: "compatible iOS & Android",
-
-      // CTA
       cta_title: "Prêt à laisser",
       cta_title_grad: "une impression inoubliable ?",
       cta_sub: "Rejoignez des centaines de professionnels qui communiquent différemment",
       cta_btn_order: "Commandez votre carte",
       cta_btn_products: "Voir les formules",
-
-      // CONTACT
       contact_follow: "Suivez-nous sur",
       contact_reach: "Contactez-nous",
-
-      // FOOTER
       footer_copy: "© 2026 Klyx. Tous droits réservés.",
-
-      // MODAL
       modal_title: "🛒 Commander",
       modal_name: "Nom complet",
       modal_phone: "Numéro de téléphone",
@@ -393,8 +475,6 @@
       modal_login: "Déjà un compte ? Se connecter →",
       modal_err: "Veuillez saisir votre nom et numéro de téléphone",
       lang_label: "Langue",
-
-      // DASHBOARD
       dash_greeting: "Bienvenue dans votre espace personnel ✨",
       dash_copy: "📋 Copier le lien",
       dash_copied: "✓ Copié !",
@@ -414,8 +494,6 @@
       dash_open_card: "Ouvrir la carte publique ↗",
       dash_view: "🔗 Ma carte",
       dash_logout: "Déconnexion",
-
-      // CARD PAGE
       card_call: "Appeler",
       card_wa: "WhatsApp",
       card_email: "E-mail",
@@ -426,8 +504,6 @@
       card_shared: "Lien copié !",
       card_footer: "Créé avec ❤ par",
       card_get: "Obtenez votre carte",
-
-      // CREATE CARD
       step_order: "Commande",
       step_card: "Carte digitale",
       step_payment: "Paiement",
@@ -457,8 +533,6 @@
       cc_btn_save: "💾 Sauvegarder et continuer plus tard",
       cc_err: "Veuillez entrer votre nom complet",
       cc_draft_saved: "Brouillon sauvegardé !",
-
-      // PAYMENT
       pay_step: "Étape 3 sur 3 — Dernière étape",
       pay_title: "Paiement",
       pay_title2: " et création de compte",
@@ -497,8 +571,6 @@
       pay_err_match: "Les mots de passe ne correspondent pas",
       pay_err_address: "Veuillez saisir votre adresse de livraison",
       pay_includes: ["Carte NFC premium", "Page digitale personnelle", "Livraison gratuite", "Support technique gratuit"],
-
-      // SUCCESS
       success_icon: "🎉",
       success_title: "Compte créé !",
       success_sub: "Votre commande a bien été reçue. Voici vos identifiants",
@@ -508,15 +580,11 @@
       success_url_label: "Votre lien personnel",
       success_wa_note: "Nous vous contacterons bientôt pour confirmer la commande",
       success_btn: "Accéder à mon espace →",
-
-      // THEMES
       theme_purple: "Violet",
       theme_dark: "Sombre",
       theme_blue: "Bleu",
       theme_gold: "Doré",
       theme_white: "Blanc",
-
-      // FIELDS
       field_name: "Nom",
       field_job: "Titre professionnel",
       field_phone: "📱 Téléphone",
@@ -533,30 +601,30 @@
       field_tg: "✈️ Telegram",
       field_gh: "🐙 GitHub",
       field_be: "🅱 Behance",
-
-      // LOGIN
       login_tagline: "Votre espace numérique personnel",
       login_title: "Bon retour 👋",
       login_sub: "Connectez-vous pour gérer votre carte digitale",
       login_err: "E-mail ou mot de passe incorrect",
       login_err_empty: "Veuillez saisir votre e-mail et mot de passe",
       login_err_nouser: "Aucun compte trouvé avec cet e-mail",
+      login_attempts_left: "tentatives restantes",
       login_email: "Adresse e-mail",
       login_pwd: "Mot de passe",
       login_btn: "Se connecter",
       login_no_account: "Pas encore de compte ?",
       login_no_account_link: " Commandez votre carte →",
+      pwd_weak: "Faible",
+      pwd_fair: "Moyen",
+      pwd_good: "Bien",
+      pwd_strong: "Fort",
     },
 
     en: {
-      // NAV
       nav_how: "How it works",
       nav_products: "Products",
       nav_features: "Features",
       nav_space: "My space",
       nav_order: "Order now",
-
-      // HERO
       hero_pill: "Smart NFC Technology — The next generation",
       hero_h1_line1: "KLYX —",
       hero_h1_line2: "Smart solutions",
@@ -568,8 +636,6 @@
       hero_scroll: "Scroll",
       hero_phone_hint: "Tap your card on any phone",
       hero_card_label: "Your smart card",
-
-      // HOW IT WORKS
       how_pill: "⚡ How it works",
       how_title: "Three steps to",
       how_title_grad: "a limitless identity",
@@ -579,8 +645,6 @@
       step2_desc: "Bring your Klyx card or NFC keychain near anyone's phone. No app needed — works instantly on iOS and Android.",
       step3_title: "Your profile opens instantly",
       step3_desc: "A sleek, professional page appears in seconds — contact details, links, social networks. The perfect impression every time.",
-
-      // FEATURES
       feat_pill: "✦ Features",
       feat_title: "Everything you need",
       feat_title_grad: "in one card",
@@ -597,8 +661,6 @@
       feat_phone_name: "Amine",
       feat_phone_role: "Sales Manager",
       feat_phone_site: "WEBSITE",
-
-      // PRODUCTS
       prod_pill: "🛍 Our products",
       prod_title: "Choose",
       prod_title_grad: "the product",
@@ -631,30 +693,20 @@
       prod_tag_cafe: "☕ Cafés",
       prod_tag_bar: "🍹 Bars",
       prod_order_btn: "🛒 Order now",
-
-      // STATS
       stat1_val: "90+",
       stat1_label: "happy clients",
       stat2_val: "0.8s",
       stat2_label: "opening time",
       stat3_val: "100%",
       stat3_label: "iOS & Android compatible",
-
-      // CTA
       cta_title: "Ready to leave",
       cta_title_grad: "an unforgettable impression?",
       cta_sub: "Join hundreds of professionals who network differently",
       cta_btn_order: "Order your card now",
       cta_btn_products: "See all plans",
-
-      // CONTACT
       contact_follow: "Follow us on",
       contact_reach: "Contact us",
-
-      // FOOTER
       footer_copy: "© 2026 Klyx. All rights reserved.",
-
-      // MODAL
       modal_title: "🛒 Order",
       modal_name: "Full name",
       modal_phone: "Phone number",
@@ -667,8 +719,6 @@
       modal_login: "Already have an account? Log in →",
       modal_err: "Please enter your name and phone number",
       lang_label: "Language",
-
-      // DASHBOARD
       dash_greeting: "Welcome to your personal space ✨",
       dash_copy: "📋 Copy link",
       dash_copied: "✓ Copied!",
@@ -688,8 +738,6 @@
       dash_open_card: "Open public card ↗",
       dash_view: "🔗 My card",
       dash_logout: "Log out",
-
-      // CARD PAGE
       card_call: "Call me",
       card_wa: "WhatsApp",
       card_email: "Email",
@@ -700,8 +748,6 @@
       card_shared: "Link copied!",
       card_footer: "Built with ❤ by",
       card_get: "Get your card",
-
-      // CREATE CARD
       step_order: "Order",
       step_card: "Digital Card",
       step_payment: "Payment",
@@ -731,8 +777,6 @@
       cc_btn_save: "💾 Save and continue later",
       cc_err: "Please enter your full name",
       cc_draft_saved: "Draft saved!",
-
-      // PAYMENT
       pay_step: "Step 3 of 3 — Last step",
       pay_title: "Payment",
       pay_title2: " & account creation",
@@ -771,8 +815,6 @@
       pay_err_match: "Passwords do not match",
       pay_err_address: "Please enter your delivery address",
       pay_includes: ["Premium NFC card", "Personal digital page", "Free shipping", "Free technical support"],
-
-      // SUCCESS
       success_icon: "🎉",
       success_title: "Account created!",
       success_sub: "Your order was received successfully. Here are your login details",
@@ -782,15 +824,11 @@
       success_url_label: "Your personal link",
       success_wa_note: "We'll contact you soon to confirm your order",
       success_btn: "Go to my space →",
-
-      // THEMES
       theme_purple: "Purple",
       theme_dark: "Dark",
       theme_blue: "Blue",
       theme_gold: "Gold",
       theme_white: "White",
-
-      // FIELDS
       field_name: "Name",
       field_job: "Job title",
       field_phone: "📱 Phone",
@@ -807,24 +845,26 @@
       field_tg: "✈️ Telegram",
       field_gh: "🐙 GitHub",
       field_be: "🅱 Behance",
-
-      // LOGIN
       login_tagline: "Your personal digital space",
       login_title: "Welcome back 👋",
       login_sub: "Sign in to manage your digital card",
       login_err: "Incorrect email or password",
       login_err_empty: "Please enter your email and password",
       login_err_nouser: "No account found with this email",
+      login_attempts_left: "attempts remaining",
       login_email: "Email address",
       login_pwd: "Password",
       login_btn: "Sign in",
       login_no_account: "Don't have an account?",
       login_no_account_link: " Order your card now →",
+      pwd_weak: "Weak",
+      pwd_fair: "Fair",
+      pwd_good: "Good",
+      pwd_strong: "Strong",
     },
   };
 
   const RTL_LANGS = ["ar"];
-
   let current = localStorage.getItem("klyx_lang") || "ar";
 
   function t(key) {
@@ -856,7 +896,6 @@
       btn.classList.toggle("active", btn.dataset.lang === current);
     });
 
-    // Fire custom event so pages can react
     document.dispatchEvent(new CustomEvent("klyxLangChanged", { detail: { lang: current } }));
   }
 
@@ -864,12 +903,10 @@
     if (!translations[lang]) return;
     current = lang;
     localStorage.setItem("klyx_lang", lang);
-    // update public property
     window.KlyxI18n.current = current;
     apply();
   }
 
-  // Legacy alias
   function setLang(lang) { set(lang); }
 
   function init() {
@@ -912,7 +949,6 @@
     else nav.appendChild(switcher);
   }
 
-  // Public API
   window.KlyxI18n = {
     current: current,
     t: t,
