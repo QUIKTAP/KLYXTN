@@ -1,37 +1,119 @@
 (function () {
   /* ══════════════════════════════════════════════
-     KLYX THEME SYSTEM
+     KLYX THEME SYSTEM — 16 THÈMES
      ══════════════════════════════════════════════ */
   var KLYX_THEMES = {
     purple: {
       primary:'#7c3aed', secondary:'#3b82f6', accent:'#06b6d4',
       grad:'linear-gradient(135deg,#7c3aed 0%,#3b82f6 50%,#06b6d4 100%)',
       glow:'rgba(124,58,237,.4)',
-      bg1:'#0d0820', bg2:'#12082e', bg3:'#0a1628'
+      bg1:'#0d0820', bg2:'#12082e', bg3:'#0a1628',
+      label_key:'theme_purple'
     },
     dark: {
       primary:'#a855f7', secondary:'#ec4899', accent:'#f43f5e',
       grad:'linear-gradient(135deg,#a855f7 0%,#ec4899 50%,#f43f5e 100%)',
       glow:'rgba(168,85,247,.4)',
-      bg1:'#1a0520', bg2:'#2d0a2e', bg3:'#1a0518'
+      bg1:'#1a0520', bg2:'#2d0a2e', bg3:'#1a0518',
+      label_key:'theme_dark'
     },
     blue: {
       primary:'#00d4ff', secondary:'#0070f3', accent:'#7928ca',
       grad:'linear-gradient(135deg,#00d4ff 0%,#0070f3 50%,#7928ca 100%)',
       glow:'rgba(0,112,243,.4)',
-      bg1:'#020b18', bg2:'#041428', bg3:'#060a20'
+      bg1:'#020b18', bg2:'#041428', bg3:'#060a20',
+      label_key:'theme_blue'
     },
     gold: {
       primary:'#fbbf24', secondary:'#f59e0b', accent:'#d97706',
       grad:'linear-gradient(135deg,#fbbf24 0%,#f59e0b 50%,#d97706 100%)',
       glow:'rgba(251,191,36,.35)',
-      bg1:'#1a1200', bg2:'#2a1e00', bg3:'#180f00'
+      bg1:'#1a1200', bg2:'#2a1e00', bg3:'#180f00',
+      label_key:'theme_gold'
     },
     white: {
       primary:'#6366f1', secondary:'#8b5cf6', accent:'#a78bfa',
       grad:'linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%)',
       glow:'rgba(99,102,241,.3)',
-      bg1:'#0f0f1a', bg2:'#1a1a2e', bg3:'#0a0a18'
+      bg1:'#0f0f1a', bg2:'#1a1a2e', bg3:'#0a0a18',
+      label_key:'theme_white'
+    },
+    emerald: {
+      primary:'#10b981', secondary:'#059669', accent:'#34d399',
+      grad:'linear-gradient(135deg,#10b981 0%,#059669 50%,#34d399 100%)',
+      glow:'rgba(16,185,129,.4)',
+      bg1:'#022c22', bg2:'#064e3b', bg3:'#065f46',
+      label_key:'theme_emerald'
+    },
+    rose: {
+      primary:'#f43f5e', secondary:'#e11d48', accent:'#fb7185',
+      grad:'linear-gradient(135deg,#f43f5e 0%,#e11d48 50%,#fb7185 100%)',
+      glow:'rgba(244,63,94,.4)',
+      bg1:'#4c0519', bg2:'#881337', bg3:'#9f1239',
+      label_key:'theme_rose'
+    },
+    orange: {
+      primary:'#f97316', secondary:'#ea580c', accent:'#fb923c',
+      grad:'linear-gradient(135deg,#f97316 0%,#ea580c 50%,#fb923c 100%)',
+      glow:'rgba(249,115,22,.4)',
+      bg1:'#431407', bg2:'#7c2d12', bg3:'#9a3412',
+      label_key:'theme_orange'
+    },
+    teal: {
+      primary:'#14b8a6', secondary:'#0d9488', accent:'#2dd4bf',
+      grad:'linear-gradient(135deg,#14b8a6 0%,#0d9488 50%,#2dd4bf 100%)',
+      glow:'rgba(20,184,166,.4)',
+      bg1:'#042f2e', bg2:'#115e59', bg3:'#134e4a',
+      label_key:'theme_teal'
+    },
+    indigo: {
+      primary:'#6366f1', secondary:'#4f46e5', accent:'#818cf8',
+      grad:'linear-gradient(135deg,#6366f1 0%,#4f46e5 50%,#818cf8 100%)',
+      glow:'rgba(99,102,241,.4)',
+      bg1:'#1e1b4b', bg2:'#312e81', bg3:'#3730a3',
+      label_key:'theme_indigo'
+    },
+    lime: {
+      primary:'#84cc16', secondary:'#65a30d', accent:'#a3e635',
+      grad:'linear-gradient(135deg,#84cc16 0%,#65a30d 50%,#a3e635 100%)',
+      glow:'rgba(132,204,22,.4)',
+      bg1:'#1a2e05', bg2:'#365314', bg3:'#3f6212',
+      label_key:'theme_lime'
+    },
+    cyan: {
+      primary:'#06b6d4', secondary:'#0891b2', accent:'#22d3ee',
+      grad:'linear-gradient(135deg,#06b6d4 0%,#0891b2 50%,#22d3ee 100%)',
+      glow:'rgba(6,182,212,.4)',
+      bg1:'#083344', bg2:'#155e75', bg3:'#164e63',
+      label_key:'theme_cyan'
+    },
+    violet: {
+      primary:'#8b5cf6', secondary:'#7c3aed', accent:'#a78bfa',
+      grad:'linear-gradient(135deg,#8b5cf6 0%,#7c3aed 50%,#a78bfa 100%)',
+      glow:'rgba(139,92,246,.4)',
+      bg1:'#2e1065', bg2:'#4c1d95', bg3:'#5b21b6',
+      label_key:'theme_violet'
+    },
+    sunset: {
+      primary:'#f59e0b', secondary:'#ec4899', accent:'#8b5cf6',
+      grad:'linear-gradient(135deg,#f59e0b 0%,#ec4899 50%,#8b5cf6 100%)',
+      glow:'rgba(245,158,11,.4)',
+      bg1:'#2a0a1a', bg2:'#3d0f2e', bg3:'#4a1239',
+      label_key:'theme_sunset'
+    },
+    ocean: {
+      primary:'#0ea5e9', secondary:'#3b82f6', accent:'#06b6d4',
+      grad:'linear-gradient(135deg,#0ea5e9 0%,#3b82f6 50%,#06b6d4 100%)',
+      glow:'rgba(14,165,233,.4)',
+      bg1:'#0c4a6e', bg2:'#075985', bg3:'#0369a1',
+      label_key:'theme_ocean'
+    },
+    forest: {
+      primary:'#22c55e', secondary:'#16a34a', accent:'#4ade80',
+      grad:'linear-gradient(135deg,#22c55e 0%,#16a34a 50%,#4ade80 100%)',
+      glow:'rgba(34,197,94,.4)',
+      bg1:'#052e16', bg2:'#14532d', bg3:'#166534',
+      label_key:'theme_forest'
     }
   };
 
@@ -329,12 +411,23 @@
       success_wa_note: "سنتواصل معك قريباً لتأكيد الطلب",
       success_btn: "ادخل على مساحتي ←",
 
-      // THEMES
+      // THEMES — 16 thèmes
       theme_purple: "بنفسجي",
       theme_dark: "داكن",
       theme_blue: "أزرق",
       theme_gold: "ذهبي",
       theme_white: "أبيض",
+      theme_emerald: "زمردي",
+      theme_rose: "وردي",
+      theme_orange: "برتقالي",
+      theme_teal: "فيروزي",
+      theme_indigo: "نيلي",
+      theme_lime: "ليموني",
+      theme_cyan: "سماوي",
+      theme_violet: "بنفسجي فاتح",
+      theme_sunset: "غروب",
+      theme_ocean: "محيطي",
+      theme_forest: "غابي",
 
       // FIELDS
       field_name: "الاسم",
@@ -585,6 +678,17 @@
       theme_blue: "Bleu",
       theme_gold: "Doré",
       theme_white: "Blanc",
+      theme_emerald: "Émeraude",
+      theme_rose: "Rose",
+      theme_orange: "Orange",
+      theme_teal: "Turquoise",
+      theme_indigo: "Indigo",
+      theme_lime: "Citron",
+      theme_cyan: "Cyan",
+      theme_violet: "Violet clair",
+      theme_sunset: "Coucher de soleil",
+      theme_ocean: "Océan",
+      theme_forest: "Forêt",
       field_name: "Nom",
       field_job: "Titre professionnel",
       field_phone: "📱 Téléphone",
@@ -829,6 +933,17 @@
       theme_blue: "Blue",
       theme_gold: "Gold",
       theme_white: "White",
+      theme_emerald: "Emerald",
+      theme_rose: "Rose",
+      theme_orange: "Orange",
+      theme_teal: "Teal",
+      theme_indigo: "Indigo",
+      theme_lime: "Lime",
+      theme_cyan: "Cyan",
+      theme_violet: "Violet",
+      theme_sunset: "Sunset",
+      theme_ocean: "Ocean",
+      theme_forest: "Forest",
       field_name: "Name",
       field_job: "Job title",
       field_phone: "📱 Phone",
