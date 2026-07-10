@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -26,11 +27,27 @@
     color: var(--text);
     font-family: 'Tajawal', sans-serif;
     overflow-x: hidden;
-    
+    cursor: none;
   }
 
   /* CURSOR */
-
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--purple); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .3s, height .3s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid rgba(124,58,237,.45); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: left .12s ease, top .12s ease, width .3s, height .3s;
+  }
+  .cursor.big { width: 18px; height: 18px; }
+  .cursor-ring.big { width: 54px; height: 54px; border-color: var(--purple); }
 
   /* NAV */
   nav {
@@ -56,7 +73,7 @@
     border-radius: 50px; font-weight: 700 !important; font-size: .82rem !important;
     box-shadow: 0 4px 16px rgba(124,58,237,.35);
     transition: opacity .3s, transform .2s !important;
-    
+    cursor: none;
   }
   .nav-btn:hover { opacity: .9; transform: translateY(-1px); }
 
@@ -181,6 +198,7 @@
   .wv:nth-child(1){height:7px;} .wv:nth-child(2){height:12px;animation-delay:.2s;}
   .wv:nth-child(3){height:9px;animation-delay:.4s;} .wv:nth-child(4){height:16px;animation-delay:.6s;}
   @keyframes wv{0%,100%{opacity:.4;transform:scaleY(.8);}50%{opacity:1;transform:scaleY(1.1);}}
+  .card-label { font-size:.65rem;color:var(--text-soft);letter-spacing:.04em; }
 
   /* SCROLL HINT */
   .shint {
@@ -328,18 +346,29 @@
   .logo-placeholder {
     background: rgba(124,58,237,0.08);
     border: 1.5px dashed rgba(124,58,237,0.45);
-    border-radius: 6px; padding: 4px 7px;
-    font-size: .48rem; font-weight: 800; color: var(--purple);
-    letter-spacing: .07em; font-family: 'Syne', sans-serif;
-    text-align: center; line-height: 1.3;
+    border-radius: 6px;
+    padding: 4px 7px;
+    font-size: .48rem;
+    font-weight: 800;
+    color: var(--purple);
+    letter-spacing: .07em;
+    font-family: 'Syne', sans-serif;
+    text-align: center;
+    line-height: 1.3;
   }
   .logo-placeholder-key {
     background: rgba(124,58,237,0.08);
     border: 1.5px dashed rgba(124,58,237,0.45);
-    border-radius: 6px; padding: 5px 6px;
-    font-size: .42rem; font-weight: 800; color: var(--purple);
-    letter-spacing: .06em; font-family: 'Syne', sans-serif;
-    text-align: center; line-height: 1.3; width: 46px;
+    border-radius: 6px;
+    padding: 5px 6px;
+    font-size: .42rem;
+    font-weight: 800;
+    color: var(--purple);
+    letter-spacing: .06em;
+    font-family: 'Syne', sans-serif;
+    text-align: center;
+    line-height: 1.3;
+    width: 46px;
   }
   .mk-h { width:13px;height:13px;border:2px solid rgba(124,58,237,.4);border-radius:50%; }
   .mk-r {
@@ -351,15 +380,31 @@
   .prod-desc { font-size:.85rem;color:var(--text-soft);line-height:1.7;margin-bottom:26px; }
   .prod-price { font-size:2rem;font-weight:800;line-height:1;margin-bottom:5px; }
   .prod-sub { font-size:.76rem;color:var(--text-soft);margin-bottom:20px; }
+
+  /* ✅ FIX: Order button on product cards */
   .prod-order-btn {
-    display: inline-block; margin-top: 16px; padding: 12px 28px;
-    background: var(--grad); color: white; border: none; border-radius: 50px;
-    font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: .9rem;
-     width: 100%; text-align: center;
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 28px;
+    background: var(--grad);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: .9rem;
+    cursor: none;
+    width: 100%;
+    text-align: center;
     box-shadow: 0 6px 20px rgba(124,58,237,.35);
-    transition: transform .2s, box-shadow .3s, opacity .2s; letter-spacing: .02em;
+    transition: transform .2s, box-shadow .3s, opacity .2s;
+    letter-spacing: .02em;
   }
-  .prod-order-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,58,237,.48); opacity: .93; }
+  .prod-order-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(124,58,237,.48);
+    opacity: .93;
+  }
 
   /* Google Review Stand */
   .google-stand { display:flex;flex-direction:column;align-items:center; }
@@ -386,7 +431,8 @@
   .stand-base {
     width:154px;height:13px;background:#101010;
     clip-path:polygon(6px 0,calc(100% - 6px) 0,100% 100%,0 100%);
-    border-radius:0 0 5px 5px; box-shadow:0 6px 18px rgba(0,0,0,.28);
+    border-radius:0 0 5px 5px;
+    box-shadow:0 6px 18px rgba(0,0,0,.28);
   }
 
   /* Epoxy Round NFC Tag */
@@ -396,14 +442,18 @@
     border:5px solid rgba(255,255,255,.1);
     box-shadow:0 16px 48px rgba(0,0,0,.3),inset 0 2px 4px rgba(255,255,255,.06),0 0 0 1px rgba(0,0,0,.5);
     display:flex;align-items:center;justify-content:center;
-    transition:transform .4s; position:relative;overflow:hidden;
+    transition:transform .4s;
+    position:relative;overflow:hidden;
   }
   .epoxy-tag::before {
     content:'';position:absolute;inset:0;border-radius:50%;
     background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.08),transparent 60%);
   }
   .prod-card:hover .epoxy-tag { transform:scale(1.06) rotate(-3deg); }
-  .epoxy-inner { display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px;position:relative;z-index:1; }
+  .epoxy-inner {
+    display:flex;flex-direction:column;align-items:center;
+    gap:3px;padding:12px;position:relative;z-index:1;
+  }
   .epoxy-title {
     font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
     background:linear-gradient(135deg,#e8c97a,#c8a030);
@@ -414,7 +464,8 @@
   .epoxy-row { display:flex;align-items:center;gap:8px;margin-top:2px; }
   .epoxy-nfc {
     width:32px;height:32px;border:1.5px solid rgba(255,255,255,.25);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.05);
   }
   .epoxy-tap { font-size:.38rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;margin-bottom:3px; }
   .epoxy-qr-mini {
@@ -464,7 +515,9 @@
     background:white;border-top:1px solid var(--border);
     padding:40px 60px;display:grid;grid-template-columns:1fr 1fr;
   }
-  .cblock { padding:20px 36px;display:flex;flex-direction:column;align-items:center;gap:6px; }
+  .cblock {
+    padding:20px 36px;display:flex;flex-direction:column;align-items:center;gap:6px;
+  }
   .cblock:first-child { border-left:1px solid var(--border); }
   .clabel { font-size:.72rem;color:var(--text-soft);font-weight:600;letter-spacing:.07em;margin-bottom:3px; }
   .cval { font-size:1.1rem;font-weight:700;color:var(--text); direction:ltr; }
@@ -474,11 +527,13 @@
     width:42px;height:42px;border-radius:12px;
     background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.18);
     color:var(--purple);text-decoration:none;
-    transition:background .25s,transform .2s,box-shadow .25s; cursor:pointer;
+    transition:background .25s,transform .2s,box-shadow .25s;
+    cursor:pointer;
   }
   .social-link:hover {
     background:var(--grad);color:white;
-    transform:translateY(-3px); box-shadow:0 8px 20px rgba(124,58,237,.35);
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(124,58,237,.35);
     border-color:transparent;
   }
   .social-link svg { display:block; }
@@ -496,17 +551,25 @@
   .reveal { opacity:0;transform:translateY(26px);transition:opacity .65s ease,transform .65s ease; }
   .reveal.in { opacity:1;transform:translateY(0); }
 
-  /* ORDER MODAL */
+  /* ✅ FIX: ORDER MODAL */
   #orderModal {
     position: fixed; inset: 0;
     background: rgba(10, 5, 30, 0.65);
     backdrop-filter: blur(10px);
-    display: none; align-items: center; justify-content: center; z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
   }
-  #orderModal.open { display: flex; }
+  #orderModal.open {
+    display: flex;
+  }
   .modal-box {
-    background: white; width: 92%; max-width: 440px;
-    border-radius: 24px; padding: 36px 32px 28px;
+    background: white;
+    width: 92%;
+    max-width: 440px;
+    border-radius: 24px;
+    padding: 36px 32px 28px;
     position: relative;
     animation: pop .35s cubic-bezier(.34,1.56,.64,1);
     box-shadow: 0 40px 100px rgba(124,58,237,.22), 0 0 0 1px rgba(124,58,237,.1);
@@ -517,10 +580,14 @@
     width: 30px; height: 30px;
     background: rgba(124,58,237,.08); border: none; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;  color: var(--purple); transition: background .2s;
+    font-size: 1rem; cursor: none; color: var(--purple);
+    transition: background .2s;
   }
   .modal-close:hover { background: rgba(124,58,237,.15); }
-  .modal-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+  .modal-title {
+    font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800;
+    margin-bottom: 6px; color: var(--text);
+  }
   .modal-product {
     font-size: .82rem; color: var(--purple); font-weight: 700;
     background: rgba(124,58,237,.08); border: 1px solid rgba(124,58,237,.2);
@@ -529,351 +596,35 @@
   }
   .modal-field {
     width: 100%; padding: 12px 16px;
-    border: 1.5px solid rgba(124,58,237,.18); border-radius: 12px;
-    font-family: 'Tajawal', sans-serif; font-size: .92rem; color: var(--text);
+    border: 1.5px solid rgba(124,58,237,.18);
+    border-radius: 12px; font-family: 'Tajawal', sans-serif;
+    font-size: .92rem; color: var(--text);
     margin-bottom: 12px; outline: none;
-    transition: border-color .2s, box-shadow .2s; background: #fafaff;
+    transition: border-color .2s, box-shadow .2s;
+    background: #fafaff;
   }
-  .modal-field:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,.1); background: white; }
+  .modal-field:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(124,58,237,.1);
+    background: white;
+  }
   .modal-field::placeholder { color: #aaa; }
   .modal-send {
     width: 100%; padding: 14px;
-    background: var(--grad); color: white; border: none; border-radius: 14px;
-    font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: .98rem; 
+    background: var(--grad); color: white; border: none;
+    border-radius: 14px; font-family: 'Tajawal', sans-serif;
+    font-weight: 700; font-size: .98rem; cursor: none;
     box-shadow: 0 6px 24px rgba(124,58,237,.4);
-    transition: transform .2s, box-shadow .3s, opacity .2s; margin-top: 4px;
+    transition: transform .2s, box-shadow .3s, opacity .2s;
+    margin-top: 4px;
   }
   .modal-send:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,58,237,.5); }
-  .modal-note { text-align: center; font-size: .72rem; color: var(--text-soft); margin-top: 12px; }
-
-  
-  /* ══ NFC DEMO ANIMATION ══ */
-  .hero-demo {
-    position: relative;
-    width: 100%;
-    max-width: 340px;
-    height: 280px;
-    margin: 30px auto 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 800px;
-  }
-
-  .demo-phone {
-    width: 160px;
-    height: 310px;
-    background: linear-gradient(160deg, #1a1040, #0f0a2e);
-    border-radius: 28px;
-    border: 3px solid rgba(255,255,255,.15);
-    box-shadow: 0 20px 60px rgba(124,58,237,.3), inset 0 2px 4px rgba(255,255,255,.1);
-    position: relative;
-    overflow: hidden;
-    animation: phoneFloat 4s ease-in-out infinite;
-    transform-style: preserve-3d;
-  }
-
-  @keyframes phoneFloat {
-    0%, 100% { transform: translateY(0) rotateY(-5deg); }
-    50% { transform: translateY(-12px) rotateY(5deg); }
-  }
-
-  .demo-notch {
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 18px;
-    background: rgba(0,0,0,.4);
-    border-radius: 0 0 12px 12px;
-    z-index: 10;
-  }
-
-  .demo-screen {
-    position: absolute;
-    inset: 3px;
-    background: linear-gradient(160deg, #0d0820, #12082e);
-    border-radius: 24px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 28px;
-  }
-
-  .demo-screen::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(rgba(124,58,237,.04) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(124,58,237,.04) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  .demo-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--grad);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: white;
-    box-shadow: 0 4px 16px rgba(124,58,237,.4);
-    position: relative;
-    z-index: 2;
-    margin-bottom: 6px;
-  }
-
-  .demo-name {
-    font-size: .62rem;
-    font-weight: 700;
-    color: white;
-    position: relative;
-    z-index: 2;
-    margin-bottom: 2px;
-  }
-
-  .demo-role {
-    font-size: .48rem;
-    color: rgba(255,255,255,.5);
-    position: relative;
-    z-index: 2;
-    margin-bottom: 8px;
-  }
-
-  .demo-badge {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 50px;
-    padding: 2px 8px;
-    font-size: .4rem;
-    color: rgba(255,255,255,.6);
-    font-weight: 600;
-    position: relative;
-    z-index: 2;
-    margin-bottom: 10px;
-  }
-
-  .demo-badge-dot {
-    width: 4px;
-    height: 4px;
-    background: #22c55e;
-    border-radius: 50%;
-    animation: blink 1.5s infinite;
-  }
-
-  .demo-links {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 85%;
-    position: relative;
-    z-index: 2;
-  }
-
-  .demo-link {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 8px;
-    padding: 5px 8px;
-  }
-
-  .demo-link-icon {
-    width: 16px;
-    height: 16px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .6rem;
-    flex-shrink: 0;
-  }
-
-  .demo-link span {
-    font-size: .48rem;
-    color: rgba(255,255,255,.7);
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .demo-card {
-    position: absolute;
-    width: 100px;
-    height: 62px;
-    background: linear-gradient(135deg, #f5f2ff, #e6dcff, #d2c4f8);
-    border-radius: 8px;
-    border: 1px solid rgba(124,58,237,.25);
-    box-shadow: 0 12px 36px rgba(124,58,237,.25);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 8px 10px;
-    animation: cardApproach 4s ease-in-out infinite;
-    z-index: 20;
-    right: -20px;
-    top: 20px;
-  }
-
-  @keyframes cardApproach {
-    0% { transform: translate(60px, -40px) rotate(15deg) scale(.8); opacity: 0; }
-    15% { opacity: 1; }
-    40% { transform: translate(-30px, 20px) rotate(-5deg) scale(1); }
-    50% { transform: translate(-30px, 20px) rotate(-5deg) scale(1); }
-    70% { transform: translate(60px, -40px) rotate(15deg) scale(.8); opacity: 1; }
-    85% { opacity: 0; }
-    100% { transform: translate(60px, -40px) rotate(15deg) scale(.8); opacity: 0; }
-  }
-
-  .demo-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .demo-card-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: .65rem;
-    background: var(--grad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .demo-card-nfc {
-    width: 14px;
-    height: 14px;
-    border: 1.5px solid rgba(124,58,237,.4);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .35rem;
-    font-weight: 800;
-    color: var(--purple);
-    font-family: 'Syne', sans-serif;
-  }
-
-  .demo-card-waves {
-    display: flex;
-    gap: 2px;
-    align-items: flex-end;
-  }
-
-  .demo-cw {
-    width: 2.5px;
-    border-radius: 2px;
-    background: var(--grad);
-    animation: cwPulse 1s ease-in-out infinite;
-  }
-  .demo-cw:nth-child(1){height:5px;}
-  .demo-cw:nth-child(2){height:9px;animation-delay:.15s;}
-  .demo-cw:nth-child(3){height:6px;animation-delay:.3s;}
-  .demo-cw:nth-child(4){height:11px;animation-delay:.45s;}
-
-  @keyframes cwPulse {
-    0%, 100% { opacity: .4; transform: scaleY(.8); }
-    50% { opacity: 1; transform: scaleY(1.1); }
-  }
-
-  .demo-nfc-waves {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 15;
-    pointer-events: none;
-  }
-
-  .demo-nfc-wave {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px solid rgba(124,58,237,.4);
-    border-radius: 50%;
-    opacity: 0;
-    animation: nfcWaveExpand 4s ease-out infinite;
-  }
-
-  .demo-nfc-wave:nth-child(1) { width: 40px; height: 40px; animation-delay: 1.6s; }
-  .demo-nfc-wave:nth-child(2) { width: 60px; height: 60px; animation-delay: 1.8s; }
-  .demo-nfc-wave:nth-child(3) { width: 80px; height: 80px; animation-delay: 2.0s; }
-
-  @keyframes nfcWaveExpand {
-    0% { transform: translate(-50%, -50%) scale(.5); opacity: .8; border-color: rgba(124,58,237,.5); }
-    50% { opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-  }
-
-  .demo-screen-flash {
-    position: absolute;
-    inset: 0;
-    background: rgba(124,58,237,.15);
-    opacity: 0;
-    animation: screenFlash 4s ease-in-out infinite;
-    z-index: 5;
-    border-radius: 24px;
-  }
-
-  @keyframes screenFlash {
-    0%, 38% { opacity: 0; }
-    42% { opacity: 1; }
-    48% { opacity: 0; }
-    100% { opacity: 0; }
-  }
-
-  .hero-visual {
-    display: none !important;
+  .modal-note {
+    text-align: center; font-size: .72rem; color: var(--text-soft);
+    margin-top: 12px;
   }
 
   @media(max-width:900px){
-    .hero-demo {
-      max-width: 280px;
-      height: 240px;
-      margin: 20px auto 5px;
-    }
-    .demo-phone {
-      width: 130px;
-      height: 260px;
-      border-radius: 24px;
-    }
-    .demo-card {
-      width: 80px;
-      height: 50px;
-      right: -10px;
-      top: 15px;
-    }
-    .demo-screen {
-      padding-top: 22px;
-    }
-    .demo-avatar {
-      width: 36px;
-      height: 36px;
-      font-size: .9rem;
-    }
-    .demo-name { font-size: .55rem; }
-    .demo-role { font-size: .42rem; }
-    .demo-badge { font-size: .35rem; padding: 1px 6px; }
-    .demo-link { padding: 4px 6px; }
-    .demo-link-icon { width: 14px; height: 14px; font-size: .5rem; }
-    .demo-link span { font-size: .42rem; }
-  }
-
-@media(max-width:900px){
     nav{padding:16px 18px;} nav ul{display:none;}
     .hero{padding:100px 20px 60px;flex-direction:column;}
     .hero-visual{display:none;}
@@ -887,11 +638,11 @@
     footer{padding:24px 18px;flex-direction:column;gap:10px;}
   }
 </style>
-<base target="_blank">
 </head>
 <body>
 
-
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
 
 <!-- NAV -->
 <nav>
@@ -900,6 +651,7 @@
     <li><a href="#how" data-i18n="nav_how">كيف يعمل</a></li>
     <li><a href="#products" data-i18n="nav_products">المنتجات</a></li>
     <li><a href="#features" data-i18n="nav_features">المميزات</a></li>
+    <li><a href="b2b.html" data-i18n="nav_b2b">الشركات</a></li>
     <li><a href="login.html" data-i18n="nav_space">مساحتي</a></li>
     <li><a href="#cta" class="nav-btn" data-i18n="nav_order">اطلب الآن</a></li>
   </ul>
@@ -912,65 +664,15 @@
   <div class="blob b3"></div>
 
   <div class="hero-content">
-    <div class="pill"><div class="dot"></div><span data-i18n="hero_pill">تقنية NFC الذكية — الجيل الجديد</span></div>
-    <h1>
-      <span data-i18n="hero_h1_line1">KLYX —</span><br>
-      <span data-i18n="hero_h1_line2">حلول ذكية</span><br>
-      <span class="grad-text" data-i18n="hero_h1_grad">بدون تلامس</span>
-    </h1>
-    <p class="hero-sub" data-i18n="hero_sub1">حلول رقمية للأعمال الحديثة باستخدام NFC</p>
-    <p class="hero-sub2" data-i18n="hero_sub2">بسّط تواصلك وخلي تجربتك أسرع وأكثر احترافية</p>
+    <div class="pill"><div class="dot"></div>تقنية NFC الذكية — الجيل الجديد</div>
+    <h1>KLYX —<br>حلول ذكية<br><span class="grad-text">بدون تلامس</span></h1>
+    <p class="hero-sub">حلول رقمية للأعمال الحديثة باستخدام NFC</p>
+    <p class="hero-sub2">بسّط تواصلك وخلي تجربتك أسرع وأكثر احترافية</p>
     <div class="actions">
-      <a href="#products" class="btn btn-p" data-i18n="hero_btn_products">اكتشف المنتجات</a>
-      <a href="#features" class="btn btn-g" data-i18n="hero_btn_features">المميزات</a>
+      <a href="#products" class="btn btn-p">اكتشف المنتجات</a>
+      <a href="#features" class="btn btn-g">المميزات</a>
     </div>
   </div>
-
-  <!-- NFC DEMO ANIMATION -->
-  <div class="hero-demo" aria-hidden="true">
-    <div class="demo-phone">
-      <div class="demo-notch"></div>
-      <div class="demo-screen">
-        <div class="demo-screen-flash"></div>
-        <div class="demo-avatar">K</div>
-        <div class="demo-name">KLYX User</div>
-        <div class="demo-role">Digital Card</div>
-        <div class="demo-badge"><div class="demo-badge-dot"></div><span>Active</span></div>
-        <div class="demo-links">
-          <div class="demo-link">
-            <div class="demo-link-icon" style="background:rgba(34,197,94,.15);">📱</div>
-            <span>+216 XX XXX XXX</span>
-          </div>
-          <div class="demo-link">
-            <div class="demo-link-icon" style="background:rgba(124,58,237,.15);">✉️</div>
-            <span>user@klyxtn.com</span>
-          </div>
-          <div class="demo-link">
-            <div class="demo-link-icon" style="background:rgba(59,130,246,.15);">🌐</div>
-            <span>www.klyxtn.com</span>
-          </div>
-        </div>
-      </div>
-      <div class="demo-nfc-waves">
-        <div class="demo-nfc-wave"></div>
-        <div class="demo-nfc-wave"></div>
-        <div class="demo-nfc-wave"></div>
-      </div>
-    </div>
-    <div class="demo-card">
-      <div class="demo-card-top">
-        <div class="demo-card-logo">KLYX</div>
-        <div class="demo-card-nfc">NFC</div>
-      </div>
-      <div class="demo-card-waves">
-        <div class="demo-cw"></div>
-        <div class="demo-cw"></div>
-        <div class="demo-cw"></div>
-        <div class="demo-cw"></div>
-      </div>
-    </div>
-  </div>
-
 
   <div class="hero-visual">
     <div class="phone-hero">
@@ -978,15 +680,17 @@
       <div class="nfc-ring">
         <span class="nfc-txt grad-text">NFC</span>
       </div>
-      <div class="hint-txt" data-i18n="hero_phone_hint">قرّب بطاقتك من الهاتف</div>
+      <div class="hint-txt">قرّب بطاقتك من الهاتف</div>
     </div>
     <div class="card-hero">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
         <div class="card-klyx grad-text">KLYX</div>
-        <div style="background:rgba(124,58,237,0.1);border:1px dashed rgba(124,58,237,0.4);border-radius:6px;padding:4px 8px;font-size:.55rem;font-weight:700;color:var(--purple);letter-spacing:.06em;font-family:'Syne',sans-serif;">VOTRE LOGO</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+          <div style="background:rgba(124,58,237,0.1);border:1px dashed rgba(124,58,237,0.4);border-radius:6px;padding:4px 8px;font-size:.55rem;font-weight:700;color:var(--purple);letter-spacing:.06em;font-family:'Syne',sans-serif;">VOTRE LOGO</div>
+        </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:flex-end;">
-        <div class="card-label" data-i18n="hero_card_label">بطاقتك الذكية</div>
+        <div class="card-label">بطاقتك الذكية</div>
         <div class="card-waves">
           <div class="wv"></div><div class="wv"></div>
           <div class="wv"></div><div class="wv"></div>
@@ -995,33 +699,31 @@
     </div>
   </div>
 
-  <div class="shint"><div class="sl"></div><span data-i18n="hero_scroll">اسكرول</span></div>
+  <div class="shint"><div class="sl"></div>اسكرول</div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section class="how" id="how">
-  <div class="section-pill" data-i18n="how_pill">⚡ كيف يعمل</div>
-  <h2 class="sec-title">
-    <span data-i18n="how_title">ثلاث خطوات نحو</span> <span class="grad-text" data-i18n="how_title_grad">هوية بلا حدود</span>
-  </h2>
+  <div class="section-pill">⚡ كيف يعمل</div>
+  <h2 class="sec-title">ثلاث خطوات نحو <span class="grad-text">هوية بلا حدود</span></h2>
   <div class="steps">
     <div class="step reveal">
       <div class="step-n">01</div>
       <div class="step-ico">🎨</div>
-      <h3 data-i18n="step1_title">خصّص ملفك الشخصي</h3>
-      <p data-i18n="step1_desc">أعدّ مساحتك الرقمية — صورتك، روابطك، معلومات التواصل، وكل ما يمثلك.</p>
+      <h3>خصّص ملفك الشخصي</h3>
+      <p>أعدّ مساحتك الرقمية — صورتك، روابطك، معلومات التواصل، وكل ما يمثلك.</p>
     </div>
     <div class="step reveal">
       <div class="step-n">02</div>
       <div class="step-ico">📲</div>
-      <h3 data-i18n="step2_title">قرّب بطاقتك من الهاتف</h3>
-      <p data-i18n="step2_desc">قرّب بطاقة Klyx أو مفتاحك NFC من هاتف أي شخص. بدون تطبيق — يشتغل مباشرة على iOS و Android.</p>
+      <h3>قرّب بطاقتك من الهاتف</h3>
+      <p>قرّب بطاقة Klyx أو مفتاحك NFC من هاتف أي شخص. بدون تطبيق — يشتغل مباشرة على iOS و Android.</p>
     </div>
     <div class="step reveal">
       <div class="step-n">03</div>
       <div class="step-ico">✨</div>
-      <h3 data-i18n="step3_title">ملفك يفتح فوراً</h3>
-      <p data-i18n="step3_desc">صفحة أنيقة ومهنية تظهر في ثانية — معلومات التواصل، الروابط، الشبكات. الانطباع المثالي في كل لقاء.</p>
+      <h3>ملفك يفتح فوراً</h3>
+      <p>صفحة أنيقة ومهنية تظهر في ثانية — معلومات التواصل، الروابط، الشبكات. الانطباع المثالي في كل لقاء.</p>
     </div>
   </div>
 </section>
@@ -1030,59 +732,41 @@
 <section class="features" id="features">
   <div class="feat-list">
     <div>
-      <div class="section-pill" data-i18n="feat_pill">✦ المميزات</div>
-      <h2 class="sec-title" style="margin-bottom:32px;">
-        <span data-i18n="feat_title">كل اللي تحتاجه</span><br>
-        <span class="grad-text" data-i18n="feat_title_grad">في بطاقة واحدة</span>
-      </h2>
+      <div class="section-pill">✦ المميزات</div>
+      <h2 class="sec-title" style="margin-bottom:32px;">كل اللي تحتاجه<br><span class="grad-text">في بطاقة واحدة</span></h2>
     </div>
     <div class="feat-item reveal">
       <div class="feat-ico">📶</div>
-      <div>
-        <h4 data-i18n="feat1_title">بطاقات NFC ذكية</h4>
-        <p data-i18n="feat1_desc">تقنية NFC مدمجة — تشتغل مع كل الهواتف الحديثة بدون إعداد</p>
-      </div>
+      <div><h4>بطاقات NFC ذكية</h4><p>تقنية NFC مدمجة — تشتغل مع كل الهواتف الحديثة بدون إعداد</p></div>
     </div>
     <div class="feat-item reveal">
       <div class="feat-ico">⚡</div>
-      <div>
-        <h4 data-i18n="feat2_title">مشاركة فورية بدون تطبيقات</h4>
-        <p data-i18n="feat2_desc">لا تحميل، لا QR ، لا تأخير — قط قرب وكهو</p>
-      </div>
+      <div><h4>مشاركة فورية بدون تطبيقات</h4><p>لا تحميل، لا QR ، لا تأخير — قط قرب وكهو</p></div>
     </div>
     <div class="feat-item reveal">
       <div class="feat-ico">🎯</div>
-      <div>
-        <h4 data-i18n="feat3_title">تخصيص كامل لبيزنسك</h4>
-        <p data-i18n="feat3_desc">غير ملفك في أي وقت من خلال الاتصال بينا — بدون بطاقة جديدة</p>
-      </div>
+      <div><h4>تخصيص كامل لبيزنسك</h4><p>غير ملفك في أي وقت من خلال الاتصال بينا — بدون بطاقة جديدة</p></div>
     </div>
     <div class="feat-item reveal">
       <div class="feat-ico">👤</div>
-      <div>
-        <h4 data-i18n="feat4_title">تجربة عصرية لعملائك</h4>
-        <p data-i18n="feat4_desc">اترك انطباعاً احترافياً يُعبّر عن مستواك الحقيقي</p>
-      </div>
+      <div><h4>تجربة عصرية لعملائك</h4><p>اترك انطباعاً احترافياً يُعبّر عن مستواك الحقيقي</p></div>
     </div>
     <div class="feat-item reveal">
       <div class="feat-ico">🔒</div>
-      <div>
-        <h4 data-i18n="feat5_title">تحكم كامل في بياناتك</h4>
-        <p data-i18n="feat5_desc">أنت من يقرر ما يُعرض — خصوصيتك محفوظة دائماً</p>
-      </div>
+      <div><h4>تحكم كامل في بياناتك</h4><p>أنت من يقرر ما يُعرض — خصوصيتك محفوظة دائماً</p></div>
     </div>
   </div>
 
   <div class="feat-phone">
     <div class="fp-notch"></div>
     <div class="fp-avatar">A</div>
-    <div class="fp-name" data-i18n="feat_phone_name">أمين</div>
-    <div class="fp-role" data-i18n="feat_phone_role">مدير تجاري</div>
+    <div class="fp-name">أمين </div>
+    <div class="fp-role">مدير تجاري</div>
     <div class="fp-badge"><div class="fp-dot"></div>Via Klyx NFC</div>
     <div class="fp-links">
       <div class="fp-lnk"><div class="fp-lnk-i ic-g">📞</div><span style="direction:ltr;">+216 XX XXX XXX</span></div>
       <div class="fp-lnk"><div class="fp-lnk-i ic-p">✉</div><span>amin@xxxx.com</span></div>
-      <div class="fp-lnk"><div class="fp-lnk-i ic-b">🌐</div><span data-i18n="feat_phone_site">SITE WEB</span></div>
+      <div class="fp-lnk"><div class="fp-lnk-i ic-b">🌐</div><span>SITE WEB</span></div>
       <div class="fp-lnk"><div class="fp-lnk-i ic-r">📸</div><span>@amin.tn</span></div>
     </div>
   </div>
@@ -1090,33 +774,31 @@
 
 <!-- PRODUCTS -->
 <section class="products" id="products">
-  <div class="section-pill" data-i18n="prod_pill">🛍 منتجاتنا</div>
-  <h2 class="sec-title">
-    <span data-i18n="prod_title">اختار</span> <span class="grad-text" data-i18n="prod_title_grad">المنتج</span><span data-i18n="prod_title2"> المناسب</span>
-  </h2>
+  <div class="section-pill">🛍 منتجاتنا</div>
+  <h2 class="sec-title">اختار <span class="grad-text">المنتج</span> المناسب</h2>
 
   <div style="display:flex;gap:0;background:white;border:1px solid var(--border);border-radius:18px;margin-bottom:32px;overflow:hidden;">
     <div style="flex:1;padding:28px 24px;text-align:center;border-left:1px solid var(--border);">
       <div style="font-size:1.6rem;margin-bottom:8px;">⚡</div>
-      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;" data-i18n="prod_speed">سرعة</div>
-      <div style="font-size:.72rem;color:var(--text-soft);" data-i18n="prod_speed_sub">في الاستخدام</div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;">سرعة</div>
+      <div style="font-size:.72rem;color:var(--text-soft);">في الاستخدام</div>
     </div>
     <div style="flex:1;padding:28px 24px;text-align:center;border-left:1px solid var(--border);">
       <div style="font-size:1.6rem;margin-bottom:8px;">💎</div>
-      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;" data-i18n="prod_design">تصميم</div>
-      <div style="font-size:.72rem;color:var(--text-soft);" data-i18n="prod_design_sub">فاخر</div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;">تصميم</div>
+      <div style="font-size:.72rem;color:var(--text-soft);">فاخر</div>
     </div>
     <div style="flex:1;padding:28px 24px;text-align:center;">
       <div style="font-size:1.6rem;margin-bottom:8px;">🎯</div>
-      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;" data-i18n="prod_fit">مناسب</div>
-      <div style="font-size:.72rem;color:var(--text-soft);" data-i18n="prod_fit_sub">لكل الأنشطة</div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px;">مناسب</div>
+      <div style="font-size:.72rem;color:var(--text-soft);">لكل الأنشطة</div>
     </div>
   </div>
 
   <div class="products-grid">
     <!-- Card 1 -->
     <div class="prod-card feat reveal">
-      <div class="prod-badge" data-i18n="prod_badge_popular">⭐ الأكثر طلباً</div>
+      <div class="prod-badge">⭐ الأكثر طلباً</div>
       <div class="prod-vis">
         <div class="mc">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;">
@@ -1126,11 +808,12 @@
           <div class="mc-w"><div class="mw"></div><div class="mw"></div><div class="mw"></div><div class="mw"></div></div>
         </div>
       </div>
-      <div class="prod-name" data-i18n="prod1_name">Klyx Card — بطاقة NFC</div>
-      <p class="prod-desc" data-i18n="prod1_desc">بطاقة العمل المُعاد اختراعها. حجم قياسي، فاخر، شريحة NFC مدمجة. دائمة، أنيقة، لا تُنسى.</p>
-      <div class="prod-price grad-text" data-i18n="prod1_price">27 TND</div>
-      <div class="prod-sub" data-i18n="prod1_sub">للبطاقة الواحدة — شحن مجاني</div>
-      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Card — بطاقة NFC (27 TND)')">🛒 اطلب الآن</button>
+      <div class="prod-name">Klyx Card — بطاقة NFC</div>
+      <p class="prod-desc">بطاقة العمل المُعاد اختراعها. حجم قياسي، فاخر، شريحة NFC مدمجة. دائمة، أنيقة، لا تُنسى.</p>
+      <div class="prod-price grad-text">27 TND</div>
+      <div class="prod-sub">للبطاقة الواحدة — شحن مجاني</div>
+      <!-- ✅ FIX: Order button added -->
+      <button class="prod-order-btn" onclick="openOrder('Klyx Card — بطاقة NFC (27 TND)')">🛒 اطلب الآن</button>
     </div>
 
     <!-- Card 2 -->
@@ -1142,16 +825,17 @@
           <div class="logo-placeholder-key">VOTRE<br>LOGO</div>
         </div>
       </div>
-      <div class="prod-name" data-i18n="prod2_name">Klyx حامل المفاتيح — porte-clé NFC</div>
-      <p class="prod-desc" data-i18n="prod2_desc">دايماً معاك. حامل المفاتيح NFC صغير يرافق يومياتك — خفيف، عملي، واحترافي في نفس الوقت.</p>
-      <div class="prod-price grad-text" data-i18n="prod2_price">25 TND</div>
-      <div class="prod-sub" data-i18n="prod2_sub">للقطعة الواحدة — شحن مجاني</div>
-      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Key — porte-clé NFC (25 TND)')">🛒 اطلب الآن</button>
+      <div class="prod-name">Klyx حامل المفاتيح — porte-clé NFC</div>
+      <p class="prod-desc">دايماً معاك. حامل المفاتيح NFC صغير يرافق يومياتك — خفيف، عملي، واحترافي في نفس الوقت.</p>
+      <div class="prod-price grad-text">25 TND</div>
+      <div class="prod-sub">للقطعة الواحدة — شحن مجاني</div>
+      <!-- ✅ FIX: Order button added -->
+      <button class="prod-order-btn" onclick="openOrder('Klyx Key — porte-clé NFC (25 TND)')">🛒 اطلب الآن</button>
     </div>
 
     <!-- Card 3 -->
     <div class="prod-card reveal">
-      <div class="prod-badge" style="background:linear-gradient(135deg,#4285F4,#34A853);" data-i18n="prod_badge_shops">⭐ للمحلات</div>
+      <div class="prod-badge" style="background:linear-gradient(135deg,#4285F4,#34A853);">⭐ للمحلات</div>
       <div class="prod-vis">
         <div class="google-stand">
           <div class="stand-panel">
@@ -1170,11 +854,12 @@
           <div class="stand-base"></div>
         </div>
       </div>
-      <div class="prod-name" data-i18n="prod3_name">Klyx Stand — Google Review</div>
-      <p class="prod-desc" data-i18n="prod3_desc">أداة احترافية لمحلك أو مطعمك. زبونك يقرب هاتفه أو يسكن QR — مباشرة لصفحة Google Review تاعك.</p>
-      <div class="prod-price grad-text" data-i18n="prod3_price">79 TND</div>
-      <div class="prod-sub" data-i18n="prod3_sub">للقطعة — شحن مجاني</div>
-      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Stand — Google Review (79 TND)')">🛒 اطلب الآن</button>
+      <div class="prod-name">Klyx Stand — Google Review</div>
+      <p class="prod-desc">أداة احترافية لمحلك أو مطعمك. زبونك يقرب هاتفه أو يسكن QR — مباشرة لصفحة Google Review تاعك.</p>
+      <div class="prod-price grad-text">79 TND</div>
+      <div class="prod-sub">للقطعة — شحن مجاني</div>
+      <!-- ✅ FIX: Order button added -->
+      <button class="prod-order-btn" onclick="openOrder('Klyx Stand — Google Review (79 TND)')">🛒 اطلب الآن</button>
     </div>
 
     <!-- Card 4 -->
@@ -1192,23 +877,24 @@
               </div>
               <div>
                 <div class="epoxy-tap">TAP OR SCAN</div>
-                <div class="epoxy-qr-mini"></div>
+                <div class="epoxy-qr-mini"><div class="mini-qr-block"></div></div>
               </div>
             </div>
             <div class="logo-placeholder" style="margin-top:6px;font-size:.42rem;padding:3px 6px;">VOTRE LOGO</div>
           </div>
         </div>
       </div>
-      <div class="prod-name" data-i18n="prod4_name">Klyx Menu — منيو NFC دائري</div>
-      <p class="prod-desc" data-i18n="prod4_desc">منيو رقمي للمطاعم والمقاهي والبارات. تاغ NFC دائري من الإيبوكسي يوضع على الطاولة — زبونك يقرب هاتفه أو يسكن QR وينفتحله المنيو فوراً. بدون ورق، بدون تطبيق.</p>
+      <div class="prod-name">Klyx Menu — منيو NFC دائري</div>
+      <p class="prod-desc">منيو رقمي للمطاعم والمقاهي والبارات. تاغ NFC دائري من الإيبوكسي يوضع على الطاولة — زبونك يقرب هاتفه أو يسكن QR وينفتحله المنيو فوراً. بدون ورق، بدون تطبيق.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;" data-i18n="prod_tag_resto">🍽 مطاعم</span>
-        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;" data-i18n="prod_tag_cafe">☕ مقاهي</span>
-        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;" data-i18n="prod_tag_bar">🍹 بارات</span>
+        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;">🍽 مطاعم</span>
+        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;">☕ مقاهي</span>
+        <span style="background:rgba(124,58,237,.08);border:1px solid var(--border);border-radius:50px;padding:3px 10px;font-size:.7rem;color:var(--purple);font-weight:600;">🍹 بارات</span>
       </div>
-      <div class="prod-price grad-text" data-i18n="prod4_price">29 TND</div>
-      <div class="prod-sub" data-i18n="prod4_sub">للقطعة — مقاوم للماء والخدش</div>
-      <button class="prod-order-btn" data-i18n="prod_order_btn" onclick="openOrder('Klyx Menu — منيو NFC دائري (29 TND)')">🛒 اطلب الآن</button>
+      <div class="prod-price grad-text">29 TND</div>
+      <div class="prod-sub">للقطعة — مقاوم للماء والخدش</div>
+      <!-- ✅ FIX: Order button added -->
+      <button class="prod-order-btn" onclick="openOrder('Klyx Menu — منيو NFC دائري (29 TND)')">🛒 اطلب الآن</button>
     </div>
   </div>
 </section>
@@ -1216,36 +902,35 @@
 <!-- STATS -->
 <div class="stats">
   <div class="stat reveal">
-    <span class="stat-n" data-i18n="stat1_val">90+</span>
-    <span class="stat-l" data-i18n="stat1_label">عميل راضي</span>
+    <span class="stat-n">90+</span>
+    <span class="stat-l">عميل راضي</span>
   </div>
   <div class="stat reveal">
-    <span class="stat-n" data-i18n="stat2_val">0.8s</span>
-    <span class="stat-l" data-i18n="stat2_label">وقت الفتح</span>
+    <span class="stat-n">0.8s</span>
+    <span class="stat-l">وقت الفتح</span>
   </div>
   <div class="stat reveal">
-    <span class="stat-n" data-i18n="stat3_val">100%</span>
-    <span class="stat-l" data-i18n="stat3_label">متوافق iOS & Android</span>
+    <span class="stat-n">100%</span>
+    <span class="stat-l">متوافق iOS & Android</span>
   </div>
 </div>
 
 <!-- CTA -->
 <section class="cta" id="cta">
   <div class="cta-glow"></div>
-  <h2>
-    <span data-i18n="cta_title">مستعد تترك</span> <span class="grad-text" data-i18n="cta_title_grad">انطباع لا يُنسى؟</span>
-  </h2>
-  <p data-i18n="cta_sub">انضم لمئات المحترفين اللي يتواصلوا بطريقة مختلفة</p>
+  <h2>مستعد تترك <span class="grad-text">انطباع لا يُنسى؟</span></h2>
+  <p>انضم لمئات المحترفين اللي يتواصلوا بطريقة مختلفة</p>
   <div class="actions">
-    <button onclick="openOrder('Klyx Card — بطاقة NFC (27 TND)')" class="btn btn-p" data-i18n="cta_btn_order">اطلب بطاقتك الآن</button>
-    <a href="#products" class="btn btn-g" data-i18n="cta_btn_products">تعرف على الباقات</a>
+    <!-- ✅ FIX: CTA opens modal -->
+    <button onclick="openOrder('Klyx Card — بطاقة NFC (27 TND)')" class="btn btn-p">اطلب بطاقتك الآن</button>
+    <a href="#products" class="btn btn-g">تعرف على الباقات</a>
   </div>
 </section>
 
 <!-- CONTACT -->
 <div class="contact-bar">
   <div class="cblock">
-    <div class="clabel" data-i18n="contact_follow">تابعنا علي</div>
+    <div class="clabel">تابعنا علي</div>
     <div class="socials">
       <a href="https://www.instagram.com/klyx.tn/" target="_blank" rel="noopener" class="social-link" title="Instagram">
         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -1260,7 +945,7 @@
     <div class="shandle">@klyx.tn</div>
   </div>
   <div class="cblock">
-    <div class="clabel" data-i18n="contact_reach">تواصل معنا</div>
+    <div class="clabel">تواصل معنا</div>
     <div class="cval">+216 29 691 046</div>
     <div class="cval">contact@klyxtn.com</div>
   </div>
@@ -1268,10 +953,10 @@
 
 <footer>
   <div class="f-logo grad-text">KLYX</div>
-  <div class="f-copy" data-i18n="footer_copy">© 2026 Klyx. جميع الحقوق محفوظة.</div>
+  <div class="f-copy">© 2026 Klyx. جميع الحقوق محفوظة.</div>
 </footer>
 
-<!-- ORDER MODAL -->
+<!-- ORDER MODAL — Smart routing: NFC=card flow, others=WhatsApp -->
 <div id="orderModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -1291,8 +976,24 @@
   </div>
 </div>
 
-<script src="i18n.js"></script>
 <script>
+  // ── Cursor ──────────────────────────────────────────
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+  });
+  (function loop(){
+    rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.prod-card,.step,.feat-item').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.classList.add('big');ring.classList.add('big');});
+    el.addEventListener('mouseleave',()=>{cur.classList.remove('big');ring.classList.remove('big');});
+  });
 
   // ── Scroll reveal ────────────────────────────────────
   const obs = new IntersectionObserver(entries=>{
@@ -1310,18 +1011,24 @@
 
   // ── Modal ────────────────────────────────────────────
   let currentProduct = "";
-  const NFC_PRODUCTS = ['Klyx Card', 'Klyx Key', 'porte-clé NFC', 'NFC (27 TND)', 'NFC (25 TND)'];
-  let isNfcProduct = false;
 
   function closeModal() {
     document.getElementById("orderModal").classList.remove("open");
   }
+
+  // ✅ Close on backdrop click
   document.getElementById("orderModal").addEventListener("click", function(e) {
     if (e.target === this) closeModal();
   });
+
+  // ✅ Close on Escape key
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeModal();
   });
+
+  // NFC products that trigger digital card creation flow
+  const NFC_PRODUCTS = ['Klyx Card', 'Klyx Key', 'porte-clé NFC', 'NFC (27 TND)', 'NFC (25 TND)'];
+  let isNfcProduct = false;
 
   function openOrder(product) {
     currentProduct = product;
@@ -1331,9 +1038,11 @@
     document.getElementById("city").value = "";
     document.getElementById("qty").value = "1";
 
+    // Detect if NFC card/keychain — show card creation flow
     isNfcProduct = NFC_PRODUCTS.some(k => product.includes(k));
     const btn = document.getElementById("modalBtn");
     const note = document.getElementById("modalNote");
+    const lang = (window.KlyxI18n && KlyxI18n.current) ? KlyxI18n.current : 'ar';
     if (isNfcProduct) {
       btn.setAttribute('data-i18n', 'modal_btn_nfc');
       note.setAttribute('data-i18n', 'modal_note_nfc');
@@ -1360,10 +1069,15 @@
     if (isNfcProduct) {
       window.location.href = 'create-card.html';
     } else {
+      // Simple WhatsApp order for non-NFC products
       const msg = `🛒 طلب KLYX\n━━━━━━━━━━\n📦 ${currentProduct}\n👤 ${name}\n📞 ${phone}\n🏙 ${city}\n🔢 ${qty}`;
       window.open('https://wa.me/21629691046?text=' + encodeURIComponent(msg), '_blank');
     }
   }
+
+  // legacy alias
+  function continueToCard() { handleModalSubmit(); }
 </script>
+<script src="i18n.js"></script>
 </body>
 </html>
